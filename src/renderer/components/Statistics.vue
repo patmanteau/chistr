@@ -131,8 +131,10 @@ td {
 </style>
 
 /*<style media="screen">
-a, a:hover, a:visited {
-  color: #DE703C;
+a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .wrapper {

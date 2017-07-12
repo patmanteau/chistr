@@ -1,71 +1,80 @@
 <template>
   <table class="player-table">
     <colgroup>
-      <col class="col-player-name"><col class="col-ship-name">
-      <col><col><col>
-      <col class="col-avg-dmg"><col class="col-avg-exp">
-      <col><col><col><col>
+      <col class="col-player-name"><col class="col-ship-name"><col class="col-icon">
+      <col class="col-battle-count"><col class="col-winrate"><col class="col-kd">
+      <col class="col-avg-dmg"><col class="col-avg-exp"><col class="col-icon">
+      <col class="col-battle-count"><col class="col-winrate"><col class="col-pr"><col class="col-kd">
       <col class="col-avg-dmg"><col class="col-avg-exp">
     </colgroup>
-    <thead>
-      <tr v-if="!noheader">
-        <th></th>
-        <th></th>
-        <th colspan="5" class="grey-bottom-border"><i class="fa fa-user" aria-hidden="true"></i></th>
-        <th colspan="6" class="grey-bottom-border"><i class="fa fa-ship" aria-hidden="true"></i></th>
-      </tr>
-      <tr class="grey-bottom-border">
-        <template v-if="!noheader">
-        <!-- <th title="Player"><i class="fa fa-user" aria-hidden="true"></i></th>
-        <th title="Ship"><i class="fa fa-ship" aria-hidden="true"></i></th> -->
+    <thead v-if="!noheader">
+      <tr>
         <th title="Player"></th>
         <th title="Ship"></th>
-        <th title="# of battles for player"><i class="fa fa-repeat" aria-hidden="true"></i></th>
-        <th title="Winrate"><i class="fa fa-pie-chart" aria-hidden="true"></i></th>
-        <th title="Kill/Death ratio"><i class="fa fa-bullseye" aria-hidden="true"></i></th>
-        <th title="Average damage"><i class="fa fa-rocket" aria-hidden="true"></i></th>
-        <th title="Average experience"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
-        <th title="# of battles for player" class="td-grey-left-border"><i class="fa fa-repeat" aria-hidden="true"></i></th>
-        <th title="Winrate"><i class="fa fa-pie-chart" aria-hidden="true"></i></th>
-        <th title="Personal Rating for this ship">PR</th>
-        <th title="Kill/Death ratio"><i class="fa fa-bullseye" aria-hidden="true"></i></th>
-        <th title="Average damage"><i class="fa fa-rocket" aria-hidden="true"></i></th>
-        <th title="Average experience"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
-        </template>
-        <template v-else>
-          <th colspan="13"></th>
-        </template>
+        <th title="Player statistics" class="grey-left-border grey-top-border grey-background"><i class="fa fa-user text-centered" aria-hidden="true"></i></th>
+        <th title="# of battles overall" class="grey-top-border"><i class="fa fa-repeat" aria-hidden="true"></i></th>
+        <th title="Winrate" class="grey-top-border"><i class="fa fa-pie-chart" aria-hidden="true"></i></th>
+        <th title="Kill/Death ratio" class="grey-top-border"><i class="fa fa-bullseye" aria-hidden="true"></i></th>
+        <th title="Average damage" class="grey-top-border"><i class="fa fa-rocket" aria-hidden="true"></i></th>
+        <th title="Average experience" class="grey-top-border"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
+        <th title="Ship statistics" class="grey-left-border grey-top-border grey-background"><i class="fa fa-ship text-centered" aria-hidden="true"></i></th>
+        <th title="# of battles in this ship" class="grey-top-border"><i class="fa fa-repeat" aria-hidden="true"></i></th>
+        <th title="Winrate" class="grey-top-border"><i class="fa fa-pie-chart" aria-hidden="true"></i></th>
+        <th title="Personal Rating for this ship" class="grey-top-border">PR</th>
+        <th title="Kill/Death ratio" class="grey-top-border text-centered"><i class="fa fa-bullseye" aria-hidden="true"></i></th>
+        <th title="Average damage" class="grey-top-border"><i class="fa fa-rocket" aria-hidden="true"></i></th>
+        <th title="Average experience" class="grey-top-border grey-right-border"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
       </tr>
     </thead>
+    <tfoot v-if="noheader">
+      <tr>
+        <th title="Player"></th>
+        <th title="Ship"></th>
+        <th title="Player statistics" class="grey-left-border grey-top-border grey-bottom-border grey-background"><i class="fa fa-user text-centered" aria-hidden="true"></i></th>
+        <th title="# of battles overall" class="grey-top-border grey-bottom-border"><i class="fa fa-repeat" aria-hidden="true"></i></th>
+        <th title="Winrate" class="grey-top-border grey-bottom-border"><i class="fa fa-pie-chart" aria-hidden="true"></i></th>
+        <th title="Kill/Death ratio" class="grey-top-border grey-bottom-border"><i class="fa fa-bullseye" aria-hidden="true"></i></th>
+        <th title="Average damage" class="grey-top-border grey-bottom-border"><i class="fa fa-rocket" aria-hidden="true"></i></th>
+        <th title="Average experience" class="grey-top-border grey-bottom-border"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
+        <th title="Ship statistics" class="grey-top-border grey-left-border grey-bottom-border grey-background"><i class="fa fa-ship text-centered" aria-hidden="true"></i></th>
+        <th title="# of battles in this ship" class="grey-top-border grey-bottom-border"><i class="fa fa-repeat" aria-hidden="true"></i></th>
+        <th title="Winrate" class="grey-top-border grey-bottom-border"><i class="fa fa-pie-chart" aria-hidden="true"></i></th>
+        <th title="Personal Rating for this ship" class="grey-top-border grey-bottom-border">PR</th>
+        <th title="Kill/Death ratio" class="grey-top-border grey-bottom-border td-centered"><i class="fa fa-bullseye" aria-hidden="true"></i></th>
+        <th title="Average damage" class="grey-top-border grey-bottom-border"><i class="fa fa-rocket" aria-hidden="true"></i></th>
+        <th title="Average experience" class="grey-top-border grey-bottom-border grey-right-border"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
+      </tr>
+    </tfoot>
     <tbody>
-      <template v-for="player in sortedPlayers" v-if="player.playerHasRecord">
+      <template v-for="player in sortedPlayers">
       <tr :style="trstyle">
-        <td>{{ player.playerName }}</td>
-        <td>{{ player.shipName }}</td>
-        <td class="td-number">{{ player.playerBattles }}</td>
-        <td class="td-number" :class="winrateclass(player.playerBattles, player.playerWinrate)">{{ player.playerWinrate }}%</td>
-        <td class="td-number">{{ player.playerKdRatio | denan }}</td>
-        <td class="td-number text-subdued">{{ player.playerAvgDmg }}</td>
-        <td class="td-number text-subdued">{{ player.playerAvgExp }}</td>
-        <template v-if="player.shipHasRecord && player.shipBattles > 0">
-          <td class="td-number grey-left-border">{{ player.shipBattles }}</td>
-          <td class="td-number" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</td>
-          <td class="td-number" :class="prclass(player.shipBattles, personalrating(player))">{{ personalrating(player) | denan }}</td>
-          <td class="td-number">{{ player.shipKdRatio | denan }}</td>
-          <td class="td-number text-subdued">{{ player.shipAvgDmg}}</td>
-          <td class="td-number text-subdued">{{ player.shipAvgExp }}</td>
+        <td v-if="player.accountId !== undefined">
+          <a :href="wowsNumbersLink(player)" :title="wowsNumbersLink(player)" class="external-link" target="_blank">{{ player.playerName }}</a>
+        </td>
+        <td v-else><span title="Can't visit this player, his profile is hidden" class="external-link disabled">{{ player.playerName }}</span></td>
+        <td><i>{{ player.shipName }}</i></td>
+        <template v-if="player.playerHasRecord">
+          <td class="td-number grey-left-border" colspan="2">{{ player.playerBattles }}</td>
+          <td class="td-number" v-bind:class="winrateclass(player.playerBattles, player.playerWinrate)">{{ player.playerWinrate }}%</td>
+          <td class="td-number">{{ player.playerKdRatio | denan }}</td>
+          <td class="td-number text-subdued">{{ player.playerAvgDmg }}</td>
+          <td class="td-number text-subdued">{{ player.playerAvgExp }}</td>
+          <template v-if="player.shipHasRecord && player.shipBattles > 0">
+            <td class="td-number grey-left-border" colspan="2">{{ player.shipBattles }}</td>
+            <td class="td-number" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</td>
+            <td class="td-number" :class="prclass(player.shipBattles, personalrating(player))">{{ personalrating(player) | denan }}</td>
+            <td class="text-centered">{{ player.shipKdRatio | denan }}</td>
+            <td class="td-number text-subdued">{{ player.shipAvgDmg}}</td>
+            <td class="td-number text-subdued grey-right-border">{{ player.shipAvgExp }}</td>
+          </template>
+          <template v-else>
+            <td class="text-centered td-no-data" colspan="7">First match with this ship</td>
+          </template>
         </template>
         <template v-else>
-          <td class="text-centered td-no-data" colspan="6">First match with this ship</td>
+          <td class="text-centered td-no-data" colspan="13">This profile is hidden</td>
         </template>
       </tr>
-      </template>
-      <template v-else>
-        <tr :style="trstyle">
-          <td>{{ player.playerName }}</td>
-          <td>{{ player.shipName }}</td>
-          <td class="text-centered td-no-data" colspan="11">This profile is hidden</td>
-        </tr>
       </template>
     </tbody>
   </table>
@@ -73,6 +82,7 @@
 
 <script type="text/javascript">
 // const jsonfile = require('jsonfile')
+import { shell } from 'electron'
 
 export default {
   name: 'player-list',
@@ -97,6 +107,10 @@ export default {
   },
 
   methods: {
+    wowsNumbersLink (player) {
+      return `https://wows-numbers.com/player/${player.accountId},${player.playerName}`
+    },
+
     personalrating (player) {
       console.log(this.expected)
       if (player.playerHasRecord && player.shipHasRecord && this.expected.data.hasOwnProperty(player.shipId)) {
@@ -140,6 +154,10 @@ export default {
       else if (rate < 60) return 'rating-great'
       else if (rate < 65) return 'rating-unicum'
       else return 'rating-superunicum'
+    },
+
+    openInBrowser (url) {
+      shell.openExternal(url)
     }
   },
 
@@ -162,6 +180,10 @@ table tbody tr:nth-child(odd) {
   background: #eee;
 }
 
+table tbody tr:hover {
+  background-color: #ddd;
+}
+
 table th, table td {
   padding: 2px;
 }
@@ -180,20 +202,46 @@ table {
 }
 
 .col-ship-name {
-  width: 15%;
+  width: 20%;
 }
 
-.col-avg-dmg {
+.col-icon {
+  width: 3%;
+}
+
+.col-battle-count {
+  width: 3.5%;
+}
+
+.col-winrate {
+  width: 5%;
+}
+
+.col-kd {
   width: 4%;
 }
 
+.col-avg-dmg {
+  width: 3%;
+}
+
 .col-avg-exp {
+  width: 3%;
+}
+
+.col-pr {
   width: 4%;
 }
 
 .text-subdued {
   color: #aaa;
   font-size: x-small;
+}
+
+.grey-top-border {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #ddd;
 }
 
 .grey-bottom-border {
@@ -208,6 +256,16 @@ table {
   border-left-color: #ddd;
 }
 
+.grey-right-border {
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #ddd;
+}
+
+.grey-background {
+  background: #ddd;
+}
+
 .text-centered {
   text-align: center;
 }
@@ -216,12 +274,26 @@ table {
   text-align: right;
 }
 
+.text-align-left {
+  text-align: left;
+}
+
 .td-number {
   text-align: right;
 }
 
 .td-no-data {
   background: #ddd;
+}
+
+.external-link {
+  color: #555;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.disabled {
+  cursor: not-allowed;
 }
 
 .rating-nonsensical {
