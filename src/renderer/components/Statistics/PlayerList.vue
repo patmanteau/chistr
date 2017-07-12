@@ -1,13 +1,20 @@
 <template>
   <table class="player-table">
+    <colgroup>
+      <col class="col-player-name"><col class="col-ship-name">
+      <col><col><col>
+      <col class="col-avg-dmg"><col class="col-avg-exp">
+      <col><col><col><col>
+      <col class="col-avg-dmg"><col class="col-avg-exp">
+    </colgroup>
     <thead>
       <tr v-if="!noheader">
-        <th class="col-player-name"></th>
-        <th class="col-ship-name"></th>
-        <th colspan="5" class="tr-grey-bottom-border"><i class="fa fa-user" aria-hidden="true"></i></th>
-        <th colspan="6" class="tr-grey-bottom-border"><i class="fa fa-ship" aria-hidden="true"></i></th>
+        <th></th>
+        <th></th>
+        <th colspan="5" class="grey-bottom-border"><i class="fa fa-user" aria-hidden="true"></i></th>
+        <th colspan="6" class="grey-bottom-border"><i class="fa fa-ship" aria-hidden="true"></i></th>
       </tr>
-      <tr class="tr-grey-bottom-border">
+      <tr class="grey-bottom-border">
         <template v-if="!noheader">
         <!-- <th title="Player"><i class="fa fa-user" aria-hidden="true"></i></th>
         <th title="Ship"><i class="fa fa-ship" aria-hidden="true"></i></th> -->
@@ -26,9 +33,7 @@
         <th title="Average experience"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
         </template>
         <template v-else>
-          <th class="col-player-name"></th>
-          <th class="col-ship-name"></th>
-          <th colspan="11"></th>
+          <th colspan="13"></th>
         </template>
       </tr>
     </thead>
@@ -42,8 +47,8 @@
         <td class="td-number">{{ player.playerKdRatio | denan }}</td>
         <td class="td-number text-subdued">{{ player.playerAvgDmg }}</td>
         <td class="td-number text-subdued">{{ player.playerAvgExp }}</td>
-        <template v-if="player.shipHasRecord">
-          <td class="td-number td-grey-left-border">{{ player.shipBattles }}</td>
+        <template v-if="player.shipHasRecord && player.shipBattles > 0">
+          <td class="td-number grey-left-border">{{ player.shipBattles }}</td>
           <td class="td-number" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</td>
           <td class="td-number" :class="prclass(player.shipBattles, personalrating(player))">{{ personalrating(player) | denan }}</td>
           <td class="td-number">{{ player.shipKdRatio | denan }}</td>
@@ -51,7 +56,7 @@
           <td class="td-number text-subdued">{{ player.shipAvgExp }}</td>
         </template>
         <template v-else>
-          <td class="td-centered td-no-data" colspan="6">First match with this ship</td>
+          <td class="text-centered td-no-data" colspan="6">First match with this ship</td>
         </template>
       </tr>
       </template>
@@ -59,7 +64,7 @@
         <tr :style="trstyle">
           <td>{{ player.playerName }}</td>
           <td>{{ player.shipName }}</td>
-          <td class="td-centered td-no-data" colspan="11">This profile is hidden</td>
+          <td class="text-centered td-no-data" colspan="11">This profile is hidden</td>
         </tr>
       </template>
     </tbody>
@@ -153,10 +158,6 @@ export default {
 </script>
 
 <style scoped media="screen">
-table caption {
-  background: #eee;
-}
-
 table tbody tr:nth-child(odd) {
   background: #eee;
 }
@@ -182,8 +183,12 @@ table {
   width: 15%;
 }
 
-.text-overbar {
-  text-decoration: overline;
+.col-avg-dmg {
+  width: 4%;
+}
+
+.col-avg-exp {
+  width: 4%;
 }
 
 .text-subdued {
@@ -191,32 +196,28 @@ table {
   font-size: x-small;
 }
 
-.tr-grey-bottom-border {
+.grey-bottom-border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #ddd;
 }
 
-.td-centered {
+.grey-left-border {
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #ddd;
+}
+
+.text-centered {
   text-align: center;
 }
 
-.td-align-right {
-  text-align: right;
-}
-
-.td-right {
+.text-align-right {
   text-align: right;
 }
 
 .td-number {
   text-align: right;
-}
-
-.td-grey-left-border {
-  border-left-style: solid;
-  border-left-width: 2px;
-  border-left-color: #ddd;
 }
 
 .td-no-data {
