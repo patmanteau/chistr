@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, shell } from 'electron'
 const ElectronStore = require('electron-store')
 const electronstore = new ElectronStore({
   defaults: {
@@ -38,8 +38,14 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  // createMenu()
 
-  createMenu()
+  // Open all target="_blank" link in external browser
+  // See: http://www.qcode.in/convert-vue-js-app-native-desktop-app-using-electron/
+  mainWindow.webContents.on('new-window', (event, url) => {
+    event.preventDefault()
+    shell.openExternal(url)
+  })
 }
 
 function createMenu () {
@@ -110,6 +116,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
+    createMenu()
   }
 })
 
