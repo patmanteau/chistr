@@ -10,6 +10,7 @@ export default {
     getmapname (name) {
       const names = {
         'i01_tutorial': 'Tutorial',
+        'r01_military_navigation': 'Riposte',
         '00_CO_ocean': 'Ocean',
         '01_solomon_islands': 'Solomon Islands',
         '04_Archipelago': 'Archipelago',
