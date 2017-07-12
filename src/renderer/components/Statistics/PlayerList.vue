@@ -26,7 +26,7 @@
         <th title="Average experience" class="grey-top-border grey-right-border"><i class="fa fa-line-chart" aria-hidden="true"></i></th>
       </tr>
     </thead>
-    <tfoot v-if="noheader">
+    <tfoot v-else>
       <tr>
         <th title="Player"></th>
         <th title="Ship"></th>
@@ -46,33 +46,33 @@
       </tr>
     </tfoot>
     <tbody>
-      <template v-for="player in sortedPlayers">
+      <template v-for="player in filteredPlayers">
       <tr :style="trstyle">
         <td v-if="player.accountId !== undefined">
           <a :href="wowsNumbersLink(player)" :title="wowsNumbersLink(player)" class="external-link" target="_blank">{{ player.playerName }}</a>
         </td>
         <td v-else><span title="Can't visit this player, his profile is hidden" class="external-link disabled">{{ player.playerName }}</span></td>
         <td><i>{{ player.shipName }}</i></td>
-        <template v-if="player.playerHasRecord">
-          <td class="td-number grey-left-border" colspan="2">{{ player.playerBattles }}</td>
-          <td class="td-number" v-bind:class="winrateclass(player.playerBattles, player.playerWinrate)">{{ player.playerWinrate }}%</td>
-          <td class="td-number">{{ player.playerKdRatio | denan }}</td>
-          <td class="td-number text-subdued">{{ player.playerAvgDmg }}</td>
-          <td class="td-number text-subdued">{{ player.playerAvgExp }}</td>
-          <template v-if="player.shipHasRecord && player.shipBattles > 0">
-            <td class="td-number grey-left-border" colspan="2">{{ player.shipBattles }}</td>
-            <td class="td-number" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</td>
-            <td class="td-number" :class="prclass(player.shipBattles, personalrating(player))">{{ personalrating(player) | denan }}</td>
-            <td class="text-centered">{{ player.shipKdRatio | denan }}</td>
-            <td class="td-number text-subdued">{{ player.shipAvgDmg}}</td>
-            <td class="td-number text-subdued grey-right-border">{{ player.shipAvgExp }}</td>
+          <template v-if="player.playerHasRecord">
+            <td class="td-number grey-left-border" colspan="2">{{ player.playerBattles }}</td>
+            <td class="td-number" v-bind:class="winrateclass(player.playerBattles, player.playerWinrate)">{{ player.playerWinrate }}%</td>
+            <td class="td-number">{{ player.playerKdRatio | denan }}</td>
+            <td class="td-number text-subdued">{{ player.playerAvgDmg }}</td>
+            <td class="td-number text-subdued">{{ player.playerAvgExp }}</td>
+            <template v-if="player.shipHasRecord && player.shipBattles > 0">
+              <td class="td-number grey-left-border" colspan="2">{{ player.shipBattles }}</td>
+              <td class="td-number" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</td>
+              <td class="td-number" :class="prclass(player.shipBattles, personalrating(player))">{{ personalrating(player) | denan }}</td>
+              <td class="text-centered">{{ player.shipKdRatio | denan }}</td>
+              <td class="td-number text-subdued">{{ player.shipAvgDmg}}</td>
+              <td class="td-number text-subdued grey-right-border">{{ player.shipAvgExp }}</td>
+            </template>
+            <template v-else>
+              <td class="text-centered td-no-data grey-left-border grey-right-border" colspan="7">First match with this ship</td>
+            </template>
           </template>
-          <template v-else>
-            <td class="text-centered td-no-data" colspan="7">First match with this ship</td>
-          </template>
-        </template>
         <template v-else>
-          <td class="text-centered td-no-data" colspan="13">This profile is hidden</td>
+          <td class="text-centered td-no-data grey-left-border grey-right-border" colspan="13">This profile is hidden</td>
         </template>
       </tr>
       </template>
@@ -97,7 +97,7 @@ export default {
   },
 
   computed: {
-    sortedPlayers () {
+    filteredPlayers () {
       return this.players.sort((a, b) => {
         if (a.playerWinrate < b.playerWinrate) return 1
         else if (a.playerWinrate > b.playerWinrate) return -1
@@ -175,7 +175,7 @@ export default {
 }
 </script>
 
-<style scoped media="screen">
+<style media="screen">
 table tbody tr:nth-child(odd) {
   background: #eee;
 }

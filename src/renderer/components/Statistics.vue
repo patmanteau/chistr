@@ -4,26 +4,27 @@
       :active="active"
       :arena="arena">
     </arena-info>
-    <div class="colflexed" v-if="hasData">
-      <player-list
-        title="Friends"
-        bordercolor="#00ff00"
-        :players="friends">
-      </player-list>
-      <p></p>
-      <player-list
-        title="Foes"
-        bordercolor="#ff0000"
-        noheader="true"
-        :players="foes">
-      </player-list>
-    </div>
+    <transition appear name="fade">
+      <div class="colflexed" v-if="hasData">
+        <player-list
+          title="Friends"
+          bordercolor="#00ff00"
+          :players="friends">
+        </player-list>
+        <p></p>
+        <player-list
+          title="Foes"
+          bordercolor="#ff0000"
+          noheader="true"
+          :players="foes">
+        </player-list>
+      </div>
+    </transition>
     <!-- <div>
       <p class="footer">
         Inspired by <a href="https://github.com/tianweiliu/wows-stats">wows-stats</a> | PR courtesy of <a href="http://wows-numbers.com">WoWS Stats &amp; Numbers</a>
       </p>
     </div> -->
-
   </div>
 </template>
 
@@ -126,6 +127,13 @@ td {
 .rowflexed {
   display: flex;
   flex-direction: row;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
 }
 
 </style>
