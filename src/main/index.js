@@ -28,7 +28,7 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 720,
+    height: 800,
     useContentSize: true,
     width: 1200
   })
@@ -38,7 +38,8 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-  // createMenu()
+
+  createMenu()
 
   // Open all target="_blank" link in external browser
   // See: http://www.qcode.in/convert-vue-js-app-native-desktop-app-using-electron/
@@ -116,7 +117,6 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
-    createMenu()
   }
 })
 
