@@ -1,22 +1,31 @@
 <template>
-  <div class="colflexed">
-    <arena-info
-      :active="active"
-      :arena="arena">
-    </arena-info>
+  <div>
+    <div class="headgrid">
+      <span>
+      <arena-info
+        :active="active"
+        :arena="arena">
+      </arena-info>
+      </span>
+      <span class="searchbox">
+        <input v-model="filterstring" placeholder="Filter...">
+      </span>
+    </div>
     <transition appear name="fade">
-      <div class="colflexed" v-if="hasData">
-        <player-list
-          title="Friends"
-          bordercolor="#00ff00"
-          :players="friends">
-        </player-list>
-        <p></p>
+      <div v-if="hasData">
         <player-list
           title="Foes"
           bordercolor="#ff0000"
+          :players="foes"
+          :filterby="filterstring">
+        </player-list>
+        <p></p>
+        <player-list
+          title="Friends"
+          bordercolor="#00ff00"
           noheader="true"
-          :players="foes">
+          :players="friends"
+          :filterby="filterstring">
         </player-list>
       </div>
     </transition>
@@ -52,7 +61,8 @@ export default {
 
   data () {
     return {
-      gridColumns: ['playerName', 'shipName', 'playerBattles', 'playerWinrate', 'playerAvgExp', 'playerAvgDmg', 'playerKdRatio']
+      gridColumns: ['playerName', 'shipName', 'playerBattles', 'playerWinrate', 'playerAvgExp', 'playerAvgDmg', 'playerKdRatio'],
+      filterstring: ''
     }
   },
 
@@ -75,29 +85,6 @@ body {
 table caption {
   font-family: 'Roboto', serif;
   font-weight: 400;
-}
-
-th {
-  font-family: 'Roboto', serif;
-  font-weight: 400;
-  font-size: 14px;
-  text-align: center;
-}
-
-td {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
-  font-size: 14px;
-}
-
-.text {
-  color: #1abc9c;
-  font-size: 40px;
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
-  margin-top:10px;
-  margin-bottom: 10px;
-  text-align: center;
 }
 
 .digit {
@@ -129,6 +116,26 @@ td {
   flex-direction: row;
 }
 
+.headgrid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.searchbox {
+  /*box-sizing: border-box;
+  justify-content: center;
+  flex-grow: 1;*/
+  /*flex: 1;*/
+  /*width: 5%;
+  padding: 3px 2px 3px 2px;
+  overflow: hidden;
+  list-style: none;*/
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }
@@ -139,19 +146,19 @@ td {
 </style>
 
 /*<style media="screen">
-a {
+/*a {
   color: #333;
   text-decoration: none;
   font-weight: bold;
-}
+}*/
 
 .wrapper {
   margin: 0 auto;
 }
 
-h1, h2, h3 {
+/*h1, h2, h3 {
   text-align: center;
-}
+}*/
 
 ul {
   list-style: none;
