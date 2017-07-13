@@ -19,7 +19,7 @@
           :players="foes"
           :filterby="filterstring">
         </player-list>
-        <p></p>
+        <p v-if="filterstring ===''"></p>
         <player-list
           title="Friends"
           bordercolor="#00ff00"

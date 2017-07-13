@@ -50,7 +50,7 @@
         </div>
       </transition>
     </div>
-    <icon-row v-if="noheader"></icon-row>
+    <icon-row v-if="noheader && filterby===''"></icon-row>
   </div>
 </template>
 
@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style media="screen">
-.Rgrid {
+.Rgrid, .Rgrid--head {
   display: flex;
   /*flex-wrap: wrap;*/
   align-items: center;
@@ -215,7 +215,8 @@ export default {
 }
 
 .Rgrid:hover {
-  background-color: #ddd;
+  /*background-color: #ddd;*/
+  box-shadow: inset 0 0 2px #777;
 }
 
 .Rcell, .Rcell-1of3, .Rcell-2of3, .Rcell-2of3 {

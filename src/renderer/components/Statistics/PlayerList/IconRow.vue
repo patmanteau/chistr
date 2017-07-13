@@ -1,5 +1,5 @@
 <template>
-  <div class="Rgrid white-left-border">
+  <div class="Rgrid--head white-left-border">
     <div class="Rcell Rcell-1of3 white-right-border">
       <div title="Player" class="Rcontent text">&nbsp;</div>
       <div title="Ship" class="Rcontent text">&nbsp;</div>
