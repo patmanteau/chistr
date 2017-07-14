@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const ElectronStore = require('electron-store')
 const electronstore = new ElectronStore({
   defaults: {
@@ -28,7 +29,6 @@ let WOWSAPI = {
 
       api.get('/wows/account/list/?search=' + encodeURIComponent(playerName))
         .then(response => {
-          console.log(response)
           if (response.data.status !== 'ok' || response.data.meta.count < 1) {
             reject(Error('Player not found at all.'))
           }
@@ -53,7 +53,6 @@ let WOWSAPI = {
           return playerData
         })
         .then(playerData => {
-          // console.log(playerData)
           // Our second step is looking up the player's stats using his account ID.
           let params = {
             account_id: playerData.accountId.toString()
@@ -64,20 +63,23 @@ let WOWSAPI = {
             params: params
           })
             .then(response => {
-              console.log(response.data)
               if (response.data.status !== 'ok') {
                 reject(Error('Error retrieving player info (' + response.data.error.message + ')'))
+                return
               }
 
               let playerStats = response.data.data[playerData.accountId]
               // If the player's profile is hidden, give up
               if (playerStats.hidden_profile === true) {
                 reject(Error('Player profile is hidden.'))
+                return
               }
 
               if (!playerStats.statistics.hasOwnProperty(matchGroup)) {
                 reject(Error('Player has no record in the selected matchGroup'))
+                return
               }
+
               playerData.playerHasRecord = true
               let group = playerStats.statistics[matchGroup]
               playerData.playerBattles = group.battles
@@ -85,14 +87,15 @@ let WOWSAPI = {
               playerData.playerAvgExp = (group.xp / group.battles).toFixed()
               playerData.playerAvgDmg = (group.damage_dealt / group.battles).toFixed()
               playerData.playerKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
+
               resolve(playerData)
             })
             .catch(error => {
-              console.log(error)
-              reject(error)
+              return error
             })
         })
         .catch(error => {
+          console.log(error)
           reject(error)
         })
     })
@@ -118,20 +121,6 @@ let WOWSAPI = {
   getPlayerShip (shipId, accountId, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     return new Promise((resolve, reject) => {
-      // Look for the ship's name first...
-      // api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
-      //   .then(response => {
-      //     let shipData = {}
-      //     if (response.data.status !== 'ok' || response.data.data[shipId] === undefined) {
-      //       reject(Error('Ship not found.'))
-      //     }
-      //     shipData.shipId = shipId
-      //     shipData.shipName = response.data.data[shipId].name
-      //     return shipData
-      //   })
-      //   .then(shipData => {
-      //     console.log(shipData)
-      //     // Now get the player's stats
       let params = {
         account_id: accountId,
         ship_id: shipId
@@ -143,7 +132,6 @@ let WOWSAPI = {
       })
         .then(response => {
           let shipData = {}
-          console.log(response)
           if (response.data.status !== 'ok' || response.data.data[accountId] === undefined) {
             reject(Error('No ship data found.'))
           }
@@ -153,8 +141,6 @@ let WOWSAPI = {
           }
 
           let shipStats = response.data.data[accountId][0]
-
-          console.log(matchGroup)
           if (!shipStats.hasOwnProperty(matchGroup)) {
             reject(Error('Player has no record in the selected matchGroup'))
           }
@@ -168,7 +154,6 @@ let WOWSAPI = {
           shipData.shipAvgExp = (group.xp / group.battles).toFixed()
           shipData.shipAvgDmg = (group.damage_dealt / group.battles).toFixed()
           shipData.shipKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
-          console.log(shipData)
           resolve(shipData)
         })
         .catch(error => {
