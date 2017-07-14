@@ -15,14 +15,14 @@
       <div v-if="hasData" class="maingrid">
         <player-list
           title="Foes"
-          bordercolor="#ff0000"
+          bordercolor="#f99"
           :players="foes"
           :filterby="filterstring">
         </player-list>
         <p v-if="filterstring ===''"></p>
         <player-list
           title="Friends"
-          bordercolor="#00ff00"
+          bordercolor="#9f9"
           noheader="true"
           :players="friends"
           :filterby="filterstring">
@@ -50,7 +50,8 @@ export default {
     ...mapState({
       arena: state => state.Arena.arena,
       hasData: state => state.Arena.hasData,
-      active: state => state.Arena.active
+      active: state => state.Arena.active,
+      finishedLoading: state => state.Arena.finishedLoading
     }),
 
     ...mapGetters([
@@ -82,9 +83,12 @@ body {
   color: #333;
 }
 
-table caption {
-  font-family: 'Roboto', serif;
-  font-weight: 400;
+.maingrid {
+  /*position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);*/
 }
 
 .digit {
