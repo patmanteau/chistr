@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="colflexed">
     <div class="headgrid">
       <span>
       <arena-info
@@ -12,7 +12,8 @@
       </span>
     </div>
     <transition appear name="fade">
-      <div v-if="hasData">
+      <div v-if="hasData"
+        class="maingrid">
         <player-list
           title="Foes"
           bordercolor="#ff0000"
@@ -75,7 +76,7 @@ export default {
 </script>
 
 <style media="screen">
-@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400|Roboto:400);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400|Roboto:400|Roboto+Slab:400);
 
 body {
   background-color: #f7f7f7;
@@ -109,11 +110,14 @@ table caption {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
 }
 
 .rowflexed {
   display: flex;
-  flex-direction: row;
+  align-items: center;
 }
 
 .headgrid {
@@ -121,10 +125,12 @@ table caption {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 90%;
 }
 
+.maingrid {
+  width: 100%;
+}
 .searchbox {
   /*box-sizing: border-box;
   justify-content: center;
@@ -135,14 +141,6 @@ table caption {
   overflow: hidden;
   list-style: none;*/
 }
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0
-}
-
 </style>
 
 /*<style media="screen">

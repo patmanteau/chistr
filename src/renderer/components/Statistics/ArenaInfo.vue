@@ -1,6 +1,20 @@
 <template>
-  <h1 v-if="active">{{ arena.mapname | getmapname }}</h1>
-  <h1 v-else>No active match</h1>
+  <div class="rowflexed">
+    <div>
+      <transition name="fade" mode="out-in">
+        <h1 v-if="active">{{ arena.mapname | getmapname }}</h1>
+        <h1 v-else>No active match</h1>
+      </transition>
+    </div>
+    <div>
+      <transition name="fade" mode="out-in">
+        <h2 v-if="active">
+          {{ arena.matchGroup | getmatchgroup }}<br>
+          {{ arena.lastMatchDate }}
+        </h2>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -43,19 +57,43 @@ export default {
         '50_Gold_harbor': 'Gold Harbor'
       }
       return names[name]
+    },
+
+    getmatchgroup (name) {
+      const names = {
+        'ranked': 'Ranked match',
+        'pvp': 'Random match',
+        'pve': 'PvE match'
+      }
+      return names[name]
     }
   }
 }
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
 h1 {
   color: #777;
   font-size: 40px;
-  font-family: 'Roboto Condensed', serif;
+  font-family: 'Roboto Slab', serif;
   font-weight: 400;
-  margin-top:10px;
-  margin-bottom: 10px;
-  text-align: center;
+  margin: 4px 4px 0px 0px;
+  /*text-align: center;*/
+}
+
+h2 {
+  color: #999;
+  font-size: 14px;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 400;
+  margin: 4px 4px 0px 20px;
+  /*text-align: center;*/
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
-  <div class="gridcontainer">
-    <icon-row v-if="!noheader"></icon-row>
+  <!-- <div class="gridcontainer"> -->
+  <transition-group name="flip-list" tag="div" class="gridcontainer">
+    <icon-row v-if="!noheader" key="header"></icon-row>
     <div v-for="(player, index) in filteredPlayers"
+         :key="player.playerName"
          :class="{'Rgrid--stripe': index % 2 === 0}"
          class="Rgrid grey-right-border">
 
@@ -14,7 +16,7 @@
              target="_blank">{{ player.playerName }}</a>
             <span v-else title="Can't visit this player, his profile is hidden" class="external-link disabled">{{ player.playerName }}</span>
           </span>
-        <transition name="fade">
+        <transition name="fade" mode="out-in">
           <span class="Rcontent text" v-if="player.shipName"><i>{{ player.shipName }}</i></span>
         </transition>
       </div>
@@ -50,13 +52,15 @@
         </div>
       </transition>
     </div>
-    <icon-row v-if="noheader && filterby===''"></icon-row>
-  </div>
+    <icon-row v-if="noheader && filterby===''" key="footer"></icon-row>
+  </transition-group>
+  <!-- </div> -->
 </template>
 
 <script type="text/javascript">
 import { shell } from 'electron'
 import IconRow from './PlayerList/IconRow'
+const debounce = require('lodash/debounce')
 
 export default {
   name: 'player-list',
@@ -72,7 +76,20 @@ export default {
   },
 
   computed: {
+    // filteredPlayers () {
+    //   return throttle(this.throttledFilteredPlayers, 1000)
+    // }
     filteredPlayers () {
+      // let sorted = this.players.sort((a, b) => {
+      //   if (a.playerWinrate < b.playerWinrate) return 1
+      //   else if (a.playerWinrate > b.playerWinrate) return -1
+      //   else return 0
+      // })
+      // let sorted = this.players.sort((a, b) => {
+      //   if (a.playerWinrate < b.playerWinrate) return 1
+      //   else if (a.playerWinrate > b.playerWinrate) return -1
+      //   else return 0
+      // })
       let sorted = this.players.sort((a, b) => {
         if (a.playerWinrate < b.playerWinrate) return 1
         else if (a.playerWinrate > b.playerWinrate) return -1
@@ -96,12 +113,19 @@ export default {
   },
 
   methods: {
+    sortPlayers: debounce((players) => {
+      return players.sort((a, b) => {
+        if (a.playerWinrate < b.playerWinrate) return 1
+        else if (a.playerWinrate > b.playerWinrate) return -1
+        else return 0
+      })
+    }, 500),
+
     wowsNumbersLink (player) {
       return `https://wows-numbers.com/player/${player.accountId},${player.playerName}`
     },
 
     personalrating (player) {
-      console.log(this.expected)
       if (player.playerHasRecord && player.shipHasRecord && this.expected.data.hasOwnProperty(player.shipId)) {
         let exp = this.expected.data[player.shipId]
 
@@ -165,6 +189,17 @@ export default {
 </script>
 
 <style media="screen">
+.flip-list-move {
+  transition: transform .2s;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
 .Rgrid, .Rgrid--head {
   display: flex;
   /*flex-wrap: wrap;*/
@@ -222,7 +257,7 @@ export default {
 .Rcell, .Rcell-1of3, .Rcell-2of3, .Rcell-2of3 {
   display: flex;
   /*flex-grow: 1;*/
-  /*justify-content: space-between;*/
+  justify-content: space-between;
   /*box-sizing: border-box;*/
   overflow: hidden;
 }

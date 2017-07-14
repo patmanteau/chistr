@@ -9,7 +9,8 @@ const state = {
   arena: {
     mapname: '',
     playerName: '',
-    lastMatchDate: ''
+    lastMatchDate: '',
+    matchGroup: ''
   },
   players: [],
   playerNames: {}
@@ -37,7 +38,8 @@ const mutations = {
     state.arena = {
       mapname: arenaData.mapDisplayName,
       playerName: arenaData.playerName,
-      lastMatchDate: arenaData.dateTime
+      lastMatchDate: arenaData.dateTime,
+      matchGroup: arenaData.matchGroup
       // dateTime:"04.07.2017 15:26:52"
       // duration:1200
       // gameLogic:"Domination"
@@ -84,7 +86,8 @@ const mutations = {
         shipAvgDmg: 0,
         shipKdRatio: 0.0,
         shipError: [],
-        relation: player.relation
+        relation: player.relation,
+        finishedLoading: false
       })
     }
     state.players = newPlayers
@@ -150,7 +153,7 @@ const actions = {
 
     // Get the player's account ID and stats next
     console.log('Resolve player ' + player.playerName)
-    wowsapi.getPlayer(player.playerName)
+    wowsapi.getPlayer(player.playerName, state.arena.matchGroup)
       .then(playerData => {
         commit(types.SET_PLAYER_DATA, {
           playerName: player.playerName,
@@ -162,7 +165,7 @@ const actions = {
         })
 
         // Then get the ship's stats
-        wowsapi.getPlayerShip(player.shipId, player.accountId)
+        wowsapi.getPlayerShip(player.shipId, player.accountId, state.arena.matchGroup)
           .then(shipData => {
             commit(types.SET_PLAYER_SHIP_DATA, {
               playerName: player.playerName,

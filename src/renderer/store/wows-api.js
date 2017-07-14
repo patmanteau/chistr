@@ -15,10 +15,10 @@ let api = axios.create({
 
 api.defaults.params = {}
 api.defaults.params['application_id'] = electronstore.get('wows_api_key')
-// api.defaults.params['application_id'] = '545b3a14a15636951011be7718233e5f'
 
 let WOWSAPI = {
-  getPlayer (playerName) {
+  getPlayer (playerName, matchGroup = 'pvp') {
+    if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     return new Promise((resolve, reject) => {
       // Our first step is finding the player's account ID. We use Wargaming's
       // API to search by the player's name. The API returns a list of
@@ -55,7 +55,14 @@ let WOWSAPI = {
         .then(playerData => {
           // console.log(playerData)
           // Our second step is looking up the player's stats using his account ID.
-          api.get('/wows/account/info/?account_id=' + playerData.accountId)
+          let params = {
+            account_id: playerData.accountId.toString()
+          }
+          if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
+          if (matchGroup === 'pve') params.extra = 'statistics.pve'
+          api.get('/wows/account/info/', {
+            params: params
+          })
             .then(response => {
               console.log(response.data)
               if (response.data.status !== 'ok') {
@@ -67,12 +74,17 @@ let WOWSAPI = {
               if (playerStats.hidden_profile === true) {
                 reject(Error('Player profile is hidden.'))
               }
+
+              if (!playerStats.statistics.hasOwnProperty(matchGroup)) {
+                reject(Error('Player has no record in the selected matchGroup'))
+              }
               playerData.playerHasRecord = true
-              playerData.playerBattles = playerStats.statistics.pvp.battles
-              playerData.playerWinrate = (playerStats.statistics.pvp.wins / playerStats.statistics.pvp.battles * 100).toFixed(2)
-              playerData.playerAvgExp = (playerStats.statistics.pvp.xp / playerStats.statistics.pvp.battles).toFixed()
-              playerData.playerAvgDmg = (playerStats.statistics.pvp.damage_dealt / playerStats.statistics.pvp.battles).toFixed()
-              playerData.playerKdRatio = (playerStats.statistics.pvp.frags / (playerStats.statistics.pvp.battles - playerStats.statistics.pvp.survived_battles)).toFixed(2)
+              let group = playerStats.statistics[matchGroup]
+              playerData.playerBattles = group.battles
+              playerData.playerWinrate = (group.wins / group.battles * 100).toFixed(2)
+              playerData.playerAvgExp = (group.xp / group.battles).toFixed()
+              playerData.playerAvgDmg = (group.damage_dealt / group.battles).toFixed()
+              playerData.playerKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
               resolve(playerData)
             })
             .catch(error => {
@@ -103,7 +115,8 @@ let WOWSAPI = {
     })
   },
 
-  getPlayerShip (shipId, accountId) {
+  getPlayerShip (shipId, accountId, matchGroup = 'pvp') {
+    if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     return new Promise((resolve, reject) => {
       // Look for the ship's name first...
       // api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
@@ -119,7 +132,15 @@ let WOWSAPI = {
       //   .then(shipData => {
       //     console.log(shipData)
       //     // Now get the player's stats
-      api.get('/wows/ships/stats/?account_id=' + accountId + '&ship_id=' + shipId)
+      let params = {
+        account_id: accountId,
+        ship_id: shipId
+      }
+      if (matchGroup === 'rank_solo') params.extra = 'rank_solo'
+      if (matchGroup === 'pve') params.extra = 'pve'
+      api.get('/wows/ships/stats/', {
+        params: params
+      })
         .then(response => {
           let shipData = {}
           console.log(response)
@@ -133,15 +154,20 @@ let WOWSAPI = {
 
           let shipStats = response.data.data[accountId][0]
 
+          console.log(matchGroup)
+          if (!shipStats.hasOwnProperty(matchGroup)) {
+            reject(Error('Player has no record in the selected matchGroup'))
+          }
           shipData.shipHasRecord = true
-          shipData.shipBattles = shipStats.pvp.battles
-          shipData.shipVictories = shipStats.pvp.wins
-          shipData.shipWinrate = (shipStats.pvp.wins / shipStats.pvp.battles * 100).toFixed(2)
-          shipData.shipSurvived = shipStats.pvp.survived_battles
-          shipData.shipFrags = shipStats.pvp.frags
-          shipData.shipAvgExp = (shipStats.pvp.xp / shipStats.pvp.battles).toFixed()
-          shipData.shipAvgDmg = (shipStats.pvp.damage_dealt / shipStats.pvp.battles).toFixed()
-          shipData.shipKdRatio = (shipStats.pvp.frags / (shipStats.pvp.battles - shipStats.pvp.survived_battles)).toFixed(2)
+          let group = shipStats[matchGroup]
+          shipData.shipBattles = group.battles
+          shipData.shipVictories = group.wins
+          shipData.shipWinrate = (group.wins / group.battles * 100).toFixed(2)
+          shipData.shipSurvived = group.survived_battles
+          shipData.shipFrags = group.frags
+          shipData.shipAvgExp = (group.xp / group.battles).toFixed()
+          shipData.shipAvgDmg = (group.damage_dealt / group.battles).toFixed()
+          shipData.shipKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
           console.log(shipData)
           resolve(shipData)
         })
