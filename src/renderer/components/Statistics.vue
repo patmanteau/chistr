@@ -1,5 +1,5 @@
 <template>
-  <div class="colflexed">
+  <div class="content colflexed">
     <div class="headgrid">
       <span>
       <arena-info
@@ -12,8 +12,7 @@
       </span>
     </div>
     <transition appear name="fade">
-      <div v-if="hasData"
-        class="maingrid">
+      <div v-if="hasData" class="maingrid">
         <player-list
           title="Foes"
           bordercolor="#ff0000"
@@ -110,9 +109,11 @@ table caption {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: auto;
+  /*flex-grow: 1;*/
+  /*flex-shrink: 1;*/
+  /*flex-basis: auto;*/
+  /*height: 100%;*/
+  justify-content: center;
 }
 
 .rowflexed {
@@ -130,6 +131,7 @@ table caption {
 
 .maingrid {
   width: 100%;
+  /*justify-content: center;*/
 }
 .searchbox {
   /*box-sizing: border-box;
