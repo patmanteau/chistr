@@ -16,6 +16,8 @@ const state = {
   playerNames: {}
 }
 
+const shipnames = new Map()
+
 const getters = {
   friends () {
     return state.players.filter(player => player.relation <= 1)
@@ -127,7 +129,6 @@ const actions = {
         }
       }
     })
-    // console.log(state.players)
   },
 
   resolvePlayers ({ state, dispatch, commit }) {
@@ -138,18 +139,28 @@ const actions = {
 
   resolvePlayer ({ state, commit }, player) {
     // Resolve the ship's name first
-    wowsapi.getShipName(player.shipId)
-    .then(shipName => {
+    if (shipnames.has(player.shipId)) {
       commit(types.SET_PLAYER_DATA, {
         playerName: player.playerName,
         playerData: {
-          shipName: shipName
+          shipName: shipnames.get(player.shipId)
         }
       })
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    } else {
+      wowsapi.getShipName(player.shipId)
+      .then(shipName => {
+        commit(types.SET_PLAYER_DATA, {
+          playerName: player.playerName,
+          playerData: {
+            shipName: shipName
+          }
+        })
+        shipnames.set(player.shipId, shipName)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
 
     // Get the player's account ID and stats next
     console.log('Resolve player ' + player.playerName)
