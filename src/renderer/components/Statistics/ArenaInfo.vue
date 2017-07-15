@@ -34,7 +34,7 @@ export default {
         '13_OC_new_dawn': 'New Dawn',
         '14_Atlantic': 'Atlantic',
         '15_NE_north': 'North',
-        '16_OC_bees_to_honey': 'Bees to Honey',
+        '16_OC_bees_to_honey': 'Hotspot',
         '17_NA_fault_line': 'Fault Line',
         '18_NE_ice_islands': 'Ice Islands',
         '19_OC_prey': 'Prey',

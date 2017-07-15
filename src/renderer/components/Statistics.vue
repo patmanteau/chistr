@@ -15,14 +15,14 @@
       <div v-if="hasData" class="maingrid">
         <player-list
           title="Foes"
-          bordercolor="#f99"
+          bordercolor="#f77"
           :players="foes"
           :filterby="filterstring">
         </player-list>
         <p v-if="filterstring ===''"></p>
         <player-list
           title="Friends"
-          bordercolor="#9f9"
+          bordercolor="#8f8"
           noheader="true"
           :players="friends"
           :filterby="filterstring">
