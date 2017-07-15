@@ -3,7 +3,7 @@ import * as types from '../mutation-types'
 const state = {
   playerListSort: {
     key: 'playerWinrate',
-    order: -1
+    order: 1
   }
 }
 
