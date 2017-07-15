@@ -1,11 +1,11 @@
 <template>
   <!-- <div class="gridcontainer"> -->
   <transition-group name="flip-list" tag="div" class="gridcontainer">
-    <icon-row v-if="!noheader" key="header"></icon-row>
+    <icon-row v-if="!noheader" @set-sort="key => setSort(key)" key="header"></icon-row>
     <div v-for="(player, index) in filteredPlayers"
-         :key="player.playerName"
-         :class="{'Rgrid--stripe': index % 2 === 0}"
-         class="Rgrid grey-right-border">
+      :key="player.playerName"
+      :class="{'Rgrid--stripe': index % 2 === 0}"
+      class="Rgrid grey-right-border">
 
       <!-- Player and ship name -->
       <div class="Rcell Rcell-1of3 grey-right-border" :style="trstyle">
@@ -41,7 +41,7 @@
         <div class="Rcell Rcell-1of3" v-if="player.shipHasRecord && player.shipBattles > 0" key="with-ship-stats">
           <div class="Rcontent number">{{ player.shipBattles }}</div>
           <div class="Rcontent number text-centered" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</div>
-          <div class="Rcontent number" :class="prclass(player.shipBattles, personalrating(player))">{{ personalrating(player) | denan }}</div>
+          <div class="Rcontent number" :class="prclass(player.shipBattles, player.shipPR)">{{ player.shipPR | denan }}</div>
           <div class="Rcontent number text-centered">{{ player.shipKdRatio | denan }}</div>
           <div class="Rcontent number text-subdued">{{ player.shipAvgDmg}}</div>
           <div class="Rcontent number text-subdued">{{ player.shipAvgExp }}</div>
@@ -52,7 +52,7 @@
         </div>
       </transition>
     </div>
-    <icon-row v-if="noheader && filterby===''" key="footer"></icon-row>
+    <icon-row v-if="noheader && filterby===''" @set-sort="key => setSort(key)" key="footer"></icon-row>
   </transition-group>
   <!-- </div> -->
 </template>
@@ -60,7 +60,7 @@
 <script type="text/javascript">
 import { shell } from 'electron'
 import IconRow from './PlayerList/IconRow'
-const debounce = require('lodash/debounce')
+import { mapState } from 'vuex'
 
 export default {
   name: 'player-list',
@@ -76,23 +76,14 @@ export default {
   },
 
   computed: {
-    // filteredPlayers () {
-    //   return throttle(this.throttledFilteredPlayers, 1000)
-    // }
+    ...mapState({
+      sort: state => state.Interface.playerListSort
+    }),
+
     filteredPlayers () {
-      // let sorted = this.players.sort((a, b) => {
-      //   if (a.playerWinrate < b.playerWinrate) return 1
-      //   else if (a.playerWinrate > b.playerWinrate) return -1
-      //   else return 0
-      // })
-      // let sorted = this.players.sort((a, b) => {
-      //   if (a.playerWinrate < b.playerWinrate) return 1
-      //   else if (a.playerWinrate > b.playerWinrate) return -1
-      //   else return 0
-      // })
       let sorted = this.players.sort((a, b) => {
-        if (a.playerWinrate < b.playerWinrate) return 1
-        else if (a.playerWinrate > b.playerWinrate) return -1
+        if (a[this.sort.key] < b[this.sort.key]) return this.sort.order
+        else if (a[this.sort.key] > b[this.sort.key]) return this.sort.order * -1
         else return 0
       })
 
@@ -113,36 +104,8 @@ export default {
   },
 
   methods: {
-    sortPlayers: debounce((players) => {
-      return players.sort((a, b) => {
-        if (a.playerWinrate < b.playerWinrate) return 1
-        else if (a.playerWinrate > b.playerWinrate) return -1
-        else return 0
-      })
-    }, 500),
-
     wowsNumbersLink (player) {
       return `https://wows-numbers.com/player/${player.accountId},${player.playerName}`
-    },
-
-    personalrating (player) {
-      if (player.playerHasRecord && player.shipHasRecord && this.expected.data.hasOwnProperty(player.shipId)) {
-        let exp = this.expected.data[player.shipId]
-
-        // Calculation courtesy of http://wows-numbers.com/de/personal/rating
-        let rDmg = player.shipAvgDmg / exp.average_damage_dealt
-        let rWins = player.shipWinrate / exp.win_rate
-        let rFrags = player.shipFrags / (exp.average_frags * player.shipBattles)
-
-        let nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
-        let nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
-        let nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
-
-        let pr = (700 * nDmg + 300 * nFrags + 150 * nWins)
-        return pr.toFixed()
-      } else {
-        return 0
-      }
     },
 
     prclass (matches, pr) {
@@ -176,7 +139,6 @@ export default {
 
   data () {
     return {
-      expected: require('./expected'),
       names: {},
       trstyle: {
         'border-left-style': 'solid',
@@ -198,6 +160,14 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0
+}
+
+.list-enter-active, .list-leave-active {
+  transition: none;
+}
+.list-enter, .list-leave-to /* .list-leave-active for <2.1.8 */ {
+  opacity: 0;
+  /*transform: translateY(30px);*/
 }
 
 .Rgrid, .Rgrid--head {
@@ -293,6 +263,14 @@ export default {
   font-weight: 400;
   font-size: 14px;
   text-align: center;
+}
+
+.icon {
+  color: #777;
+  text-align: center;
+  font-family: 'Roboto Condensed', serif;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .no-data {
