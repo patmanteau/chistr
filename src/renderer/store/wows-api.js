@@ -14,6 +14,8 @@ let api = axios.create({
   timeout: 20000
 })
 
+const expected = require('./expected')
+
 api.defaults.params = {}
 api.defaults.params['application_id'] = electronstore.get('wows_api_key')
 
@@ -134,16 +136,20 @@ let WOWSAPI = {
           let shipData = {}
           if (response.data.status !== 'ok' || response.data.data[accountId] === undefined) {
             reject(Error('No ship data found.'))
+            return
           }
 
           if (response.data.data[accountId][0].pvp === undefined) {
             reject(Error('Player has no PVP battles in ship.'))
+            return
           }
 
           let shipStats = response.data.data[accountId][0]
           if (!shipStats.hasOwnProperty(matchGroup)) {
             reject(Error('Player has no record in the selected matchGroup'))
+            return
           }
+
           shipData.shipHasRecord = true
           let group = shipStats[matchGroup]
           shipData.shipBattles = group.battles
@@ -154,6 +160,23 @@ let WOWSAPI = {
           shipData.shipAvgExp = (group.xp / group.battles).toFixed()
           shipData.shipAvgDmg = (group.damage_dealt / group.battles).toFixed()
           shipData.shipKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
+          shipData.shipPR = '-'
+
+          // Calculation courtesy of http://wows-numbers.com/de/personal/rating
+          if (expected.data.hasOwnProperty(shipId)) {
+            let exp = expected.data[shipId]
+
+            let rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
+            let rWins = shipData.shipWinrate / exp.win_rate
+            let rFrags = shipData.shipFrags / (exp.average_frags * shipData.shipBattles)
+
+            let nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
+            let nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
+            let nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
+
+            shipData.shipPR = (700 * nDmg + 300 * nFrags + 150 * nWins).toFixed()
+          }
+
           resolve(shipData)
         })
         .catch(error => {
