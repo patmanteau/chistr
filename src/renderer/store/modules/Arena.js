@@ -1,7 +1,8 @@
 import * as types from '../mutation-types'
-import {wowsapi} from '../wows-api'
+import {WowsApi} from '../wows-api'
 
 const jsonfile = require('jsonfile')
+const path = require('path')
 
 const state = {
   active: false,
@@ -25,6 +26,10 @@ const getters = {
 
   foes () {
     return state.players.filter(player => player.relation > 1)
+  },
+
+  players () {
+    return state.players
   }
 }
 
@@ -114,8 +119,8 @@ const mutations = {
 }
 
 const actions = {
-  readArenaData ({ state, dispatch, commit }) {
-    let arenaJson = 'C:/Games/World_of_Warships/replays/tempArenaInfo.json'
+  readArenaData ({ state, dispatch, commit, rootState }) {
+    const arenaJson = path.resolve(rootState.Settings.wows.path, 'replays/tempArenaInfo.json')
     jsonfile.readFile(arenaJson, (error, obj) => {
       if (error) {
         console.log(error)
@@ -137,7 +142,8 @@ const actions = {
     }
   },
 
-  resolvePlayer ({ state, commit }, player) {
+  resolvePlayer ({ state, commit, rootState }, player) {
+    const wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url)
     // Resolve the ship's name first
     if (shipnames.has(player.shipId)) {
       commit(types.SET_PLAYER_DATA, {
@@ -147,7 +153,7 @@ const actions = {
         }
       })
     } else {
-      wowsapi.getShipName(player.shipId)
+      wows.getShipName(player.shipId)
       .then(shipName => {
         commit(types.SET_PLAYER_DATA, {
           playerName: player.playerName,
@@ -164,7 +170,7 @@ const actions = {
 
     // Get the player's account ID and stats next
     console.log('Resolve player ' + player.playerName)
-    wowsapi.getPlayer(player.playerName, state.arena.matchGroup)
+    wows.getPlayer(player.playerName, state.arena.matchGroup)
       .then(playerData => {
         commit(types.SET_PLAYER_DATA, {
           playerName: player.playerName,
@@ -176,7 +182,7 @@ const actions = {
         })
 
         // Then get the ship's stats
-        wowsapi.getPlayerShip(player.shipId, player.accountId, state.arena.matchGroup)
+        wows.getPlayerShip(player.shipId, player.accountId, state.arena.matchGroup)
           .then(shipData => {
             commit(types.SET_PLAYER_SHIP_DATA, {
               playerName: player.playerName,

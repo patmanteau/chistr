@@ -1,25 +1,23 @@
 import axios from 'axios'
 
-const ElectronStore = require('electron-store')
-const electronstore = new ElectronStore({
-  defaults: {
-    wows_api_key: 'demo',
-    wows_api_url: 'http://api.worldofwarships.eu'
-  },
-  name: 'chistr'
-})
-
-let api = axios.create({
-  baseURL: electronstore.get('wows_api_url'),
-  timeout: 20000
-})
-
 const expected = require('./expected')
 
-api.defaults.params = {}
-api.defaults.params['application_id'] = electronstore.get('wows_api_key')
+// api.defaults.params = {}
+// api.defaults.params['application_id'] = store.state.Settings.wows.api.key
 
-let WOWSAPI = {
+export class WowsApi {
+  constructor (key, url) {
+    this.api = axios.create({
+      baseURL: url,
+      timeout: 20000,
+      params: {
+        application_id: key
+      }
+    })
+    this.key = key
+    this.url = url
+  }
+
   getPlayer (playerName, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     return new Promise((resolve, reject) => {
@@ -29,7 +27,7 @@ let WOWSAPI = {
       // returns 'Alfred1', 'Alfred_accurate', 'AlfredAlfred' an so on), so
       // we have to search the response list ourselves for the right player
 
-      api.get('/wows/account/list/?search=' + encodeURIComponent(playerName))
+      this.api.get('/wows/account/list/?search=' + encodeURIComponent(playerName))
         .then(response => {
           if (response.data.status !== 'ok' || response.data.meta.count < 1) {
             reject(Error('Player not found at all.'))
@@ -37,7 +35,7 @@ let WOWSAPI = {
 
           // Look for the right player
           let playerRecord
-          for (let entry of response.data.data) {
+          for (const entry of response.data.data) {
             if (entry !== undefined && decodeURIComponent(entry.nickname) === playerName) {
               playerRecord = entry
             }
@@ -49,10 +47,10 @@ let WOWSAPI = {
           }
 
           // Player found, so return his account ID
-          let playerData = {}
-          playerData['accountId'] = playerRecord.account_id
-          playerData['playerName'] = decodeURIComponent(playerRecord.nickname)
-          return playerData
+          return {
+            accountId: playerRecord.account_id,
+            playerName: decodeURIComponent(playerRecord.nickname)
+          }
         })
         .then(playerData => {
           // Our second step is looking up the player's stats using his account ID.
@@ -61,7 +59,7 @@ let WOWSAPI = {
           }
           if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
           if (matchGroup === 'pve') params.extra = 'statistics.pve'
-          api.get('/wows/account/info/', {
+          this.api.get('/wows/account/info/', {
             params: params
           })
             .then(response => {
@@ -101,11 +99,11 @@ let WOWSAPI = {
           reject(error)
         })
     })
-  },
+  }
 
   getShipName (shipId) {
     return new Promise((resolve, reject) => {
-      api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
+      this.api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
         .then(response => {
           if (response.data.status === 'ok' && response.data.data[shipId] !== undefined) {
             resolve(response.data.data[shipId].name)
@@ -118,7 +116,7 @@ let WOWSAPI = {
           reject(error)
         })
     })
-  },
+  }
 
   getPlayerShip (shipId, accountId, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
@@ -129,7 +127,7 @@ let WOWSAPI = {
       }
       if (matchGroup === 'rank_solo') params.extra = 'rank_solo'
       if (matchGroup === 'pve') params.extra = 'pve'
-      api.get('/wows/ships/stats/', {
+      this.api.get('/wows/ships/stats/', {
         params: params
       })
         .then(response => {
@@ -186,5 +184,3 @@ let WOWSAPI = {
     })
   }
 }
-
-export let wowsapi = WOWSAPI
