@@ -1,14 +1,6 @@
 'use strict'
 
 import { app, BrowserWindow, Menu, shell } from 'electron'
-const ElectronStore = require('electron-store')
-const electronstore = new ElectronStore({
-  defaults: {
-    wows_api_key: 'demo',
-    wows_api_url: 'http://api.worldofwarships.eu'
-  },
-  name: 'chistr'
-})
 
 /**
  * Set `__static` path to static files in production

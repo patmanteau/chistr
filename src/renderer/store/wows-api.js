@@ -2,9 +2,6 @@ import axios from 'axios'
 
 const expected = require('./expected')
 
-// api.defaults.params = {}
-// api.defaults.params['application_id'] = store.state.Settings.wows.api.key
-
 export class WowsApi {
   constructor (key, url) {
     this.api = axios.create({
