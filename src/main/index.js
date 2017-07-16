@@ -2,6 +2,20 @@
 
 import { app, BrowserWindow, Menu, shell } from 'electron'
 
+const ElectronStore = require('electron-store')
+const electronstore = new ElectronStore({
+  defaults: {
+    wows: {
+      api: {
+        key: 'demo',
+        url: 'http://api.worldofwarships.eu'
+      },
+      path: 'C:/Games/World_of_Warships'
+    }
+  },
+  name: 'chistr'
+})
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
