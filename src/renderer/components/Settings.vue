@@ -18,7 +18,7 @@
         </div>
         <div v-if="errors.has('wowsApiKey')" class="error">{{ errors.first('wowsApiKey') }}</div>
         <input class="text" type="text" placeholder="API key"
-               v-model="wowsApiKey">
+               v-model.trim="wowsApiKey">
       </div>
       <div class="config-item">
         <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
@@ -55,7 +55,7 @@ export default {
         return this.$store.state.Settings.wows.api.key
       },
       set (value) {
-        this.$store.commit(types.SET_WOWS_API_KEY, value.trim())
+        this.$store.commit(types.SET_WOWS_API_KEY, value)
       }
     },
 
