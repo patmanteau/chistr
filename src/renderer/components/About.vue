@@ -13,7 +13,7 @@
         <span class="text"> Distributed under The MIT License.</span>
         <span class="text">Inspired by <a class="external-link text" href="https://github.com/tianweiliu/wows-stats" target="_blank">wows-stats</a>. PR courtesy of <a class="external-link text" href="http://wows-numbers.com" target="_blank">WoWS Stats &amp; Numbers</a>.</span>
         <span class="text">&lsquo;World of Warships&rsquo; is a registered trademark of <a href="https://eu.wargaming.net/" target="_blank" class="external-link text">Wargaming</a>.</span>
-
+        <span class="github"><a href="https://github.com/patmanteau/chistr" class="external-link github" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></span>
       </div>
     </div>
   </div>
@@ -66,6 +66,13 @@ export default {
 .text {
   color: #777;
   font-size: 14px;
+  /*font-family: 'Roboto Slab', serif;*/
+}
+
+.github {
+  color: #333;
+  font-size: 16px;
+  margin: 10px 0px 0px 0px;
   /*font-family: 'Roboto Slab', serif;*/
 }
 
