@@ -51,7 +51,7 @@ export class WowsApi {
         })
         .then(playerData => {
           // Our second step is looking up the player's stats using his account ID.
-          let params = {
+          const params = {
             account_id: playerData.accountId.toString()
           }
           if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
@@ -118,7 +118,7 @@ export class WowsApi {
   getPlayerShip (shipId, accountId, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     return new Promise((resolve, reject) => {
-      let params = {
+      const params = {
         account_id: accountId,
         ship_id: shipId
       }
@@ -128,7 +128,7 @@ export class WowsApi {
         params: params
       })
         .then(response => {
-          let shipData = {}
+          const shipData = {}
           if (response.data.status !== 'ok' || response.data.data[accountId] === undefined) {
             reject(Error('No ship data found.'))
             return
