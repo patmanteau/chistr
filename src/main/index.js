@@ -11,6 +11,9 @@ const electronstore = new ElectronStore({
         url: 'http://api.worldofwarships.eu'
       },
       path: 'C:/Games/World_of_Warships'
+    },
+    app: {
+      debug: false
     }
   },
   name: 'chistr'
@@ -60,11 +63,11 @@ function createMenu () {
     {
       label: 'File',
       submenu: [
-        {
-          label: 'Edit settings file...',
-          click () { electronstore.openInEditor() }
-        },
-        {type: 'separator'},
+        // {
+        //   label: 'Edit settings file...',
+        //   click () { electronstore.openInEditor() }
+        // },
+        // {type: 'separator'},
         {role: 'quit'}
       ]
     },
@@ -78,30 +81,19 @@ function createMenu () {
         {
           role: 'forcereload',
           accelerator: 'CmdOrCtrl+Shift+R'
-        },
-        {
-          role: 'toggledevtools',
-          accelerator: 'CmdOrCtrl+Shift+I'
         }
-      ]
-    },
-    // {
-    //   role: 'window',
-    //   submenu: [
-    //     {role: 'minimize'},
-    //     {role: 'close'}
-    //   ]
-    // },
-    {
-      role: 'help',
-      submenu: [
-        {
-          label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://github.com/patmanteau/chistr') }
-        }
+        // {
+        //   role: 'toggledevtools',
+        //   accelerator: 'CmdOrCtrl+Shift+I'
+        // }
       ]
     }
   ]
+
+  if (electronstore.get('app.debug')) {
+    template[0].submenu.unshift({ label: 'Edit settings file...', click () { electronstore.openInEditor() } }, { type: 'separator' })
+    template[1].submenu.push({ role: 'toggledevtools', accelerator: 'CmdOrCtrl+Shift+I' })
+  }
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 }

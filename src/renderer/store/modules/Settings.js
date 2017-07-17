@@ -9,6 +9,9 @@ const electronstore = new ElectronStore({
         url: 'http://api.worldofwarships.eu'
       },
       path: 'C:/Games/World_of_Warships'
+    },
+    app: {
+      debug: false
     }
   },
   name: 'chistr'
