@@ -61,7 +61,7 @@ function createMenu () {
       label: 'File',
       submenu: [
         {
-          label: 'Settings',
+          label: 'Edit settings file...',
           click () { electronstore.openInEditor() }
         },
         {type: 'separator'},
@@ -82,28 +82,22 @@ function createMenu () {
         {
           role: 'toggledevtools',
           accelerator: 'CmdOrCtrl+Shift+I'
-        },
-        {type: 'separator'},
-        {role: 'resetzoom'},
-        {role: 'zoomin'},
-        {role: 'zoomout'},
-        {type: 'separator'},
-        {role: 'togglefullscreen'}
+        }
       ]
     },
-    {
-      role: 'window',
-      submenu: [
-        {role: 'minimize'},
-        {role: 'close'}
-      ]
-    },
+    // {
+    //   role: 'window',
+    //   submenu: [
+    //     {role: 'minimize'},
+    //     {role: 'close'}
+    //   ]
+    // },
     {
       role: 'help',
       submenu: [
         {
           label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://electron.atom.io') }
+          click () { require('electron').shell.openExternal('https://github.com/patmanteau/chistr') }
         }
       ]
     }
