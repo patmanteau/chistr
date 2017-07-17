@@ -84,7 +84,7 @@ h1 {
   font-size: 40px;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
-  margin: 4px 4px 0px 0px;
+  margin: 0px 4px 0px 0px;
   /*text-align: center;*/
 }
 
@@ -93,7 +93,7 @@ h2 {
   font-size: 14px;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
-  margin: 4px 4px 0px 20px;
+  margin: 0px 4px 0px 20px;
   /*text-align: center;*/
 }
 </style>
