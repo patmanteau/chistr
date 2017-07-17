@@ -7,10 +7,10 @@
         :arena="arena">
       </arena-info>
       </span>
-      <span class="searchbox">
-        <input v-model="filterstring" placeholder="Filter...">
+      <span>
+        <input v-model="filterstring" class="searchbox" placeholder="Filter...">
       </span>
-      <span><router-link :to="{ name: 'settings', params: {} }"><span class="text link">Settings</span></router-link> | <router-link :to="{ name: 'about', params: {} }"><span class="text link">About</span></router-link></span>
+      <span><router-link class="text link" :to="{ name: 'settings', params: {} }"><span>Settings</span></router-link> | <router-link class="text link" :to="{ name: 'about', params: {} }"><span>About</span></router-link></span>
     </div>
     <transition appear name="fade">
       <div v-if="hasData" class="maingrid">
@@ -32,7 +32,7 @@
     </transition>
     <!-- <div>
       <p class="footer">
-        Inspired by <a href="https://github.com/tianweiliu/wows-stats">wows-stats</a> | PR courtesy of <a href="http://wows-numbers.com">WoWS Stats &amp; Numbers</a>
+
       </p>
     </div> -->
   </div>
@@ -76,5 +76,22 @@ export default {
 }
 </script>
 
-<style media="screen">
+<style scoped>
+.searchbox {
+  /*box-sizing: border-box;
+  justify-content: center;
+  flex-grow: 1;*/
+  /*flex: 1;*/
+  /*width: 5%;
+  padding: 3px 2px 3px 2px;
+  overflow: hidden;
+  list-style: none;*/
+  width: 100%;
+  padding: 4px 4px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  /*box-sizing: border-box;*/
+}
+
+
 </style>

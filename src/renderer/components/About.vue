@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <div class="head">
-      <router-link :to="{ name: 'statistics', params: {} }">
-        <span class="text link"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</span>
+      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
+        <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</span>
       </router-link>
 
     </div>

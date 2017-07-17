@@ -74,16 +74,6 @@ body {
   width: 100%;
   /*justify-content: center;*/
 }
-.searchbox {
-  /*box-sizing: border-box;
-  justify-content: center;
-  flex-grow: 1;*/
-  /*flex: 1;*/
-  /*width: 5%;
-  padding: 3px 2px 3px 2px;
-  overflow: hidden;
-  list-style: none;*/
-}
 
 /*a {
   color: #333;

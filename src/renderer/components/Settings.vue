@@ -1,14 +1,15 @@
 <template>
   <div class="container">
-      <div class="Rcell Rcell-2of2">
-        <div class="Rcontent">
+    <div class="config-item">
+      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
+        <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</span>
+      </router-link>
+    </div>
+    <!-- <div class="Rcell Rcell-2of2"> -->
+    <div class="config-item">
+        <!-- <div class="Rcontent"> -->
           <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
-        </div>
-      </div>
-      <div class="config-item">
-        <router-link :to="{ name: 'statistics', params: {} }">
-          <span class="text link"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back...</span>
-        </router-link>
+        <!-- </div> -->
       </div>
       <div class="config-item">
         <div class="title">Your Wargaming API key</div>
@@ -134,13 +135,17 @@ export default {
 
 input, select {
   width: 100%;
-  padding: 2px;
-  margin: 2px 0 2px 0;
+  /*padding: 2px;
+  margin: 2px 0 2px 0;*/
+  padding: 4px 4px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  /*border-radius: 2px;*/
 }
 
 h1 {
   color: #777;
-  font-size: 24px;
+  font-size: 28px;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
   margin: 4px 4px 0px 0px;

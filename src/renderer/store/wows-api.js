@@ -155,7 +155,7 @@ export class WowsApi {
           shipData.shipAvgExp = (group.xp / group.battles).toFixed()
           shipData.shipAvgDmg = (group.damage_dealt / group.battles).toFixed()
           shipData.shipKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
-          shipData.shipPR = '-'
+          shipData.shipPR = 0
 
           // Calculation courtesy of http://wows-numbers.com/de/personal/rating
           if (expected.data.hasOwnProperty(shipId)) {
