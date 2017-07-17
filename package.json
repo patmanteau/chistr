@@ -1,6 +1,6 @@
 {
   "name": "chistr",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": "Patrick Haas <patmanteau@posteo.de>",
   "description": "A player statistics viewer for World of Warships",
   "license": "MIT",
@@ -20,7 +20,7 @@
   },
   "build": {
     "productName": "chistr",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "de.radaubox.chistr",
     "directories": {
       "output": "build"
     },
@@ -47,6 +47,9 @@
     },
     "win": {
       "icon": "build/icons/icon.ico"
+    },
+    "nsis": {
+      "artifactName": "${productName}-setup-${version}.${ext}"
     },
     "linux": {
       "icon": "build/icons"
