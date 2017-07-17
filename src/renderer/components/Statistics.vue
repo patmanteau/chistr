@@ -1,5 +1,6 @@
 <template>
   <div class="content colflexed">
+    <div v-if="updateAvailable" class="update-warning">Update available. <a target="_blank" href="https://cloud.radaubox.de/s/Tdcqdsj60FFR5o1">Click here</a> to download.</div>
     <div class="headgrid">
       <span>
       <arena-info
@@ -40,6 +41,8 @@
 
 <script type="text/javascript">
 import { mapState, mapGetters } from 'vuex'
+import { remote } from 'electron'
+import * as yaml from 'js-yaml'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
 
@@ -64,7 +67,8 @@ export default {
   data () {
     return {
       gridColumns: ['playerName', 'shipName', 'playerBattles', 'playerWinrate', 'playerAvgExp', 'playerAvgDmg', 'playerKdRatio'],
-      filterstring: ''
+      filterstring: '',
+      updateAvailable: false
     }
   },
 
@@ -72,11 +76,41 @@ export default {
     setInterval(() => {
       this.$store.dispatch('readArenaData')
     }, 1000)
+
+    if (process.env.NODE_ENV !== 'development') {
+      this.$http.get('https://t.radaubox.de/chistr/latest.yml')
+        .then(response => {
+          const doc = yaml.safeLoad(response.data)
+          this.updateAvailable = remote.app.getVersion() !== doc.version
+        })
+        .catch(error => {
+          console.log(error)
+          this.updateAvailable = false
+        })
+    }
   }
 }
 </script>
 
 <style scoped>
+.update-warning {
+  color: #c33;
+  font-size: 12px;
+  font-weight: 100;
+  font-family: 'Roboto Slab', serif;
+  margin: 0px;
+  text-align: center;
+  border-top: 1px solid #c33;
+  /*border-bottom: 1px solid #c33;*/
+}
+
+.update-warning a {
+  color: #c33;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
 .searchbox {
   /*box-sizing: border-box;
   justify-content: center;
