@@ -11,7 +11,7 @@
         <span class="standout">Chistr <small>{{ version }}</small></span>
         <span class="author">Copyright &copy; 2017 Patrick Haas &lt;patmanteau@posteo.de&gt;.</span>
         <span class="text"> Distributed under The MIT License.</span>
-        <span class="text">Inspired by <a class="external-link text" href="https://github.com/tianweiliu/wows-stats">wows-stats</a>. PR courtesy of <a class="external-link text" href="http://wows-numbers.com">WoWS Stats &amp; Numbers</a>.</span>
+        <span class="text">Inspired by <a class="external-link text" href="https://github.com/tianweiliu/wows-stats" target="_blank">wows-stats</a>. PR courtesy of <a class="external-link text" href="http://wows-numbers.com" target="_blank">WoWS Stats &amp; Numbers</a>.</span>
         <span class="text">&lsquo;World of Warships&rsquo; is a registered trademark of <a href="https://eu.wargaming.net/" target="_blank" class="external-link text">Wargaming</a>.</span>
 
       </div>
