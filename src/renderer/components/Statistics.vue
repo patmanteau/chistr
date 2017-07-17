@@ -1,6 +1,6 @@
 <template>
   <div class="content colflexed">
-    <div v-if="updateAvailable" class="update-warning"><a target="_blank" href="https://cloud.radaubox.de/s/Tdcqdsj60FFR5o1">Update available. Click here to download.</a></div>
+    <div v-if="updateAvailable" class="update-warning"><a target="_blank" href="https://github.com/patmanteau/chistr/releases/latest">Update available. Click here to download.</a></div>
     <div class="headgrid">
       <span>
       <arena-info
@@ -42,7 +42,7 @@
 <script type="text/javascript">
 import { mapState, mapGetters } from 'vuex'
 import { remote } from 'electron'
-import * as yaml from 'js-yaml'
+// import * as yaml from 'js-yaml'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
 
@@ -77,18 +77,15 @@ export default {
       this.$store.dispatch('readArenaData')
     }, 1000)
 
-    console.log(process.env.NODE_ENV)
-    if (process.env.NODE_ENV !== 'development') {
-      this.$http.get('https://t.radaubox.de/chistr/latest.yml')
-        .then(response => {
-          const doc = yaml.safeLoad(response.data)
-          this.updateAvailable = remote.app.getVersion() < doc.version
-        })
-        .catch(error => {
-          console.log(error)
-          this.updateAvailable = false
-        })
-    }
+    this.$http.get('https://api.github.com/repos/patmanteau/chistr/releases/latest')
+      .then(response => {
+        console.log(response)
+        this.updateAvailable = remote.app.getVersion() !== response.data.name
+      })
+      .catch(error => {
+        console.log(error)
+        this.updateAvailable = false
+      })
   }
 }
 </script>
