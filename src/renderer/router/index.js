@@ -11,6 +11,16 @@ export default new Router({
       component: require('@/components/Statistics')
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: require('@/components/Settings')
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: require('@/components/about')
+    },
+    {
       path: '*',
       redirect: '/'
     }
