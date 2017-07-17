@@ -83,8 +83,6 @@ export default {
         .then(response => {
           const doc = yaml.safeLoad(response.data)
           this.updateAvailable = remote.app.getVersion() < doc.version
-          console.log(remote.app.getVersion())
-          console.log(doc.version)
         })
         .catch(error => {
           console.log(error)

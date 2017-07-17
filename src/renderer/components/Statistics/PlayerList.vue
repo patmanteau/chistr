@@ -82,8 +82,8 @@ export default {
 
     filteredPlayers () {
       let sorted = this.players.sort((a, b) => {
-        if (a[this.sort.key] < b[this.sort.key]) return this.sort.order
-        else if (a[this.sort.key] > b[this.sort.key]) return this.sort.order * -1
+        if (parseFloat(a[this.sort.key]) < parseFloat(b[this.sort.key])) return this.sort.order
+        else if (parseFloat(a[this.sort.key]) > parseFloat(b[this.sort.key])) return this.sort.order * -1
         else return 0
       })
 
