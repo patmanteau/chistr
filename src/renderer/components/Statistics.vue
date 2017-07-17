@@ -1,6 +1,6 @@
 <template>
   <div class="content colflexed">
-    <div v-if="updateAvailable" class="update-warning">Update available. <a target="_blank" href="https://cloud.radaubox.de/s/Tdcqdsj60FFR5o1">Click here</a> to download.</div>
+    <div v-if="updateAvailable" class="update-warning"><a target="_blank" href="https://cloud.radaubox.de/s/Tdcqdsj60FFR5o1">Update available. Click here to download.</a></div>
     <div class="headgrid">
       <span>
       <arena-info
@@ -77,11 +77,14 @@ export default {
       this.$store.dispatch('readArenaData')
     }, 1000)
 
+    console.log(process.env.NODE_ENV)
     if (process.env.NODE_ENV !== 'development') {
       this.$http.get('https://t.radaubox.de/chistr/latest.yml')
         .then(response => {
           const doc = yaml.safeLoad(response.data)
-          this.updateAvailable = remote.app.getVersion() !== doc.version
+          this.updateAvailable = remote.app.getVersion() < doc.version
+          console.log(remote.app.getVersion())
+          console.log(doc.version)
         })
         .catch(error => {
           console.log(error)
@@ -106,7 +109,6 @@ export default {
 
 .update-warning a {
   color: #c33;
-  font-weight: bold;
   text-decoration: none;
 }
 
