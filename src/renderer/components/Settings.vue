@@ -16,9 +16,17 @@
         <div class="explanation">
           You need a valid Wargaming.net Mobile Application ID. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
         </div>
-        <div v-if="errors.has('wowsApiKey')" class="error">{{ errors.first('wowsApiKey') }}</div>
-        <input class="text" type="text" placeholder="API key"
-               v-model.trim="wowsApiKey">
+        <div v-if="!wowsApiKeyValid" class="error">Please enter a valid Application ID.</div>
+        <input class="text" type="text" placeholder="API key" v-model.trim="wowsApiKey" @input="validateApiKey"> <i class="inp fa fa-check" :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
+
+      </div>
+      <div class="config-item">
+        <div class="title">World of Warships path</div>
+        <div class="explanation">
+          Enter the folder your World of Warships installation lives in.
+        </div>
+        <div v-if="!wowsPathValid" class="error">Couldn't find WorldOfWarships.exe. The path you entered seems to be incorrect.</div>
+        <input v-model="wowsPath" @input="validatePath" class="text" placeholder="Path to WoWS"> <i class="inp fa fa-check" :class="wowsPathValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
       </div>
       <div class="config-item">
         <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
@@ -32,19 +40,13 @@
                   :selected="realm.url === wowsApiUrl">{{ realm.name }} ({{ realm.url }})</option>
         </select>
       </div>
-      <div class="config-item">
-        <div class="title">World of Warships path</div>
-        <div class="explanation">
-          Enter the folder your World of Warships installation lives in.
-        </div>
-        <input v-model="wowsPath" class="text" placeholder="Path to WoWS">
-      </div>
-
   </div>
 </template>
 
 <script type="text/javascript">
 import * as types from '../store/mutation-types'
+import * as fs from 'fs'
+import * as path from 'path'
 
 export default {
   name: 'settings',
@@ -78,6 +80,30 @@ export default {
     }
   },
 
+  methods: {
+    validateApiKey () {
+      this.$http.get(this.wowsApiUrl + '/wows/encyclopedia/info/?application_id=' + this.wowsApiKey)
+        .then((response) => {
+          this.wowsApiKeyValid = response.data.status === 'ok'
+        })
+        .catch(() => {
+          this.wowsApiKeyValid = false
+        })
+    },
+
+    validatePath () {
+      fs.access(path.resolve(this.wowsPath, 'WorldOfWarships.exe'), fs.constants.F_OK, (err) => {
+        // eslint-disable-next-line no-unneeded-ternary
+        this.wowsPathValid = err ? false : true
+      })
+    }
+  },
+
+  mounted () {
+    this.validatePath()
+    this.validateApiKey()
+  },
+
   data () {
     return {
       realms: [
@@ -85,7 +111,9 @@ export default {
         { name: 'NA', url: 'http://api.worldofwarships.com' },
         { name: 'RU', url: 'http://api.worldofwarships.ru' },
         { name: 'ASIA', url: 'http://api.worldofwarships.asia' }
-      ]
+      ],
+      wowsApiKeyValid: false,
+      wowsPathValid: false
     }
   }
 }
@@ -107,7 +135,14 @@ export default {
   /*width: 50%;*/
   align-items: left;
   margin: 10px;
+  position: relative;
   /*justify-content: center;*/
+}
+
+.config-item .inp {
+  position: absolute;
+  bottom: 13px;
+  right: 0px;
 }
 
 .config-item .title {
