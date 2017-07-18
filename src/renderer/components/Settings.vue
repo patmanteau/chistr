@@ -12,9 +12,9 @@
         <!-- </div> -->
       </div>
       <div class="config-item">
-        <div class="title">Your Wargaming API key</div>
+        <div class="title">Your Wargaming Application ID</div>
         <div class="explanation">
-          You need a valid Wargaming.net mobile API key. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
+          You need a valid Wargaming.net Mobile Application ID. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
         </div>
         <div v-if="errors.has('wowsApiKey')" class="error">{{ errors.first('wowsApiKey') }}</div>
         <input class="text" type="text" placeholder="API key"
