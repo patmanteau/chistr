@@ -1,5 +1,7 @@
 # chistr
 
+[![Build status](https://ci.appveyor.com/api/projects/status/8iulnpq4sldtekeo?svg=true)](https://ci.appveyor.com/project/patmanteau/chistr)
+
 A player statistics viewer for World of Warships
 
 ## Installation
