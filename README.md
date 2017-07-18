@@ -27,6 +27,8 @@ tl:dr; Use Chistr to improve and augment your own play, not to "prove" to other 
 
 #### Build Setup
 
+In case you want to use the development version, clone this repo, cd into it, then:
+
 ``` bash
 # install dependencies
 yarn
