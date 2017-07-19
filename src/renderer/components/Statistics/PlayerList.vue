@@ -17,7 +17,14 @@
             <span v-else title="Can't visit this player, his profile is hidden" class="external-link disabled">{{ player.playerName }}</span>
           </span>
         <transition name="fade" mode="out-in">
-          <span class="Rcontent text" v-if="player.shipName"><i>{{ player.shipName }}</i></span>
+          <span class="Rcontent text" v-if="player.shipName">
+            <a v-if="player.shipName !== ''"
+              :href="wikiLink(player)"
+              :title="wikiLink(player)"
+              class="external-link"
+              target="_blank"><i>{{ player.shipName }}</i>
+            </a>
+          </span>
         </transition>
       </div>
 
@@ -114,6 +121,10 @@ export default {
   methods: {
     wowsNumbersLink (player) {
       return `https://wows-numbers.com/player/${player.accountId},${player.playerName}`
+    },
+
+    wikiLink (player) {
+      return `http://wiki.wargaming.net/en/Ship:${player.shipName.replace(/\s/g, '_')}`
     },
 
     prclass (matches, pr) {
