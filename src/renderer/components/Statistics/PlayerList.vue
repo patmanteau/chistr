@@ -30,7 +30,11 @@
           <div class="Rcontent number text-subdued">{{ player.playerAvgDmg }}</div>
           <div class="Rcontent number text-subdued">{{ player.playerAvgExp }}</div>
         </div>
-        <!-- No player stats -->
+        <!-- No player stats, not yet loaded -->
+        <div class="Rcell Rcell-2of3 no-data" v-else-if="!player.playerFinishedLoading" key="without-player-stats-not-loaded">
+          <span class="Rcontent text text-centered">Loading player</span>
+        </div>
+        <!-- No player stats at all -->
         <div class="Rcell Rcell-2of3 no-data" v-else key="without-player-stats">
           <span class="Rcontent text text-centered">This profile is hidden</span>
         </div>
@@ -46,7 +50,11 @@
           <div class="Rcontent number text-subdued">{{ player.shipAvgDmg}}</div>
           <div class="Rcontent number text-subdued">{{ player.shipAvgExp }}</div>
         </div>
-        <!-- No ship stats -->
+        <!-- No ship stats, not yet loaded -->
+        <div class="Rcell Rcell-1of3 no-data" v-else-if="!player.shipFinishedLoading" key="without-ship-stats-not-loaded">
+          <span class="Rcontent text text-centered">Loading ship</span>
+        </div>
+        <!-- No ship stats at all -->
         <div class="Rcell Rcell-1of3" v-else-if="player.playerHasRecord" key="without-ship-stats">
           <span class="Rcontent text text-centered">First match with this ship</span>
         </div>
