@@ -39,7 +39,7 @@ export default {
         '15_NE_north': 'North',
         '16_OC_bees_to_honey': 'Hotspot',
         '17_NA_fault_line': 'Fault Line',
-        '18_NE_ice_islands': 'Ice Islands',
+        '18_NE_ice_islands': 'Islands of Ice',
         '19_OC_prey': 'Trap',
         '20_NE_two_brothers': 'Two Brothers',
         '22_tierra_del_fuego': 'Land of Fire',
