@@ -17,7 +17,7 @@
           You need a valid Wargaming.net Mobile Application ID. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
         </div>
         <div v-if="!wowsApiKeyValid" class="error">Please enter a valid Application ID.</div>
-        <input class="text" type="text" placeholder="API key" v-model.trim="wowsApiKey" @input="validateApiKey"> <i class="inp fa fa-check" :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
+        <input class="text" type="text" placeholder="API key" v-model.trim="wowsApiKey" @input="validateApiKey"> <i class="inline-icon fa fa-check" :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
 
       </div>
       <div class="config-item">
@@ -26,7 +26,7 @@
           Enter the folder your World of Warships installation lives in.
         </div>
         <div v-if="!wowsPathValid" class="error">Couldn't find WorldOfWarships.exe. The path you entered seems to be incorrect.</div>
-        <input v-model="wowsPath" @input="validatePath" class="text" placeholder="Path to WoWS"> <i class="inp fa fa-check" :class="wowsPathValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
+        <input v-model="wowsPath" @input="validatePath" class="text" placeholder="Path to WoWS"> <i class="inline-icon fa fa-check" :class="wowsPathValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
       </div>
       <div class="config-item">
         <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
@@ -38,6 +38,18 @@
           <option v-for="realm in realms"
                   :value="realm.url"
                   :selected="realm.url === wowsApiUrl">{{ realm.name }} ({{ realm.url }})</option>
+        </select>
+      </div>
+      <div class="config-item">
+        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+        <div class="title">Match group</div>
+        <div class="explanation">
+          Choose the kind of statistics you want to see.
+        </div>
+        <select class="text" v-model="wowsMatchgroup" name="matchgroup">
+          <option v-for="group in matchgroups"
+                  :value="group.val"
+                  :selected="group.val === wowsMatchgroup">{{ group.name }} ({{ group.desc }})</option>
         </select>
       </div>
   </div>
@@ -77,6 +89,15 @@ export default {
       set (value) {
         this.$store.commit(types.SET_WOWS_PATH, value)
       }
+    },
+
+    wowsMatchgroup: {
+      get () {
+        return this.$store.state.Settings.wows.matchgroup
+      },
+      set (value) {
+        this.$store.commit(types.SET_WOWS_MATCHGROUP, value)
+      }
     }
   },
 
@@ -112,6 +133,11 @@ export default {
         { name: 'RU', url: 'http://api.worldofwarships.ru' },
         { name: 'ASIA', url: 'http://api.worldofwarships.asia' }
       ],
+      matchgroups: [
+        { name: 'Automatic', desc: 'Auto-select based on current match', val: 'auto' },
+        { name: 'Random', desc: 'Display Random match statistics', val: 'pvp' },
+        { name: 'Ranked', desc: 'Display Ranked match statistics', val: 'ranked' }
+      ],
       wowsApiKeyValid: false,
       wowsPathValid: false
     }
@@ -125,57 +151,44 @@ export default {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  /*align-items: center;*/
-  /*height: 90vh;*/
 }
 
 .config-item {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*width: 50%;*/
+  font-family: 'Roboto Condensed', serif;
+  font-weight: 400;
   align-items: left;
   margin: 10px;
   position: relative;
-  /*justify-content: center;*/
 }
 
-.config-item .inp {
+.config-item .inline-icon {
   position: absolute;
   bottom: 13px;
   right: 0px;
 }
 
 .config-item .title {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
   font-size: 16px;
   margin: 2px 0 2px 0;
 }
 
 .config-item .explanation {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
   font-size: 14px;
   color: #777;
   margin: 2px 0 2px 0;
 }
 
 .config-item .error {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
   font-size: 14px;
-  color: #f77;
+  color: #f33;
   margin: 2px 0 2px 0;
 }
 
 input, select {
   width: 100%;
-  /*padding: 2px;
-  margin: 2px 0 2px 0;*/
   padding: 4px 4px;
   margin: 8px 0;
   border: 1px solid #ddd;
-  /*border-radius: 2px;*/
 }
 
 h1 {
@@ -185,7 +198,6 @@ h1 {
   font-weight: 400;
   margin: 4px 4px 0px 0px;
   text-align: left;
-  /*align-self: left;*/
 }
 
 h2 {
@@ -194,7 +206,6 @@ h2 {
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
   margin: 4px 4px 0px 20px;
-  /*text-align: center;*/
 }
 
 </style>

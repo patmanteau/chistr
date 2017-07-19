@@ -13,7 +13,8 @@ const electronstore = new ElectronStore({
       path: 'C:/Games/World_of_Warships'
     },
     app: {
-      debug: false
+      debug: false,
+      matchgroup: 'auto'
     }
   },
   name: 'chistr'

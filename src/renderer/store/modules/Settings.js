@@ -8,7 +8,8 @@ const electronstore = new ElectronStore({
         key: 'demo',
         url: 'http://api.worldofwarships.eu'
       },
-      path: 'C:/Games/World_of_Warships'
+      path: 'C:/Games/World_of_Warships',
+      matchgroup: 'auto'
     },
     app: {
       debug: false
@@ -37,6 +38,11 @@ const mutations = {
   [types.SET_WOWS_PATH] (state, path) {
     state.wows.path = path
     electronstore.set('wows.path', path)
+  },
+
+  [types.SET_WOWS_MATCHGROUP] (state, matchgroup) {
+    state.wows.matchgroup = matchgroup
+    electronstore.set('wows.matchgroup', matchgroup)
   }
 }
 

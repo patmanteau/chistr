@@ -160,7 +160,14 @@ const actions = {
 
     // Get the player's account ID and stats next
     console.log('Resolve player ' + player.playerName)
-    wows.getPlayer(player.playerName, state.arena.matchGroup)
+
+    // Select the correct match group
+    let matchGroup = rootState.Settings.wows.matchgroup
+    if (matchGroup === 'auto') {
+      matchGroup = state.arena.matchGroup
+    }
+
+    wows.getPlayer(player.playerName, matchGroup)
       .then(playerData => {
         commit(types.SET_PLAYER_DATA, {
           name: player.playerName,
@@ -171,7 +178,7 @@ const actions = {
           }
         })
         // Then get the ship's stats
-        wows.getPlayerShip(player.shipId, player.accountId, state.arena.matchGroup)
+        wows.getPlayerShip(player.shipId, player.accountId, matchGroup)
           .then(shipData => {
             commit(types.SET_PLAYER_DATA, {
               name: player.playerName,
