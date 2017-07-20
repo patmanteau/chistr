@@ -20,7 +20,7 @@ A player statistics viewer for World of Warships
    1. Select your server
    1. Enter the path to your World of Warships installation (e.g. 'C:\Games\World_of_Warships')
 1. Hit 'Back' - you should be good to go now!
-  
+
 ## Code of Conduct
 
 To experienced players, statistics are useful when making tactical decisions. They are not a measure of a player's worth as a person. By using this tool, you agree NOT to use it to create a toxic environment in World of Warships or to belittle, bully, or harass other players. If you do not agree, you may not use the tool.
