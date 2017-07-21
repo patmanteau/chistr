@@ -1,9 +1,7 @@
 import axios from 'axios'
 
-const expected = require('./expected')
-
 export class WowsApi {
-  constructor (key, url) {
+  constructor (key, url, shipdb) {
     this.api = axios.create({
       baseURL: url,
       timeout: 20000,
@@ -11,8 +9,15 @@ export class WowsApi {
         application_id: key
       }
     })
+
+    this.shipdb = shipdb // new ShipDB()
+
     this.key = key
     this.url = url
+  }
+
+  clearCache () {
+    this.shipdb.clear()
   }
 
   getPlayer (playerName, matchGroup = 'pvp') {
@@ -100,18 +105,25 @@ export class WowsApi {
 
   getShipName (shipId) {
     return new Promise((resolve, reject) => {
-      this.api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
-        .then(response => {
-          if (response.data.status === 'ok' && response.data.data[shipId] !== undefined) {
-            resolve(response.data.data[shipId].name)
-          } else {
-            reject(Error('Ship not found.'))
-          }
-        })
-        .catch(error => {
-          console.log(error)
-          reject(error)
-        })
+      if (this.shipdb.hasName(shipId)) {
+        console.log(shipId + ' found in cache')
+        resolve(this.shipdb.getName(shipId))
+      } else {
+        console.log(shipId + ' not in cache')
+        this.api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
+          .then(response => {
+            if (response.data.status === 'ok' && response.data.data[shipId] !== undefined) {
+              this.shipdb.setName(shipId, response.data.data[shipId].name)
+              resolve(response.data.data[shipId].name)
+            } else {
+              reject(Error('Ship not found.'))
+            }
+          })
+          .catch(error => {
+            console.log(error)
+            reject(error)
+          })
+      }
     })
   }
 
@@ -129,7 +141,7 @@ export class WowsApi {
       })
         .then(response => {
           const shipData = {}
-          if (response.data.status !== 'ok' || response.data.data[accountId] === undefined) {
+          if (response.data.status !== 'ok' || response.data.data[accountId] === undefined || response.data.data[accountId] === null) {
             reject(Error('No ship data found.'))
             return
           }
@@ -158,8 +170,22 @@ export class WowsApi {
           shipData.shipPR = 0
 
           // Calculation courtesy of http://wows-numbers.com/de/personal/rating
-          if (expected.data.hasOwnProperty(shipId)) {
-            let exp = expected.data[shipId]
+          // if (expected.data.hasOwnProperty(shipId)) {
+          //   let exp = expected.data[shipId]
+          //
+          //   let rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
+          //   let rWins = shipData.shipWinrate / exp.win_rate
+          //   let rFrags = shipData.shipFrags / (exp.average_frags * shipData.shipBattles)
+          //
+          //   let nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
+          //   let nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
+          //   let nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
+          //
+          //   shipData.shipPR = (700 * nDmg + 300 * nFrags + 150 * nWins).toFixed()
+          // }
+
+          if (this.shipdb.has(shipId)) {
+            let exp = this.shipdb.get(shipId)
 
             let rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
             let rWins = shipData.shipWinrate / exp.win_rate

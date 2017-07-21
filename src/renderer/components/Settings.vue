@@ -52,6 +52,14 @@
                   :selected="group.val === wowsMatchgroup">{{ group.name }} ({{ group.desc }})</option>
         </select>
       </div>
+      <div class="config-item">
+        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+        <div class="title">Cache settings</div>
+        <div class="explanation">
+          Chistr caches ship names to reduce loading times. If you notice wrong or missing ship names, try clearing the cache.
+        </div>
+        <button class="text" @click="clearShipCache">Clear ship cache</button>
+      </div>
   </div>
 </template>
 
@@ -117,6 +125,10 @@ export default {
         // eslint-disable-next-line no-unneeded-ternary
         this.wowsPathValid = err ? false : true
       })
+    },
+
+    clearShipCache () {
+      this.$store.dispatch('clearApiCache')
     }
   },
 

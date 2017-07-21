@@ -1,8 +1,10 @@
 import * as types from '../mutation-types'
 import {WowsApi} from '../wows-api'
+import {ShipDB} from '../ship-db'
 
 const jsonfile = require('jsonfile')
 const path = require('path')
+const shipdb = new ShipDB()
 
 const state = {
   active: false,
@@ -133,7 +135,7 @@ const actions = {
   },
 
   resolvePlayer ({ state, commit, rootState }, player) {
-    const wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url)
+    const wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url, shipdb)
     // Resolve the ship's name first
     if (shipnames.has(player.shipId)) {
       commit(types.SET_PLAYER_DATA, {
@@ -214,6 +216,10 @@ const actions = {
         })
         console.log(error)
       })
+  },
+
+  clearApiCache () {
+    shipdb.clear()
   }
 }
 
