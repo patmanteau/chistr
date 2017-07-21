@@ -1,65 +1,65 @@
 <template>
   <div class="container">
     <div class="config-item">
-      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
+      <router-link class="text link ui" :to="{ name: 'statistics', params: {} }">
         <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</span>
       </router-link>
     </div>
     <!-- <div class="Rcell Rcell-2of2"> -->
-    <div class="config-item">
+    <div class="config-item ui">
         <!-- <div class="Rcontent"> -->
-          <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
+      <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
         <!-- </div> -->
+    </div>
+    <div class="config-item">
+      <div class="title ui">Your Wargaming Application ID</div>
+      <div class="explanation ui">
+        You need a valid Wargaming.net Mobile Application ID. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
       </div>
-      <div class="config-item">
-        <div class="title">Your Wargaming Application ID</div>
-        <div class="explanation">
-          You need a valid Wargaming.net Mobile Application ID. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
-        </div>
-        <div v-if="!wowsApiKeyValid" class="error">Please enter a valid Application ID.</div>
-        <input class="text" type="text" placeholder="API key" v-model.trim="wowsApiKey" @input="validateApiKey"> <i class="inline-icon fa fa-check" :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
+      <div v-if="!wowsApiKeyValid" class="error">Please enter a valid Application ID.</div>
+      <input class="text" type="text" placeholder="API key" v-model.trim="wowsApiKey" @input="validateApiKey"> <i class="inline-icon fa fa-check" :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
 
+    </div>
+    <div class="config-item">
+      <div class="title ui">World of Warships path</div>
+      <div class="explanation ui">
+        Enter the folder your World of Warships installation lives in.
       </div>
-      <div class="config-item">
-        <div class="title">World of Warships path</div>
-        <div class="explanation">
-          Enter the folder your World of Warships installation lives in.
-        </div>
-        <div v-if="!wowsPathValid" class="error">Couldn't find WorldOfWarships.exe. The path you entered seems to be incorrect.</div>
-        <input v-model="wowsPath" @input="validatePath" class="text" placeholder="Path to WoWS"> <i class="inline-icon fa fa-check" :class="wowsPathValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
+      <div v-if="!wowsPathValid" class="error">Couldn't find WorldOfWarships.exe. The path you entered seems to be incorrect.</div>
+      <input v-model="wowsPath" @input="validatePath" class="text" placeholder="Path to WoWS"> <i class="inline-icon fa fa-check" :class="wowsPathValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
+    </div>
+    <div class="config-item ui">
+      <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+      <div class="title">World of Warships server</div>
+      <div class="explanation">
+        Select the server you play on.
       </div>
-      <div class="config-item">
-        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
-        <div class="title">World of Warships server</div>
-        <div class="explanation">
-          Select the server you play on.
-        </div>
-        <select class="text" v-model="wowsApiUrl" name="apiUrl">
-          <option v-for="realm in realms"
-                  :value="realm.url"
-                  :selected="realm.url === wowsApiUrl">{{ realm.name }} ({{ realm.url }})</option>
-        </select>
+      <select class="text" v-model="wowsApiUrl" name="apiUrl">
+        <option v-for="realm in realms"
+                :value="realm.url"
+                :selected="realm.url === wowsApiUrl">{{ realm.name }} ({{ realm.url }})</option>
+      </select>
+    </div>
+    <div class="config-item ui">
+      <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+      <div class="title">Match group</div>
+      <div class="explanation">
+        Choose the kind of statistics you want to see.
       </div>
-      <div class="config-item">
-        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
-        <div class="title">Match group</div>
-        <div class="explanation">
-          Choose the kind of statistics you want to see.
-        </div>
-        <select class="text" v-model="wowsMatchgroup" name="matchgroup">
-          <option v-for="group in matchgroups"
-                  :value="group.val"
-                  :selected="group.val === wowsMatchgroup">{{ group.name }} ({{ group.desc }})</option>
-        </select>
+      <select class="text" v-model="wowsMatchgroup" name="matchgroup">
+        <option v-for="group in matchgroups"
+                :value="group.val"
+                :selected="group.val === wowsMatchgroup">{{ group.name }} ({{ group.desc }})</option>
+      </select>
+    </div>
+    <div class="config-item ui">
+      <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+      <div class="title">Cache settings</div>
+      <div class="explanation">
+        Chistr caches ship names to reduce loading times. If you notice wrong or missing ship names, try clearing the cache.
       </div>
-      <div class="config-item">
-        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
-        <div class="title">Cache settings</div>
-        <div class="explanation">
-          Chistr caches ship names to reduce loading times. If you notice wrong or missing ship names, try clearing the cache.
-        </div>
-        <button class="text" @click="clearShipCache">Clear ship cache</button>
-      </div>
+      <button class="text" @click="clearShipCache">Clear ship cache</button>
+    </div>
   </div>
 </template>
 

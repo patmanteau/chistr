@@ -20,12 +20,16 @@ body {
   color: #333;
 }
 
-.maingrid {
-  /*position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);*/
+.ui {
+  -webkit-user-select:none;
+}
+
+.ui .number {
+  cursor: default;
+}
+
+.ui .no-data {
+  cursor: default;
 }
 
 .digit {
@@ -224,9 +228,9 @@ body {
   font-size: 14px;
 }
 
-.no-data {
-  /*background: #ddd;*/
-}
+/*.no-data {
+  background: #ddd;
+}*/
 
 .text-subdued {
   color: #aaa;

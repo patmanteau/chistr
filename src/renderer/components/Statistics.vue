@@ -1,6 +1,6 @@
 <template>
   <div class="content colflexed">
-    <div v-if="updateAvailable" class="update-warning"><a target="_blank" href="https://github.com/patmanteau/chistr/releases/latest">Update available. Click here to download.</a></div>
+    <div v-if="updateAvailable" class="ui update-warning"><a target="_blank" href="https://github.com/patmanteau/chistr/releases/latest">Update available. Click here to download.</a></div>
     <div class="headgrid">
       <span>
       <arena-info
@@ -11,7 +11,7 @@
       <span>
         <input v-model="filterstring" class="searchbox" placeholder="Filter...">
       </span>
-      <span><router-link class="text link" :to="{ name: 'settings', params: {} }"><span>Settings</span></router-link> | <router-link class="text link" :to="{ name: 'about', params: {} }"><span>About</span></router-link></span>
+      <span><router-link class="text link ui" :to="{ name: 'settings', params: {} }"><span>Settings</span></router-link><span class="ui text"> | </span><router-link class="text link ui" :to="{ name: 'about', params: {} }"><span>About</span></router-link></span>
     </div>
     <transition appear name="fade">
       <div v-if="hasData" class="maingrid">

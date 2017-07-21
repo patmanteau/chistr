@@ -1,8 +1,8 @@
 <template>
   <div class="Rgrid--head white-left-border">
     <div class="Rcell Rcell-1of3 white-right-border">
-      <div title="Player" class="Rcontent icon">&nbsp;</div>
-      <div title="Ship" class="Rcontent icon">&nbsp;</div>
+      <div title="Player" class="Rcontent icon ui">&nbsp;</div>
+      <div title="Ship" class="Rcontent icon ui">&nbsp;</div>
     </div>
     <div class="Rcell Rcell-1of3 grey-right-border">
 
@@ -14,7 +14,7 @@
         <i v-if="sort.key === 'playerBattles' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
-      <div title="Player winrate" class="Rcontent icon"
+      <div title="Player winrate" class="Rcontent icon ui"
           :class="{ active: sort.key === 'playerWinrate'}"
           @click="setSort('playerWinrate')">
         <i class="fa fa-pie-chart" aria-hidden="true"></i>
@@ -64,7 +64,7 @@
         <i v-if="sort.key === 'shipWinrate' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
-      <div title="Player's Personal Rating for this ship" class="Rcontent icon"
+      <div title="Player's Personal Rating for this ship" class="Rcontent icon ui"
           :class="{ active: sort.key === 'shipPR'}"
           @click="setSort('shipPR')">
         <span>PR</span>

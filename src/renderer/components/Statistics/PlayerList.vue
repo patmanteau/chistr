@@ -30,7 +30,7 @@
 
       <!-- Player stats -->
       <transition name="fade" mode="out-in">
-        <div class="Rcell Rcell-1of3 grey-right-border" v-if="player.playerHasRecord" key="with-player-stats">
+        <div class="Rcell Rcell-1of3 grey-right-border ui" v-if="player.playerHasRecord" key="with-player-stats">
           <div class="Rcontent number">{{ player.playerBattles }}</div>
           <div class="Rcontent number text-centered" v-bind:class="winrateclass(player.playerBattles, player.playerWinrate)">{{ player.playerWinrate }}%</div>
           <div class="Rcontent number text-centered">{{ player.playerKdRatio | denan }}</div>
@@ -39,17 +39,17 @@
         </div>
         <!-- No player stats, not yet loaded -->
         <div class="Rcell Rcell-2of3 no-data" v-else-if="!player.playerFinishedLoading" key="without-player-stats-not-loaded">
-          <span class="Rcontent text text-centered">Loading player</span>
+          <span class="Rcontent text text-centered ui">Loading player</span>
         </div>
         <!-- No player stats at all -->
         <div class="Rcell Rcell-2of3 no-data" v-else key="without-player-stats">
-          <span class="Rcontent text text-centered">This profile is hidden</span>
+          <span class="Rcontent text text-centered ui">This profile is hidden</span>
         </div>
       </transition>
 
       <!-- Ship stats -->
       <transition name="fade" mode="out-in">
-        <div class="Rcell Rcell-1of3" v-if="player.shipHasRecord && player.shipBattles > 0" key="with-ship-stats">
+        <div class="Rcell Rcell-1of3 ui" v-if="player.shipHasRecord && player.shipBattles > 0" key="with-ship-stats">
           <div class="Rcontent number">{{ player.shipBattles }}</div>
           <div class="Rcontent number text-centered" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</div>
           <div class="Rcontent number" :class="prclass(player.shipBattles, player.shipPR)">{{ player.shipPR | denan }}</div>
@@ -62,7 +62,7 @@
           <span class="Rcontent text text-centered">Loading ship</span>
         </div>
         <!-- No ship stats at all -->
-        <div class="Rcell Rcell-1of3" v-else-if="player.playerHasRecord" key="without-ship-stats">
+        <div class="Rcell Rcell-1of3 no-data" v-else-if="player.playerHasRecord" key="without-ship-stats">
           <span class="Rcontent text text-centered">First match with this ship</span>
         </div>
       </transition>
