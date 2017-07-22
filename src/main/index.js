@@ -3,6 +3,10 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import * as windowState from 'electron-window-state'
 
+const log = require('electron-log')
+log.transports.console.level = 'info'
+log.transports.file.level = 'info'
+
 const ElectronStore = require('electron-store')
 const electronstore = new ElectronStore({
   defaults: {

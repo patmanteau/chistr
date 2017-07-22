@@ -111,7 +111,7 @@ export default {
 
   methods: {
     validateApiKey () {
-      this.$http.get(this.wowsApiUrl + '/wows/encyclopedia/info/?application_id=' + this.wowsApiKey)
+      this.$http.get(`${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`)
         .then((response) => {
           this.wowsApiKeyValid = response.data.status === 'ok'
         })

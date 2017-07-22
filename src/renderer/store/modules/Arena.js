@@ -1,6 +1,7 @@
 import * as types from '../mutation-types'
 import {WowsApi} from '../wows-api'
 import {ShipDB} from '../ship-db'
+import * as log from 'electron-log'
 
 const jsonfile = require('jsonfile')
 const path = require('path')
@@ -115,8 +116,13 @@ const actions = {
     const arenaJson = path.resolve(rootState.Settings.wows.path, 'replays/tempArenaInfo.json')
     jsonfile.readFile(arenaJson, (error, obj) => {
       if (error) {
-        console.log(error)
-        commit(types.SET_ARENA_ACTIVE, false)
+        if (error.code !== 'ENOENT') {
+          log.error(error)
+          console.log(error)
+        }
+        if (state.arena.active) {
+          commit(types.SET_ARENA_ACTIVE, false)
+        }
       } else {
         if (state.arena.lastMatchDate !== obj.dateTime) {
           commit(types.SET_ARENA_DATA, obj)
@@ -135,6 +141,7 @@ const actions = {
   },
 
   resolvePlayer ({ state, commit, rootState }, player) {
+    log.info(`Resolve player ${player.playerName}`)
     const wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url, shipdb)
     // Resolve the ship's name first
     if (shipnames.has(player.shipId)) {
@@ -156,12 +163,10 @@ const actions = {
         shipnames.set(player.shipId, shipName)
       })
       .catch(error => {
+        log.error(error)
         console.log(error)
       })
     }
-
-    // Get the player's account ID and stats next
-    console.log('Resolve player ' + player.playerName)
 
     // Select the correct match group
     let matchGroup = rootState.Settings.wows.matchgroup
@@ -169,6 +174,7 @@ const actions = {
       matchGroup = state.arena.matchGroup
     }
 
+    // Get the player's account ID and stats next
     wows.getPlayer(player.playerName, matchGroup)
       .then(playerData => {
         commit(types.SET_PLAYER_DATA, {
@@ -200,6 +206,7 @@ const actions = {
               errors: [error]
             }
           })
+          log.warn(error)
           console.log(error)
         })
       })
@@ -214,6 +221,7 @@ const actions = {
             errors: [error]
           }
         })
+        log.warn(error)
         console.log(error)
       })
   },

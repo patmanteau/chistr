@@ -79,7 +79,6 @@ export default {
 
     this.$http.get('https://api.github.com/repos/patmanteau/chistr/releases/latest')
       .then(response => {
-        console.log(response)
         this.updateAvailable = remote.app.getVersion() !== response.data.name
       })
       .catch(error => {

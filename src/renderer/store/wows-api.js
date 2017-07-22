@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as log from 'electron-log'
 
 export class WowsApi {
   constructor (key, url, shipdb) {
@@ -29,7 +30,7 @@ export class WowsApi {
       // returns 'Alfred1', 'Alfred_accurate', 'AlfredAlfred' an so on), so
       // we have to search the response list ourselves for the right player
 
-      this.api.get('/wows/account/list/?search=' + encodeURIComponent(playerName))
+      this.api.get(`/wows/account/list/?search=${encodeURIComponent(playerName)}`)
         .then(response => {
           if (response.data.status !== 'ok' || response.data.meta.count < 1) {
             reject(Error('Player not found at all.'))
@@ -66,7 +67,7 @@ export class WowsApi {
           })
             .then(response => {
               if (response.data.status !== 'ok') {
-                reject(Error('Error retrieving player info (' + response.data.error.message + ')'))
+                reject(Error(`Error retrieving player info (${response.data.error.message})`))
                 return
               }
 
@@ -97,7 +98,7 @@ export class WowsApi {
             })
         })
         .catch(error => {
-          console.log(error)
+          log.error(error)
           reject(error)
         })
     })
@@ -106,11 +107,12 @@ export class WowsApi {
   getShipName (shipId) {
     return new Promise((resolve, reject) => {
       if (this.shipdb.hasName(shipId)) {
-        console.log(shipId + ' found in cache')
-        resolve(this.shipdb.getName(shipId))
+        let shipName = this.shipdb.getName(shipId)
+        log.info(`Cache hit: ${shipId} => ${shipName}`)
+        resolve(shipName)
       } else {
-        console.log(shipId + ' not in cache')
-        this.api.get('/wows/encyclopedia/ships/?ship_id=' + shipId)
+        log.info(`Cache miss: ${shipId}`)
+        this.api.get(`/wows/encyclopedia/ships/?ship_id=${shipId}`)
           .then(response => {
             if (response.data.status === 'ok' && response.data.data[shipId] !== undefined) {
               this.shipdb.setName(shipId, response.data.data[shipId].name)
@@ -169,22 +171,8 @@ export class WowsApi {
           shipData.shipKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
           shipData.shipPR = 0
 
-          // Calculation courtesy of http://wows-numbers.com/de/personal/rating
-          // if (expected.data.hasOwnProperty(shipId)) {
-          //   let exp = expected.data[shipId]
-          //
-          //   let rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
-          //   let rWins = shipData.shipWinrate / exp.win_rate
-          //   let rFrags = shipData.shipFrags / (exp.average_frags * shipData.shipBattles)
-          //
-          //   let nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
-          //   let nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
-          //   let nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
-          //
-          //   shipData.shipPR = (700 * nDmg + 300 * nFrags + 150 * nWins).toFixed()
-          // }
-
           if (this.shipdb.has(shipId)) {
+            // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
             let exp = this.shipdb.get(shipId)
 
             let rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
