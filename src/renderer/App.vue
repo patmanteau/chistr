@@ -21,7 +21,9 @@ body {
 }
 
 .ui {
+  -moz-user-select: none;
   -webkit-user-select:none;
+  user-select: none;
 }
 
 .ui .number {
