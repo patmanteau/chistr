@@ -1,6 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow, Menu, shell } from 'electron'
+import * as windowState from 'electron-window-state'
 
 const ElectronStore = require('electron-store')
 const electronstore = new ElectronStore({
@@ -37,11 +38,20 @@ function createWindow () {
   /**
    * Initial window options
    */
-  mainWindow = new BrowserWindow({
-    height: 800,
-    useContentSize: true,
-    width: 1200
+  let mainWindowState = windowState({
+    file: 'chistr-window-state.json',
+    defaultWidth: 1200,
+    defaultHeight: 800
   })
+
+  mainWindow = new BrowserWindow({
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height
+  })
+
+  mainWindowState.manage(mainWindow)
 
   mainWindow.loadURL(winURL)
 
