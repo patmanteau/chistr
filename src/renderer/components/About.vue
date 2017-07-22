@@ -13,6 +13,7 @@
         <span class="text ui"> Distributed under The MIT License.</span>
         <span class="text ui">Inspired by <a class="external-link text" href="https://github.com/tianweiliu/wows-stats" target="_blank">wows-stats</a>. PR courtesy of <a class="external-link text" href="http://wows-numbers.com" target="_blank">WoWS Stats &amp; Numbers</a>.</span>
         <span class="text ui">&lsquo;World of Warships&rsquo; is a registered trademark of <a href="https://eu.wargaming.net/" target="_blank" class="external-link text">Wargaming</a>.</span>
+        <span class="text ui"><a class="external-link text" href="http://fontawesome.io" target="_blank">Font Awesome</a> icons by Dave Gandy.</span>
         <span class="github ui"><a href="https://github.com/patmanteau/chistr" class="external-link github" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></span>
       </div>
     </div>
