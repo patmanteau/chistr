@@ -28,6 +28,7 @@ export default {
         's01_NavalBase': 'Killer Whale',
         's02_Naval_Defense': 'Naval Station Newport',
         's03_Labyrinth': 'Labyrinth',
+        's05_Dunkirk': 'Dynamo',
         '00_CO_ocean': 'Ocean',
         '01_solomon_islands': 'Solomon Islands',
         '04_Archipelago': 'Archipelago',

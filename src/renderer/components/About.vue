@@ -4,7 +4,6 @@
       <router-link class="text link" :to="{ name: 'statistics', params: {} }">
         <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</span>
       </router-link>
-
     </div>
     <div class="container">
       <div class="centered">
@@ -18,7 +17,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script type="text/javascript">
