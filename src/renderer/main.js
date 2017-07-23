@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VeeValidate from 'vee-validate'
+// import VeeValidate from 'vee-validate'
 import axios from 'axios'
 
 import App from './App'
@@ -12,7 +12,7 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
-Vue.use(VeeValidate)
+// Vue.use(VeeValidate)
 
 /* eslint-disable no-new */
 new Vue({

@@ -162,7 +162,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
 }
 
 .config-item {
