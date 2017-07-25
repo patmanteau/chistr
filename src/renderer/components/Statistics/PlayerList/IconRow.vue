@@ -38,13 +38,13 @@
         <i v-if="sort.key === 'playerAvgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
-      <div title="Player average experience" class="dg-cell icon"
+      <!-- <div title="Player average experience" class="dg-cell icon"
           :class="{ active: sort.key === 'playerAvgExp'}"
           @click="setSort('playerAvgExp')">
         <i class="fa fa-line-chart" aria-hidden="true"></i>
         <i v-if="sort.key === 'playerAvgExp' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
         <i v-if="sort.key === 'playerAvgExp' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
-      </div>
+      </div> -->
     </div>
     <div class="dg-cellgroup dg-cellgroup-1of3 white-right-border">
 
@@ -88,13 +88,13 @@
         <i v-if="sort.key === 'shipAvgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
-      <div title="Ship average experience" class="dg-cell icon"
+      <!-- <div title="Ship average experience" class="dg-cell icon"
           :class="{ active: sort.key === 'shipAvgExp'}"
           @click="setSort('shipAvgExp')">
         <i class="fa fa-line-chart" aria-hidden="true"></i>
         <i v-if="sort.key === 'shipAvgExp' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
         <i v-if="sort.key === 'shipAvgExp' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

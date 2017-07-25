@@ -67,6 +67,7 @@ export default {
       const names = {
         'ranked': 'Ranked match',
         'pvp': 'Random match',
+        'cooperative': 'Co-op match',
         'pve': 'PvE match'
       }
       return names[name]

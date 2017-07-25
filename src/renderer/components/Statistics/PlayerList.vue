@@ -35,7 +35,7 @@
           <div class="dg-cell number text-centered" v-bind:class="winrateclass(player.playerBattles, player.playerWinrate)">{{ player.playerWinrate }}%</div>
           <div class="dg-cell number text-centered">{{ player.playerKdRatio | denan }}</div>
           <div class="dg-cell number text-subdued">{{ player.playerAvgDmg }}</div>
-          <div class="dg-cell number text-subdued">{{ player.playerAvgExp }}</div>
+          <!-- <div class="dg-cell number text-subdued">{{ player.playerAvgExp }}</div> -->
         </div>
         <!-- No player stats, not yet loaded -->
         <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="!player.playerFinishedLoading" key="without-player-stats-not-loaded">
@@ -55,7 +55,7 @@
           <div class="dg-cell number" :class="prclass(player.shipBattles, player.shipPR)">{{ player.shipPR | denan }}</div>
           <div class="dg-cell number text-centered">{{ player.shipKdRatio | denan }}</div>
           <div class="dg-cell number text-subdued">{{ player.shipAvgDmg}}</div>
-          <div class="dg-cell number text-subdued">{{ player.shipAvgExp }}</div>
+          <!-- <div class="dg-cell number text-subdued">{{ player.shipAvgExp }}</div> -->
         </div>
         <!-- No ship stats, not yet loaded -->
         <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="!player.shipFinishedLoading" key="without-ship-stats-not-loaded">
@@ -186,7 +186,7 @@ export default {
 
 .dg-cellgroup, .dg-cellgroup-1of3, .dg-cellgroup-2of3, .dg-cellgroup-3of3, .dg-cellgroup-1of2, .dg-cellgroup-2of2 {
   display: flex;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .dg-cellgroup-1of3 { flex: 0 0 33.33%;}

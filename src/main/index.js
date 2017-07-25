@@ -2,28 +2,14 @@
 
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import * as windowState from 'electron-window-state'
+import { esSettings } from '../defaultsettings'
 
 const log = require('electron-log')
 log.transports.console.level = 'info'
 log.transports.file.level = 'info'
 
 const ElectronStore = require('electron-store')
-const electronstore = new ElectronStore({
-  defaults: {
-    wows: {
-      api: {
-        key: 'demo',
-        url: 'http://api.worldofwarships.eu'
-      },
-      path: 'C:/Games/World_of_Warships'
-    },
-    app: {
-      debug: false,
-      matchgroup: 'auto'
-    }
-  },
-  name: 'chistr'
-})
+const electronstore = new ElectronStore(esSettings)
 
 /**
  * Set `__static` path to static files in production
@@ -82,7 +68,11 @@ function createMenu () {
         //   label: 'Edit settings file...',
         //   click () { electronstore.openInEditor() }
         // },
-        // {type: 'separator'},
+        {
+          label: 'Settings...',
+          click () { mainWindow.webContents.send('open-settings') }
+        },
+        {type: 'separator'},
         {role: 'quit'}
       ]
     },
@@ -102,11 +92,20 @@ function createMenu () {
         //   accelerator: 'CmdOrCtrl+Shift+I'
         // }
       ]
+    },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: 'About...',
+          click () { mainWindow.webContents.send('open-about') }
+        }
+      ]
     }
   ]
 
   if (electronstore.get('app.debug')) {
-    template[0].submenu.unshift({ label: 'Edit settings file...', click () { electronstore.openInEditor() } }, { type: 'separator' })
+    template[0].submenu.unshift({ label: 'Edit settings file...', click () { electronstore.openInEditor() } })
     template[1].submenu.push({ role: 'toggledevtools', accelerator: 'CmdOrCtrl+Shift+I' })
   }
   const menu = Menu.buildFromTemplate(template)

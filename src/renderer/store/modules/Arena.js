@@ -87,6 +87,13 @@ const mutations = {
         playerKdRatio: 0.0,
         playerFinishedLoading: false,
         playerError: [],
+        clanHasRecord: false,
+        clanFinishedLoading: false,
+        clanId: '',
+        clanCreatedAt: '',
+        clanMembersCount: 0,
+        clanName: '',
+        clanTag: '',
         shipId: player.shipId,
         shipHasRecord: false,
         shipName: '',
@@ -185,6 +192,30 @@ const actions = {
             ...playerData
           }
         })
+
+        // Then see if player is in a clan
+        wows.getPlayerClan(player.accountId)
+        .then(clanData => {
+          commit(types.SET_PLAYER_DATA, {
+            name: player.playerName,
+            data: {
+              clanHasRecord: true,
+              clanFinishedLoading: true,
+              ...clanData
+            }
+          })
+        })
+        .catch(error => {
+          commit(types.SET_PLAYER_DATA, {
+            name: player.playerName,
+            data: {
+              clanFinishedLoading: true,
+              clanHasRecord: false,
+              errors: [error]
+            }
+          })
+        })
+
         // Then get the ship's stats
         wows.getPlayerShip(player.shipId, player.accountId, matchGroup)
           .then(shipData => {

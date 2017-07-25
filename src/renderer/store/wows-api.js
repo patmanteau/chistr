@@ -23,6 +23,7 @@ export class WowsApi {
 
   getPlayer (playerName, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
+    else if (matchGroup === 'cooperative') matchGroup = 'pve'
     return new Promise((resolve, reject) => {
       // Our first step is finding the player's account ID. We use Wargaming's
       // API to search by the player's name. The API returns a list of
@@ -62,9 +63,8 @@ export class WowsApi {
           }
           if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
           if (matchGroup === 'pve') params.extra = 'statistics.pve'
-          this.api.get('/wows/account/info/', {
-            params: params
-          })
+
+          this.api.get('/wows/account/info/', { params: params })
             .then(response => {
               if (response.data.status !== 'ok') {
                 reject(Error(`Error retrieving player info (${response.data.error.message})`))
@@ -83,13 +83,15 @@ export class WowsApi {
                 return
               }
 
-              playerData.playerHasRecord = true
-              let group = playerStats.statistics[matchGroup]
-              playerData.playerBattles = group.battles
-              playerData.playerWinrate = (group.wins / group.battles * 100).toFixed(2)
-              playerData.playerAvgExp = (group.xp / group.battles).toFixed()
-              playerData.playerAvgDmg = (group.damage_dealt / group.battles).toFixed()
-              playerData.playerKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
+              const group = playerStats.statistics[matchGroup]
+              Object.assign(playerData, {
+                playerHasRecord: true,
+                playerBattles: group.battles,
+                playerWinrate: (group.wins / group.battles * 100).toFixed(2),
+                playerAvgExp: (group.xp / group.battles).toFixed(),
+                playerAvgDmg: (group.damage_dealt / group.battles).toFixed(),
+                playerKdRatio: (group.frags / (group.battles - group.survived_battles)).toFixed(2)
+              })
 
               resolve(playerData)
             })
@@ -99,6 +101,32 @@ export class WowsApi {
         })
         .catch(error => {
           log.error(error)
+          reject(error)
+        })
+    })
+  }
+
+  getPlayerClan (accountId) {
+    return new Promise((resolve, reject) => {
+      this.api.get('/wows/clans/accountinfo/', { params: { account_id: accountId, extra: 'clan' } })
+        .then(response => {
+          if (response.data.status === 'ok' &&
+              response.data.data[accountId] !== null &&
+              response.data.data[accountId].clan !== null) {
+            const clan = response.data.data[accountId].clan
+            resolve({
+              clanId: clan.clan_id,
+              clanCreatedAt: clan.created_at,
+              clanMembersCount: clan.members_count,
+              clanName: clan.name,
+              clanTag: clan.tag
+            })
+          } else {
+            reject(Error('Player is not in a clan.'))
+          }
+        })
+        .catch(error => {
+          console.log(error)
           reject(error)
         })
     })
@@ -131,6 +159,7 @@ export class WowsApi {
 
   getPlayerShip (shipId, accountId, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
+    else if (matchGroup === 'cooperative') matchGroup = 'pve'
     return new Promise((resolve, reject) => {
       const params = {
         account_id: accountId,
@@ -138,9 +167,7 @@ export class WowsApi {
       }
       if (matchGroup === 'rank_solo') params.extra = 'rank_solo'
       if (matchGroup === 'pve') params.extra = 'pve'
-      this.api.get('/wows/ships/stats/', {
-        params: params
-      })
+      this.api.get('/wows/ships/stats/', { params: params })
         .then(response => {
           const shipData = {}
           if (response.data.status !== 'ok' || response.data.data[accountId] === undefined || response.data.data[accountId] === null) {
@@ -159,29 +186,31 @@ export class WowsApi {
             return
           }
 
-          shipData.shipHasRecord = true
-          let group = shipStats[matchGroup]
-          shipData.shipBattles = group.battles
-          shipData.shipVictories = group.wins
-          shipData.shipWinrate = (group.wins / group.battles * 100).toFixed(2)
-          shipData.shipSurvived = group.survived_battles
-          shipData.shipFrags = group.frags
-          shipData.shipAvgExp = (group.xp / group.battles).toFixed()
-          shipData.shipAvgDmg = (group.damage_dealt / group.battles).toFixed()
-          shipData.shipKdRatio = (group.frags / (group.battles - group.survived_battles)).toFixed(2)
-          shipData.shipPR = 0
+          const group = shipStats[matchGroup]
+          Object.assign(shipData, {
+            shipHasRecord: true,
+            shipBattles: group.battles,
+            shipVictories: group.wins,
+            shipWinrate: (group.wins / group.battles * 100).toFixed(2),
+            shipSurvived: group.survived_battles,
+            shipFrags: group.frags,
+            shipAvgExp: (group.xp / group.battles).toFixed(),
+            shipAvgDmg: (group.damage_dealt / group.battles).toFixed(),
+            shipKdRatio: (group.frags / (group.battles - group.survived_battles)).toFixed(2),
+            shipPR: 0
+          })
 
           if (this.shipdb.has(shipId)) {
             // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
-            let exp = this.shipdb.get(shipId)
+            const exp = this.shipdb.get(shipId)
 
-            let rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
-            let rWins = shipData.shipWinrate / exp.win_rate
-            let rFrags = shipData.shipFrags / (exp.average_frags * shipData.shipBattles)
+            const rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
+            const rWins = shipData.shipWinrate / exp.win_rate
+            const rFrags = shipData.shipFrags / (exp.average_frags * shipData.shipBattles)
 
-            let nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
-            let nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
-            let nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
+            const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
+            const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
+            const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
 
             shipData.shipPR = (700 * nDmg + 300 * nFrags + 150 * nWins).toFixed()
           }

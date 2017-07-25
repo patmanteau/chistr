@@ -1,22 +1,9 @@
 import * as types from '../mutation-types'
+import { esSettings } from '../../../defaultsettings'
 const ElectronStore = require('electron-store')
 
-const electronstore = new ElectronStore({
-  defaults: {
-    wows: {
-      api: {
-        key: 'demo',
-        url: 'http://api.worldofwarships.eu'
-      },
-      path: 'C:/Games/World_of_Warships',
-      matchgroup: 'auto'
-    },
-    app: {
-      debug: false
-    }
-  },
-  name: 'chistr'
-})
+console.log(esSettings)
+const electronstore = new ElectronStore(esSettings)
 
 const state = {
   wows: electronstore.get('wows')
