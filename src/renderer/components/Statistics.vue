@@ -8,10 +8,6 @@
         :arena="arena">
       </arena-info>
       </span>
-      <span>
-        <input v-model="filterstring" class="searchbox" placeholder="Filter...">
-      </span>
-      <span><router-link class="text link ui" :to="{ name: 'settings', params: {} }"><span>Settings</span></router-link><span class="ui text"> | </span><router-link class="text link ui" :to="{ name: 'about', params: {} }"><span>About</span></router-link></span>
     </div>
     <transition appear name="fade">
       <div v-if="hasData" class="maingrid">
@@ -21,7 +17,7 @@
           :players="foes"
           :filterby="filterstring">
         </player-list>
-        <p v-if="filterstring ===''"></p>
+        <p></p>
         <player-list
           title="Friends"
           bordercolor="#8f8"
