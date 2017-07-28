@@ -1,123 +1,453 @@
 {
-  "time": 1499846318,
+  "time": 1500741765,
   "data": {
-    "3247355344": [],
+    "3762173136": {
+      "average_damage_dealt": 24179.311859444,
+      "average_frags": 0.57869692532943,
+      "win_rate": 49.334158125915
+    },
+    "3659445712": [],
+    "4183733712": {
+      "average_damage_dealt": 38232.913254684,
+      "average_frags": 0.87685403654867,
+      "win_rate": 54.606826278049
+    },
+    "4079891920": {
+      "average_damage_dealt": 20962.801843318,
+      "average_frags": 0.64944700460829,
+      "win_rate": 50.832822580645
+    },
+    "4077795024": {
+      "average_damage_dealt": 37834.31237591,
+      "average_frags": 0.97939774983455,
+      "win_rate": 56.355443414956
+    },
+    "4075697872": {
+      "average_damage_dealt": 34378.500464253,
+      "average_frags": 0.70156917363046,
+      "win_rate": 49.928249767875
+    },
     "3522082512": {
       "average_damage_dealt": 34338.59446093,
       "average_frags": 0.65777448071217,
       "win_rate": 50.962744807123
     },
-    "3532568272": {
-      "average_damage_dealt": 45020,
-      "average_frags": 1,
-      "win_rate": 50
+    "3764271056": {
+      "average_damage_dealt": 33420.8,
+      "average_frags": 0.952,
+      "win_rate": 54.693
     },
-    "3543054032": {
-      "average_damage_dealt": 33194.270886076,
-      "average_frags": 0.61860759493671,
-      "win_rate": 49.365658227848
+    "4179539920": {
+      "average_damage_dealt": 69637.723744292,
+      "average_frags": 1.0142237442922,
+      "win_rate": 49.352716894977
     },
-    "3551410160": {
-      "average_damage_dealt": 50707,
-      "average_frags": 1.1163636363636,
-      "win_rate": 64.728636363636
-    },
-    "3551442640": {
-      "average_damage_dealt": 31150.321913763,
-      "average_frags": 0.59925575900768,
-      "win_rate": 49.367259303013
-    },
-    "3552458448": {
-      "average_damage_dealt": 26049.676923077,
-      "average_frags": 0.63846153846154,
-      "win_rate": 53.743692307692
-    },
+    "3765384656": [],
     "3552491216": {
       "average_damage_dealt": 41016.455353364,
       "average_frags": 0.63691917054594,
       "win_rate": 51.328161235718
     },
-    "3552523984": {
-      "average_damage_dealt": 39407.772566818,
-      "average_frags": 0.79168431669184,
-      "win_rate": 52.448610690873
-    },
-    "3552524272": {
-      "average_damage_dealt": 72687.666666667,
-      "average_frags": 1.01,
-      "win_rate": 61.568333333333
-    },
-    "3553539792": {
-      "average_damage_dealt": 31448.611024845,
-      "average_frags": 0.59138975155279,
-      "win_rate": 49.414961180125
-    },
-    "3553540080": {
-      "average_damage_dealt": 56436.898550725,
-      "average_frags": 1.3288405797101,
-      "win_rate": 66.854202898551
-    },
-    "3553572560": {
-      "average_damage_dealt": 39686.875794621,
-      "average_frags": 0.8130268948655,
-      "win_rate": 52.519511002445
+    "3762206160": {
+      "average_damage_dealt": 42776.678034102,
+      "average_frags": 0.66006018054163,
+      "win_rate": 50.369954864594
     },
     "3554555600": {
       "average_damage_dealt": 34312.469155844,
       "average_frags": 0.99922077922077,
       "win_rate": 57.454131493507
     },
-    "3554588464": {
-      "average_damage_dealt": 37892.333333333,
-      "average_frags": 0.79583333333333,
-      "win_rate": 55.041666666667
+    "3767449296": {
+      "average_damage_dealt": 29195.701357466,
+      "average_frags": 1.0395022624434,
+      "win_rate": 55.788303167421
+    },
+    "3767416784": {
+      "average_damage_dealt": 23364.580917874,
+      "average_frags": 0.95304951690823,
+      "win_rate": 54.171696859906
+    },
+    "4180588496": {
+      "average_damage_dealt": 54888.93627451,
+      "average_frags": 0.84174836601307,
+      "win_rate": 51.781895424837
+    },
+    "4182652368": {
+      "average_damage_dealt": 39047.663934426,
+      "average_frags": 0.71428961748634,
+      "win_rate": 50.974330601093
     },
     "3554621136": {
       "average_damage_dealt": 41205.665336879,
       "average_frags": 0.81549202127656,
       "win_rate": 52.631779698581
     },
+    "3768465392": {
+      "average_damage_dealt": 14883.959016393,
+      "average_frags": 0.90830601092896,
+      "win_rate": 53.090218579235
+    },
+    "3763255248": {
+      "average_damage_dealt": 43216.347762289,
+      "average_frags": 0.90650770359501,
+      "win_rate": 54.431903888482
+    },
+    "4181637072": {
+      "average_damage_dealt": 47614.799093656,
+      "average_frags": 0.84235649546829,
+      "win_rate": 53.133802870091
+    },
+    "4180555568": {
+      "average_damage_dealt": 41292.603015075,
+      "average_frags": 0.87165829145729,
+      "win_rate": 55.840753768844
+    },
+    "3554588464": {
+      "average_damage_dealt": 37892.333333333,
+      "average_frags": 0.79583333333333,
+      "win_rate": 55.041666666667
+    },
+    "3532568272": {
+      "average_damage_dealt": 45020,
+      "average_frags": 1,
+      "win_rate": 50
+    },
+    "3763320528": {
+      "average_damage_dealt": 67623.030612245,
+      "average_frags": 1.3254081632653,
+      "win_rate": 56.679617346939
+    },
+    "4076746448": {
+      "average_damage_dealt": 30551.277656079,
+      "average_frags": 0.67378970427164,
+      "win_rate": 50.551922234393
+    },
+    "4181669840": [],
+    "4182685648": {
+      "average_damage_dealt": 51592.884818731,
+      "average_frags": 1.1554003021148,
+      "win_rate": 56.600271903325
+    },
+    "4181636912": {
+      "average_damage_dealt": 34862.536231884,
+      "average_frags": 0.55670807453418,
+      "win_rate": 49.867477570739
+    },
+    "4181604144": {
+      "average_damage_dealt": 35608.00209205,
+      "average_frags": 0.80253138075314,
+      "win_rate": 54.739456066945
+    },
+    "3865982416": {
+      "average_damage_dealt": 34447.387195122,
+      "average_frags": 0.5894512195122,
+      "win_rate": 48.759321646341
+    },
+    "4179539408": {
+      "average_damage_dealt": 77853.54587156,
+      "average_frags": 0.88272935779817,
+      "win_rate": 50.911066513761
+    },
+    "3767482160": {
+      "average_damage_dealt": 40094.189285714,
+      "average_frags": 1.3877321428571,
+      "win_rate": 59.092383928572
+    },
+    "4182652720": {
+      "average_damage_dealt": 33480.001936108,
+      "average_frags": 0.92144240077446,
+      "win_rate": 55.942565343659
+    },
+    "4180587984": {
+      "average_damage_dealt": 53992.010398614,
+      "average_frags": 0.69987868284229,
+      "win_rate": 52.301169844021
+    },
+    "4078843600": {
+      "average_damage_dealt": 27724.465706447,
+      "average_frags": 0.77828532235938,
+      "win_rate": 54.079230109741
+    },
+    "3553539792": {
+      "average_damage_dealt": 31448.611024845,
+      "average_frags": 0.59138975155279,
+      "win_rate": 49.414961180125
+    },
+    "3761190896": {
+      "average_damage_dealt": 71130.933884298,
+      "average_frags": 0.88448347107438,
+      "win_rate": 54.5525
+    },
+    "4179572688": [],
+    "4183701296": {
+      "average_damage_dealt": 28483.079671656,
+      "average_frags": 0.80864799613709,
+      "win_rate": 55.050079671658
+    },
+    "3551442640": {
+      "average_damage_dealt": 31150.321913763,
+      "average_frags": 0.59925575900768,
+      "win_rate": 49.367259303013
+    },
+    "4181636560": {
+      "average_damage_dealt": 44714.447296059,
+      "average_frags": 0.71755270394134,
+      "win_rate": 51.819133822182
+    },
+    "3764336336": {
+      "average_damage_dealt": 50992.455284553,
+      "average_frags": 0.88054200542006,
+      "win_rate": 52.420338753387
+    },
+    "4179539760": {
+      "average_damage_dealt": 71615.956190476,
+      "average_frags": 0.84792380952381,
+      "win_rate": 48.679342857143
+    },
+    "3764303600": {
+      "average_damage_dealt": 31355.366920152,
+      "average_frags": 0.72233840304182,
+      "win_rate": 53.16855513308
+    },
+    "4182685136": {
+      "average_damage_dealt": 44351.717887726,
+      "average_frags": 0.90207421503333,
+      "win_rate": 53.619034253093
+    },
+    "3765319120": {
+      "average_damage_dealt": 29407.957654723,
+      "average_frags": 1.0076221498371,
+      "win_rate": 55.140846905537
+    },
+    "4181604048": {
+      "average_damage_dealt": 31944.140974967,
+      "average_frags": 0.67662714097496,
+      "win_rate": 51.532048748353
+    },
     "3555636944": {
       "average_damage_dealt": 35869.067351598,
       "average_frags": 0.75482305936072,
       "win_rate": 52.269292237443
     },
-    "3555669712": {
-      "average_damage_dealt": 42708.210886292,
-      "average_frags": 0.90353662011971,
-      "win_rate": 54.107061840981
+    "4181636944": {
+      "average_damage_dealt": 59772.073878628,
+      "average_frags": 0.86517150395778,
+      "win_rate": 55.642018469657
+    },
+    "3551410160": {
+      "average_damage_dealt": 50707,
+      "average_frags": 1.1163636363636,
+      "win_rate": 64.728636363636
     },
     "3555670000": {
       "average_damage_dealt": 44208.938120703,
       "average_frags": 0.91868601986249,
       "win_rate": 55.185515660809
     },
-    "3659445712": [],
-    "3761190896": {
-      "average_damage_dealt": 71130.933884298,
-      "average_frags": 0.88448347107438,
-      "win_rate": 54.5525
+    "3764303312": {
+      "average_damage_dealt": 36227.328413284,
+      "average_frags": 0.76209409594094,
+      "win_rate": 52.738095018451
     },
-    "3762173136": {
-      "average_damage_dealt": 24179.311859444,
-      "average_frags": 0.57869692532943,
-      "win_rate": 49.334158125915
+    "4182652624": {
+      "average_damage_dealt": 28372.643504532,
+      "average_frags": 0.71890375485543,
+      "win_rate": 50.603795856712
     },
-    "3762173936": [],
-    "3762206160": {
-      "average_damage_dealt": 42776.678034102,
-      "average_frags": 0.66006018054163,
-      "win_rate": 50.369954864594
+    "4180588368": {
+      "average_damage_dealt": 68437.417177914,
+      "average_frags": 0.83625766871166,
+      "win_rate": 54.736073619632
     },
+    "4180588336": {
+      "average_damage_dealt": 47728.718085106,
+      "average_frags": 0.64089095744681,
+      "win_rate": 50.730890957447
+    },
+    "3553540080": {
+      "average_damage_dealt": 56436.898550725,
+      "average_frags": 1.3288405797101,
+      "win_rate": 66.854202898551
+    },
+    "4182718416": [],
     "3762206512": {
       "average_damage_dealt": 34885.759124088,
       "average_frags": 0.52632603406327,
       "win_rate": 49.596161800487
     },
+    "4179506992": {
+      "average_damage_dealt": 46296.005882353,
+      "average_frags": 0.86452941176471,
+      "win_rate": 53.021911764706
+    },
+    "4182718256": {
+      "average_damage_dealt": 53469.54861604,
+      "average_frags": 0.94362668559261,
+      "win_rate": 53.203750887154
+    },
+    "3971888592": {
+      "average_damage_dealt": 33234.156342183,
+      "average_frags": 0.63825958702065,
+      "win_rate": 50.858333333333
+    },
+    "3765351888": {
+      "average_damage_dealt": 28962.433839479,
+      "average_frags": 0.8037093275488,
+      "win_rate": 53.790455531453
+    },
+    "4183701200": {
+      "average_damage_dealt": 23031.457238214,
+      "average_frags": 0.60796829370048,
+      "win_rate": 49.684457655403
+    },
+    "3552523984": {
+      "average_damage_dealt": 39407.772566818,
+      "average_frags": 0.79168431669184,
+      "win_rate": 52.448610690873
+    },
     "3762239472": {
       "average_damage_dealt": 62966.845238095,
       "average_frags": 0.87164682539683,
       "win_rate": 53.589742063492
+    },
+    "4182685488": {
+      "average_damage_dealt": 31632.400611621,
+      "average_frags": 0.67091063540606,
+      "win_rate": 51.233732585795
+    },
+    "4182685520": {
+      "average_damage_dealt": 47767.493268054,
+      "average_frags": 0.87516523867808,
+      "win_rate": 54.34994492044
+    },
+    "3769513264": {
+      "average_damage_dealt": 26647.484126984,
+      "average_frags": 0.70061728395062,
+      "win_rate": 51.567711640213
+    },
+    "4179539792": {
+      "average_damage_dealt": 86253.153846154,
+      "average_frags": 0.93495726495726,
+      "win_rate": 50.73405982906
+    },
+    "4179572528": {
+      "average_damage_dealt": 87588.126738794,
+      "average_frags": 0.96763523956723,
+      "win_rate": 50.52615919629
+    },
+    "3553572560": {
+      "average_damage_dealt": 39686.875794621,
+      "average_frags": 0.8130268948655,
+      "win_rate": 52.519511002445
+    },
+    "3555669712": {
+      "average_damage_dealt": 42708.210886292,
+      "average_frags": 0.90353662011971,
+      "win_rate": 54.107061840981
+    },
+    "4179506640": {
+      "average_damage_dealt": 60466.049315068,
+      "average_frags": 0.94676712328767,
+      "win_rate": 52.775232876712
+    },
+    "3763320816": {
+      "average_damage_dealt": 38690.319060773,
+      "average_frags": 0.65410220994475,
+      "win_rate": 50.019689226519
+    },
+    "3764303664": {
+      "average_damage_dealt": 38364.078787879,
+      "average_frags": 0.80379797979795,
+      "win_rate": 55.493740259744
+    },
+    "3764336464": {
+      "average_damage_dealt": 49970.125806452,
+      "average_frags": 0.8931129032258,
+      "win_rate": 53.631850806452
+    },
+    "3764303216": {
+      "average_damage_dealt": 33516.349112426,
+      "average_frags": 0.78920118343195,
+      "win_rate": 53.960902366864
+    },
+    "3247355344": [],
+    "4074649040": {
+      "average_damage_dealt": 46004.330985915,
+      "average_frags": 0.77091549295775,
+      "win_rate": 49.60235915493
+    },
+    "3767449040": {
+      "average_damage_dealt": 25412.358974359,
+      "average_frags": 0.96153846153846,
+      "win_rate": 54.020512820513
+    },
+    "3543054032": {
+      "average_damage_dealt": 33194.270886076,
+      "average_frags": 0.61860759493671,
+      "win_rate": 49.365658227848
+    },
+    "3762173936": [],
+    "3764336624": {
+      "average_damage_dealt": 55124.977573904,
+      "average_frags": 1.030122324159,
+      "win_rate": 56.121906218145
+    },
+    "4180621104": {
+      "average_damage_dealt": 60492.168451801,
+      "average_frags": 0.70361246348588,
+      "win_rate": 49.112166504382
+    },
+    "4076746192": {
+      "average_damage_dealt": 26057.881316099,
+      "average_frags": 0.55621621621621,
+      "win_rate": 49.639976498238
+    },
+    "3764270288": {
+      "average_damage_dealt": 26721.298003072,
+      "average_frags": 0.79384024577573,
+      "win_rate": 54.596405529954
+    },
+    "4181669680": {
+      "average_damage_dealt": 57315.416358595,
+      "average_frags": 0.76758317929758,
+      "win_rate": 50.995388170056
+    },
+    "4180621264": [],
+    "3763288016": {
+      "average_damage_dealt": 57153.494736842,
+      "average_frags": 0.98013533834587,
+      "win_rate": 53.88915037594
+    },
+    "4077794768": {
+      "average_damage_dealt": 27148.979674797,
+      "average_frags": 0.66459349593496,
+      "win_rate": 51.405121951219
+    },
+    "3764303696": {
+      "average_damage_dealt": 36088.925925926,
+      "average_frags": 0.78125925925926,
+      "win_rate": 52.810148148148
+    },
+    "3552524272": {
+      "average_damage_dealt": 72687.666666667,
+      "average_frags": 1.01,
+      "win_rate": 61.568333333333
+    },
+    "3763255280": {
+      "average_damage_dealt": 31144.780254777,
+      "average_frags": 0.61462845010615,
+      "win_rate": 50.928731422506
+    },
+    "3768497968": {
+      "average_damage_dealt": 18402.70582765,
+      "average_frags": 0.98526348419095,
+      "win_rate": 53.979631122136
+    },
+    "3763287856": {
+      "average_damage_dealt": 53842.183423913,
+      "average_frags": 0.96408967391305,
+      "win_rate": 52.266348505435
     },
     "3762272240": {
       "average_damage_dealt": 81172.208333333,
@@ -129,916 +459,515 @@
       "average_frags": 0.77926157697122,
       "win_rate": 53.425350438048
     },
-    "3763255248": {
-      "average_damage_dealt": 43235.93907083,
-      "average_frags": 0.90667174409748,
-      "win_rate": 54.494146991623
-    },
-    "3763255280": {
-      "average_damage_dealt": 31144.780254777,
-      "average_frags": 0.61462845010615,
-      "win_rate": 50.928731422506
-    },
-    "3763287856": {
-      "average_damage_dealt": 53842.183423913,
-      "average_frags": 0.96408967391305,
-      "win_rate": 52.266348505435
-    },
-    "3763288016": {
-      "average_damage_dealt": 57389.41885626,
-      "average_frags": 0.98378670788254,
-      "win_rate": 53.93200927357
-    },
-    "3763320528": {
-      "average_damage_dealt": 67623.030612245,
-      "average_frags": 1.3254081632653,
-      "win_rate": 56.679617346939
-    },
-    "3763320816": {
-      "average_damage_dealt": 38690.319060773,
-      "average_frags": 0.65410220994475,
-      "win_rate": 50.019689226519
-    },
-    "3764270288": {
-      "average_damage_dealt": 26721.298003072,
-      "average_frags": 0.79384024577573,
-      "win_rate": 54.596405529954
-    },
-    "3764271056": [],
-    "3764303216": {
-      "average_damage_dealt": 33516.349112426,
-      "average_frags": 0.78920118343195,
-      "win_rate": 53.960902366864
-    },
-    "3764303312": {
-      "average_damage_dealt": 36227.328413284,
-      "average_frags": 0.76209409594094,
-      "win_rate": 52.738095018451
-    },
-    "3764303600": {
-      "average_damage_dealt": 31355.366920152,
-      "average_frags": 0.72233840304182,
-      "win_rate": 53.16855513308
-    },
-    "3764303664": {
-      "average_damage_dealt": 38364.078787879,
-      "average_frags": 0.80379797979795,
-      "win_rate": 55.493740259744
-    },
-    "3764303696": {
-      "average_damage_dealt": 36994.339449541,
-      "average_frags": 0.79825688073394,
-      "win_rate": 52.803119266055
-    },
-    "3764336336": {
-      "average_damage_dealt": 50992.455284553,
-      "average_frags": 0.88054200542006,
-      "win_rate": 52.420338753387
-    },
-    "3764336464": {
-      "average_damage_dealt": 49921.271285476,
-      "average_frags": 0.89193656093488,
-      "win_rate": 53.758109348915
-    },
-    "3764336624": {
-      "average_damage_dealt": 55124.977573904,
-      "average_frags": 1.030122324159,
-      "win_rate": 56.121906218145
-    },
-    "3765319120": {
-      "average_damage_dealt": 29407.957654723,
-      "average_frags": 1.0076221498371,
-      "win_rate": 55.140846905537
-    },
-    "3765351888": {
-      "average_damage_dealt": 28962.433839479,
-      "average_frags": 0.8037093275488,
-      "win_rate": 53.790455531453
-    },
-    "3765384656": [],
-    "3767416784": {
-      "average_damage_dealt": 23396.898046398,
-      "average_frags": 0.95394383394385,
-      "win_rate": 54.161953601956
-    },
-    "3767449040": {
-      "average_damage_dealt": 25412.358974359,
-      "average_frags": 0.96153846153846,
-      "win_rate": 54.020512820513
-    },
-    "3767449296": {
-      "average_damage_dealt": 29195.701357466,
-      "average_frags": 1.0395022624434,
-      "win_rate": 55.788303167421
-    },
-    "3767482160": {
-      "average_damage_dealt": 40094.189285714,
-      "average_frags": 1.3877321428571,
-      "win_rate": 59.092383928572
-    },
-    "3768465392": {
-      "average_damage_dealt": 14883.959016393,
-      "average_frags": 0.90830601092896,
-      "win_rate": 53.090218579235
-    },
-    "3768497968": {
-      "average_damage_dealt": 18402.70582765,
-      "average_frags": 0.98526348419095,
-      "win_rate": 53.979631122136
-    },
-    "3769513264": {
-      "average_damage_dealt": 26647.484126984,
-      "average_frags": 0.70061728395062,
-      "win_rate": 51.567711640213
-    },
-    "3865982416": {
-      "average_damage_dealt": 34447.387195122,
-      "average_frags": 0.5894512195122,
-      "win_rate": 48.759321646341
-    },
-    "3971888592": {
-      "average_damage_dealt": 33234.156342183,
-      "average_frags": 0.63825958702065,
-      "win_rate": 50.858333333333
-    },
-    "4074649040": {
-      "average_damage_dealt": 46004.330985915,
-      "average_frags": 0.77091549295775,
-      "win_rate": 49.60235915493
-    },
-    "4075697872": {
-      "average_damage_dealt": 34378.500464253,
-      "average_frags": 0.70156917363046,
-      "win_rate": 49.928249767875
-    },
-    "4076746192": {
-      "average_damage_dealt": 26057.881316099,
-      "average_frags": 0.55621621621621,
-      "win_rate": 49.639976498238
-    },
-    "4076746448": {
-      "average_damage_dealt": 30551.277656079,
-      "average_frags": 0.67378970427164,
-      "win_rate": 50.551922234393
-    },
-    "4077794768": {
-      "average_damage_dealt": 27148.979674797,
-      "average_frags": 0.66459349593496,
-      "win_rate": 51.405121951219
-    },
-    "4077795024": {
-      "average_damage_dealt": 37834.31237591,
-      "average_frags": 0.97939774983455,
-      "win_rate": 56.355443414956
-    },
     "4078843344": {
       "average_damage_dealt": 20913.514115899,
       "average_frags": 0.57644873699852,
       "win_rate": 50.652377414562
     },
-    "4078843600": {
-      "average_damage_dealt": 27724.465706447,
-      "average_frags": 0.77828532235938,
-      "win_rate": 54.079230109741
-    },
-    "4079891920": {
-      "average_damage_dealt": 20962.801843318,
-      "average_frags": 0.64944700460829,
-      "win_rate": 50.832822580645
-    },
-    "4179506640": {
-      "average_damage_dealt": 60466.049315068,
-      "average_frags": 0.94676712328767,
-      "win_rate": 52.775232876712
-    },
-    "4179506992": {
-      "average_damage_dealt": 46296.005882353,
-      "average_frags": 0.86452941176471,
-      "win_rate": 53.021911764706
-    },
-    "4179539408": {
-      "average_damage_dealt": 77853.54587156,
-      "average_frags": 0.88272935779817,
-      "win_rate": 50.911066513761
-    },
-    "4179539760": {
-      "average_damage_dealt": 71615.956190476,
-      "average_frags": 0.84792380952381,
-      "win_rate": 48.679342857143
-    },
-    "4179539792": {
-      "average_damage_dealt": 86768.847619048,
-      "average_frags": 0.94,
-      "win_rate": 50.649142857143
-    },
-    "4179539920": {
-      "average_damage_dealt": 69816.112676056,
-      "average_frags": 1.0187558685446,
-      "win_rate": 49.448215962441
-    },
-    "4179572528": {
-      "average_damage_dealt": 87588.126738794,
-      "average_frags": 0.96763523956723,
-      "win_rate": 50.52615919629
-    },
-    "4179572688": [],
-    "4180555216": {
-      "average_damage_dealt": 30971.087221095,
-      "average_frags": 0.78893847194048,
-      "win_rate": 53.145054090602
-    },
-    "4180555568": {
-      "average_damage_dealt": 41292.603015075,
-      "average_frags": 0.87165829145729,
-      "win_rate": 55.840753768844
-    },
-    "4180587984": {
-      "average_damage_dealt": 53992.010398614,
-      "average_frags": 0.69987868284229,
-      "win_rate": 52.301169844021
-    },
-    "4180588336": {
-      "average_damage_dealt": 47728.718085106,
-      "average_frags": 0.64089095744681,
-      "win_rate": 50.730890957447
-    },
-    "4180588368": {
-      "average_damage_dealt": 68987.027210884,
-      "average_frags": 0.84408163265306,
-      "win_rate": 54.88350340136
-    },
-    "4180588496": {
-      "average_damage_dealt": 55013.098497496,
-      "average_frags": 0.84327212020034,
-      "win_rate": 51.860275459098
-    },
-    "4180621104": {
-      "average_damage_dealt": 60492.168451801,
-      "average_frags": 0.70361246348588,
-      "win_rate": 49.112166504382
-    },
-    "4180621264": [],
-    "4181603792": {
-      "average_damage_dealt": 29103.915492958,
-      "average_frags": 0.63179257362356,
-      "win_rate": 50.155704225352
-    },
-    "4181604048": {
-      "average_damage_dealt": 31944.140974967,
-      "average_frags": 0.67662714097496,
-      "win_rate": 51.532048748353
-    },
-    "4181604144": {
-      "average_damage_dealt": 35608.00209205,
-      "average_frags": 0.80253138075314,
-      "win_rate": 54.739456066945
-    },
-    "4181636560": {
-      "average_damage_dealt": 44714.447296059,
-      "average_frags": 0.71755270394134,
-      "win_rate": 51.819133822182
-    },
-    "4181636912": {
-      "average_damage_dealt": 34862.536231884,
-      "average_frags": 0.55670807453418,
-      "win_rate": 49.867477570739
-    },
-    "4181636944": {
-      "average_damage_dealt": 60506.956268222,
-      "average_frags": 0.87233236151604,
-      "win_rate": 56.010131195335
-    },
-    "4181637072": {
-      "average_damage_dealt": 47741.418461538,
-      "average_frags": 0.84334615384616,
-      "win_rate": 53.213238461539
-    },
-    "4181669680": {
-      "average_damage_dealt": 57315.416358595,
-      "average_frags": 0.76758317929758,
-      "win_rate": 50.995388170056
-    },
-    "4181669840": [],
-    "4182652368": {
-      "average_damage_dealt": 39047.663934426,
-      "average_frags": 0.71428961748634,
-      "win_rate": 50.974330601093
-    },
-    "4182652624": {
-      "average_damage_dealt": 28372.643504532,
-      "average_frags": 0.71890375485543,
-      "win_rate": 50.603795856712
-    },
-    "4182652720": {
-      "average_damage_dealt": 33480.001936108,
-      "average_frags": 0.92144240077446,
-      "win_rate": 55.942565343659
-    },
-    "4182685136": {
-      "average_damage_dealt": 44351.717887726,
-      "average_frags": 0.90207421503333,
-      "win_rate": 53.619034253093
-    },
-    "4182685488": {
-      "average_damage_dealt": 31632.400611621,
-      "average_frags": 0.67091063540606,
-      "win_rate": 51.233732585795
-    },
-    "4182685520": {
-      "average_damage_dealt": 48030.085676037,
-      "average_frags": 0.87381526104417,
-      "win_rate": 54.539417670683
-    },
-    "4182685648": {
-      "average_damage_dealt": 51678.780674847,
-      "average_frags": 1.1578374233129,
-      "win_rate": 56.638449003069
-    },
-    "4182718256": {
-      "average_damage_dealt": 53469.54861604,
-      "average_frags": 0.94362668559261,
-      "win_rate": 53.203750887154
-    },
-    "4182718416": [],
-    "4183700944": {
-      "average_damage_dealt": 24520.182809917,
-      "average_frags": 0.75441983471074,
-      "win_rate": 53.893504132232
-    },
-    "4183701200": {
-      "average_damage_dealt": 23031.457238214,
-      "average_frags": 0.60796829370048,
-      "win_rate": 49.684457655403
-    },
-    "4183701296": {
-      "average_damage_dealt": 28483.079671656,
-      "average_frags": 0.80864799613709,
-      "win_rate": 55.050079671658
-    },
-    "4183733712": {
-      "average_damage_dealt": 38232.913254684,
-      "average_frags": 0.87685403654867,
-      "win_rate": 54.606826278049
-    },
-    "4183734064": {
-      "average_damage_dealt": 29534.579246935,
-      "average_frags": 0.72902583187394,
-      "win_rate": 52.062862302976
-    },
-    "4183734096": {
-      "average_damage_dealt": 33926.201575837,
-      "average_frags": 0.71449770190414,
-      "win_rate": 52.259957321077
-    },
-    "4183734224": {
-      "average_damage_dealt": 39398.176996945,
-      "average_frags": 0.99278481012661,
-      "win_rate": 55.845216062858
-    },
-    "4183766832": {
-      "average_damage_dealt": 50404.03795413,
-      "average_frags": 0.95025167444689,
-      "win_rate": 53.28124517962
-    },
-    "4184749520": {
-      "average_damage_dealt": 23580.427491409,
-      "average_frags": 0.83207731958761,
-      "win_rate": 53.325343642614
-    },
-    "4184749776": {
-      "average_damage_dealt": 21245.757368421,
-      "average_frags": 0.63150000000001,
-      "win_rate": 49.518636842106
-    },
-    "4184749872": {
-      "average_damage_dealt": 21991.856095325,
-      "average_frags": 0.70095936449741,
-      "win_rate": 51.239366025053
-    },
-    "4184782288": {
-      "average_damage_dealt": 30620.038747031,
-      "average_frags": 0.77131680522573,
-      "win_rate": 53.033482036824
-    },
-    "4184782640": {
-      "average_damage_dealt": 32189.049761585,
-      "average_frags": 0.92886049639317,
-      "win_rate": 54.239511553985
-    },
-    "4184782672": {
-      "average_damage_dealt": 34437.541773076,
-      "average_frags": 0.88202480846411,
-      "win_rate": 54.300534476469
-    },
-    "4184782800": {
-      "average_damage_dealt": 23886.901964756,
-      "average_frags": 0.69706299372088,
-      "win_rate": 50.684517925866
-    },
-    "4184815408": {
-      "average_damage_dealt": 48367.209739315,
-      "average_frags": 1.0512809315866,
-      "win_rate": 55.041312690221
-    },
-    "4185798096": {
-      "average_damage_dealt": 19811.415752396,
-      "average_frags": 0.7939126919968,
-      "win_rate": 51.97639508026
-    },
-    "4185798448": {
-      "average_damage_dealt": 24612.739431207,
-      "average_frags": 0.95434793748399,
-      "win_rate": 53.42865488086
-    },
-    "4185830864": {
-      "average_damage_dealt": 25784.227085354,
-      "average_frags": 0.83281522793404,
-      "win_rate": 53.493522672174
-    },
-    "4185831216": {
-      "average_damage_dealt": 18903.473505756,
-      "average_frags": 0.61857514587604,
-      "win_rate": 50.75249132629
-    },
-    "4185831248": {
-      "average_damage_dealt": 30859.023278689,
-      "average_frags": 0.93224918032787,
-      "win_rate": 52.794809836064
-    },
-    "4185831376": {
-      "average_damage_dealt": 22762.270238446,
-      "average_frags": 0.81059905799239,
-      "win_rate": 52.450523255821
-    },
-    "4185863984": {
-      "average_damage_dealt": 42555.957385838,
-      "average_frags": 1.0709086707341,
-      "win_rate": 53.689011832142
-    },
-    "4186846672": {
-      "average_damage_dealt": 14122.733517326,
-      "average_frags": 0.70653633854646,
-      "win_rate": 49.29342532965
-    },
-    "4186847024": {
-      "average_damage_dealt": 17264.69223301,
-      "average_frags": 0.76858252427182,
-      "win_rate": 49.34140776699
-    },
-    "4186879440": {
-      "average_damage_dealt": 24005.631865737,
-      "average_frags": 0.86519398430686,
-      "win_rate": 51.10230601569
-    },
-    "4186879792": {
-      "average_damage_dealt": 16238.195636751,
-      "average_frags": 0.64920805250084,
-      "win_rate": 49.194969847462
-    },
-    "4186879824": {
-      "average_damage_dealt": 20152.651837524,
-      "average_frags": 0.75552546744035,
-      "win_rate": 47.90667311412
-    },
-    "4186879952": {
-      "average_damage_dealt": 18174.279218887,
-      "average_frags": 0.69360536286798,
-      "win_rate": 48.351965899154
-    },
-    "4186912560": {
-      "average_damage_dealt": 31055.052596449,
-      "average_frags": 1.0265291683354,
-      "win_rate": 52.018705112808
-    },
-    "4187895248": {
-      "average_damage_dealt": 9782.3700803627,
-      "average_frags": 0.63903152689062,
-      "win_rate": 47.665485266846
-    },
-    "4187895600": {
-      "average_damage_dealt": 13323.373044525,
-      "average_frags": 0.84879663056561,
-      "win_rate": 48.1896811071
-    },
-    "4187928016": {
-      "average_damage_dealt": 13626.61981474,
-      "average_frags": 0.64703584373743,
-      "win_rate": 46.783765606122
-    },
-    "4187928400": {
-      "average_damage_dealt": 16249.182175623,
-      "average_frags": 0.65862385321101,
-      "win_rate": 44.290720838794
-    },
-    "4187928528": {
-      "average_damage_dealt": 14484.418355856,
-      "average_frags": 0.54416666666669,
-      "win_rate": 46.04852195946
-    },
-    "4188976592": {
-      "average_damage_dealt": 11238.757453259,
-      "average_frags": 0.90099545224863,
-      "win_rate": 51.508180899443
-    },
-    "4188976976": {
-      "average_damage_dealt": 5262.6467889908,
-      "average_frags": 0.6656880733945,
-      "win_rate": 48.631880733945
-    },
-    "4188977104": {
-      "average_damage_dealt": 6377.6351758794,
-      "average_frags": 0.97785929648241,
-      "win_rate": 52.296658291457
-    },
-    "4247697392": {
-      "average_damage_dealt": 43534.666666667,
-      "average_frags": 1.5,
-      "win_rate": 58.308333333333
-    },
-    "4248745968": {
-      "average_damage_dealt": 31478.43045388,
-      "average_frags": 0.92349926793558,
-      "win_rate": 54.957254758418
-    },
-    "4255037136": {
-      "average_damage_dealt": 34282.026885736,
-      "average_frags": 0.57549663928305,
-      "win_rate": 48.207430918596
-    },
-    "4256085712": {
-      "average_damage_dealt": 11453.338365435,
-      "average_frags": 0.89745445080689,
-      "win_rate": 51.224752732951
-    },
-    "4258182864": {
-      "average_damage_dealt": 13712.930653575,
-      "average_frags": 0.56575738979242,
-      "win_rate": 48.52179605196
-    },
-    "4259231440": {
-      "average_damage_dealt": 77581.565811966,
-      "average_frags": 0.8951452991453,
-      "win_rate": 48.836675213675
-    },
-    "4259264496": {
-      "average_damage_dealt": 46060.904447268,
-      "average_frags": 0.90586531130878,
-      "win_rate": 52.987466327826
-    },
-    "4264441840": {
-      "average_damage_dealt": 21346.098007968,
-      "average_frags": 0.61233466135458,
-      "win_rate": 49.832776892431
-    },
-    "4266538992": {
-      "average_damage_dealt": 13193.668408146,
-      "average_frags": 0.59516579592708,
-      "win_rate": 47.562411770977
-    },
-    "4267587280": {
-      "average_damage_dealt": 31478.448081264,
-      "average_frags": 1.078295711061,
-      "win_rate": 55.465671557562
-    },
-    "4267620048": {
-      "average_damage_dealt": 32421.3125,
-      "average_frags": 1.1993055555556,
-      "win_rate": 57.879652777778
-    },
-    "4268635856": {
-      "average_damage_dealt": 34707.502538071,
-      "average_frags": 1.1568274111675,
-      "win_rate": 57.541472081218
-    },
-    "4269684432": {
-      "average_damage_dealt": 15861.673810544,
-      "average_frags": 0.68597428204021,
-      "win_rate": 48.811564937841
-    },
-    "4269717488": {
-      "average_damage_dealt": 23856.124584323,
-      "average_frags": 0.71426959619948,
-      "win_rate": 50.699741686454
-    },
-    "4272830448": {
-      "average_damage_dealt": 33849.746418338,
-      "average_frags": 0.70090257879656,
-      "win_rate": 50.494541547278
-    },
-    "4272895696": {
-      "average_damage_dealt": 56930.607244995,
-      "average_frags": 0.64092469018111,
-      "win_rate": 48.372530981888
-    },
-    "4273911792": {
-      "average_damage_dealt": 63397.756972112,
-      "average_frags": 0.86145418326693,
-      "win_rate": 48.744940239044
-    },
-    "4274927600": {
-      "average_damage_dealt": 22199.113036165,
-      "average_frags": 0.90308158116075,
-      "win_rate": 52.098231286793
-    },
-    "4276041424": {
-      "average_damage_dealt": 85813.505703422,
-      "average_frags": 0.82532319391635,
-      "win_rate": 48.327072243346
-    },
-    "4276041712": {
-      "average_damage_dealt": 58425.172690763,
-      "average_frags": 0.67088353413656,
-      "win_rate": 48.222254016065
-    },
-    "4277024464": {
-      "average_damage_dealt": 32010.04040404,
-      "average_frags": 1.0686195286195,
-      "win_rate": 55.119444444444
-    },
-    "4277057520": {
-      "average_damage_dealt": 36614.125,
-      "average_frags": 0.53815721649484,
-      "win_rate": 49.14219072165
-    },
-    "4277090288": {
-      "average_damage_dealt": 83159.587628866,
-      "average_frags": 0.9018703976436,
-      "win_rate": 48.70293814433
-    },
-    "4277122768": {
-      "average_damage_dealt": 98760.546666667,
-      "average_frags": 1.3276,
-      "win_rate": 48.9119
-    },
-    "4279154384": {
-      "average_damage_dealt": 18383.791875,
-      "average_frags": 0.69692083333322,
-      "win_rate": 48.91140590277
-    },
-    "4279219920": {
-      "average_damage_dealt": 79193.614035088,
-      "average_frags": 1.1198684210526,
-      "win_rate": 48.648201754386
-    },
-    "4279220208": {
-      "average_damage_dealt": 90838.721212121,
-      "average_frags": 1.1400606060606,
-      "win_rate": 45.268363636364
-    },
-    "4280170192": {
-      "average_damage_dealt": 17199.857142857,
-      "average_frags": 1.0857142857143,
-      "win_rate": 51.062857142857
-    },
-    "4280170480": {
-      "average_damage_dealt": 23223.283286119,
-      "average_frags": 0.84047419632957,
-      "win_rate": 52.047020569032
+    "3552458448": {
+      "average_damage_dealt": 26049.676923077,
+      "average_frags": 0.63846153846154,
+      "win_rate": 53.743692307692
     },
     "4280203248": {
       "average_damage_dealt": 31446.143843498,
       "average_frags": 0.513665132336,
       "win_rate": 48.757756041426
     },
-    "4281219056": {
-      "average_damage_dealt": 47216.436464088,
-      "average_frags": 0.81550644567219,
-      "win_rate": 49.082909760589
-    },
-    "4281251536": {
-      "average_damage_dealt": 27071.051528025,
-      "average_frags": 0.8727429080443,
-      "win_rate": 52.594206523231
-    },
-    "4281284304": {
-      "average_damage_dealt": 59056.172125883,
-      "average_frags": 0.80937700706486,
-      "win_rate": 51.330594091202
-    },
-    "4281284592": {
-      "average_damage_dealt": 36808.514865503,
-      "average_frags": 1.0025106182161,
-      "win_rate": 53.486033506371
-    },
-    "4281317360": {
-      "average_damage_dealt": 66765.659259259,
-      "average_frags": 0.90766666666667,
-      "win_rate": 44.240796296296
-    },
-    "4282267344": {
-      "average_damage_dealt": 46857.426553672,
-      "average_frags": 0.78076271186441,
-      "win_rate": 48.689505649718
-    },
-    "4282300112": {
-      "average_damage_dealt": 47521.878076063,
-      "average_frags": 0.64385906040268,
-      "win_rate": 49.450654362417
-    },
-    "4282300400": {
-      "average_damage_dealt": 29225.613969442,
-      "average_frags": 0.59705332086061,
-      "win_rate": 49.382280947925
-    },
-    "4282333168": {
-      "average_damage_dealt": 53702.834095363,
-      "average_frags": 0.72499020248204,
-      "win_rate": 49.087197909863
-    },
-    "4282365648": {
-      "average_damage_dealt": 54892.469945355,
-      "average_frags": 0.83526411657559,
-      "win_rate": 50.288178506375
-    },
-    "4282365936": {
-      "average_damage_dealt": 48066.631921824,
-      "average_frags": 0.69771986970684,
-      "win_rate": 46.438151465798
-    },
-    "4283381456": {
-      "average_damage_dealt": 14750.244510978,
-      "average_frags": 0.70028942115768,
-      "win_rate": 52.161761477046
-    },
-    "4283414224": {
-      "average_damage_dealt": 49728.278740157,
-      "average_frags": 0.86277165354331,
-      "win_rate": 51.520763779529
-    },
-    "4284364496": {
-      "average_damage_dealt": 31549.579341317,
-      "average_frags": 0.6240119760479,
-      "win_rate": 48.143952095808
+    "4183766832": {
+      "average_damage_dealt": 50404.03795413,
+      "average_frags": 0.95025167444689,
+      "win_rate": 53.28124517962
     },
     "4284397008": {
       "average_damage_dealt": 23459,
       "average_frags": 1.245,
       "win_rate": 55.2475
     },
-    "4284430032": {
-      "average_damage_dealt": 51089.745213549,
-      "average_frags": 0.8015832106038,
-      "win_rate": 50.801855670102
+    "4186879440": {
+      "average_damage_dealt": 24005.631865737,
+      "average_frags": 0.86519398430686,
+      "win_rate": 51.10230601569
     },
-    "4284463088": {
-      "average_damage_dealt": 40728.822368421,
-      "average_frags": 0.65771381578948,
-      "win_rate": 47.641167763158
+    "4267587280": {
+      "average_damage_dealt": 31478.448081264,
+      "average_frags": 1.078295711061,
+      "win_rate": 55.465671557562
     },
-    "4285445840": {
-      "average_damage_dealt": 40472.786944046,
-      "average_frags": 0.69513629842182,
-      "win_rate": 50.704146341464
-    },
-    "4285511376": {
-      "average_damage_dealt": 43212.542436816,
-      "average_frags": 0.78307053941906,
-      "win_rate": 53.456225952471
-    },
-    "4286461936": {
-      "average_damage_dealt": 31406.944113264,
-      "average_frags": 0.76108792846496,
-      "win_rate": 52.666710134128
+    "4283414224": {
+      "average_damage_dealt": 49728.278740157,
+      "average_frags": 0.86277165354331,
+      "win_rate": 51.520763779529
     },
     "4286494416": {
       "average_damage_dealt": 38335.445354073,
       "average_frags": 0.79542365943508,
       "win_rate": 52.854453540729
     },
-    "4286527184": {
-      "average_damage_dealt": 33489.721032746,
-      "average_frags": 0.91811712846347,
-      "win_rate": 53.586306675064
+    "4281284304": {
+      "average_damage_dealt": 59056.172125883,
+      "average_frags": 0.80937700706486,
+      "win_rate": 51.330594091202
     },
-    "4286527472": {
-      "average_damage_dealt": 49304.529908515,
-      "average_frags": 0.80953905700206,
-      "win_rate": 50.761838494017
+    "4259264496": {
+      "average_damage_dealt": 46060.904447268,
+      "average_frags": 0.90586531130878,
+      "win_rate": 52.987466327826
     },
-    "4287510224": {
-      "average_damage_dealt": 27329.886899919,
-      "average_frags": 0.63131814483319,
-      "win_rate": 48.914943043125
+    "4187928528": {
+      "average_damage_dealt": 14468.896646509,
+      "average_frags": 0.54329851566797,
+      "win_rate": 46.043760307862
     },
-    "4287542992": {
-      "average_damage_dealt": 31873.652836579,
-      "average_frags": 0.76302921253177,
-      "win_rate": 52.955039161726
-    },
-    "4287543280": {
-      "average_damage_dealt": 29851.26647414,
-      "average_frags": 0.73539249146762,
-      "win_rate": 52.094140194275
-    },
-    "4287575760": {
-      "average_damage_dealt": 39316.929561366,
-      "average_frags": 0.84754822117449,
-      "win_rate": 52.862328904138
-    },
-    "4288558800": {
-      "average_damage_dealt": 23914.968241673,
-      "average_frags": 0.64932223082884,
-      "win_rate": 50.877550348567
-    },
-    "4288559088": {
-      "average_damage_dealt": 26400.659373821,
-      "average_frags": 0.74903432666918,
-      "win_rate": 52.52262919653
-    },
-    "4288591856": {
-      "average_damage_dealt": 26475.942793462,
-      "average_frags": 0.67031946508174,
-      "win_rate": 48.729245913819
-    },
-    "4288624336": {
-      "average_damage_dealt": 50180.062388136,
-      "average_frags": 0.95468678087444,
-      "win_rate": 53.5350140629
-    },
-    "4288624624": {
-      "average_damage_dealt": 37183.262751349,
-      "average_frags": 0.82551863658657,
-      "win_rate": 51.907273173121
-    },
-    "4288657104": {
-      "average_damage_dealt": 46233.567246987,
-      "average_frags": 0.95833556533381,
-      "win_rate": 54.464760857088
-    },
-    "4288657392": {
-      "average_damage_dealt": 32675.418007532,
-      "average_frags": 0.55703868538168,
-      "win_rate": 50.741472098597
-    },
-    "4289607376": {
-      "average_damage_dealt": 24235.959027169,
-      "average_frags": 0.67828659070991,
-      "win_rate": 51.675987072741
-    },
-    "4289607664": {
-      "average_damage_dealt": 24966.603568499,
-      "average_frags": 0.79014561115669,
-      "win_rate": 53.851160787529
-    },
-    "4289640144": {
-      "average_damage_dealt": 25855.719237861,
-      "average_frags": 0.71839090350337,
-      "win_rate": 51.716188076209
-    },
-    "4289640432": {
-      "average_damage_dealt": 31869.673952231,
-      "average_frags": 0.93332356917529,
-      "win_rate": 52.941283235699
-    },
-    "4290655952": {
-      "average_damage_dealt": 30025.087350639,
-      "average_frags": 1.0191841779976,
-      "win_rate": 53.21228265349
+    "4184815408": {
+      "average_damage_dealt": 48367.209739315,
+      "average_frags": 1.0512809315866,
+      "win_rate": 55.041312690221
     },
     "4290688720": {
       "average_damage_dealt": 24716.524513619,
       "average_frags": 0.82594552529184,
       "win_rate": 52.334225680935
     },
+    "4287542992": {
+      "average_damage_dealt": 31873.652836579,
+      "average_frags": 0.76302921253177,
+      "win_rate": 52.955039161726
+    },
+    "4248745968": {
+      "average_damage_dealt": 31478.43045388,
+      "average_frags": 0.92349926793558,
+      "win_rate": 54.957254758418
+    },
+    "4288657392": {
+      "average_damage_dealt": 32675.418007532,
+      "average_frags": 0.55703868538168,
+      "win_rate": 50.741472098597
+    },
+    "4268635856": {
+      "average_damage_dealt": 34707.502538071,
+      "average_frags": 1.1568274111675,
+      "win_rate": 57.541472081218
+    },
+    "4185863984": {
+      "average_damage_dealt": 42555.957385838,
+      "average_frags": 1.0709086707341,
+      "win_rate": 53.689011832142
+    },
+    "4287543280": {
+      "average_damage_dealt": 29851.26647414,
+      "average_frags": 0.73539249146762,
+      "win_rate": 52.094140194275
+    },
+    "4272895696": {
+      "average_damage_dealt": 56930.607244995,
+      "average_frags": 0.64092469018111,
+      "win_rate": 48.372530981888
+    },
+    "4287575760": {
+      "average_damage_dealt": 39316.929561366,
+      "average_frags": 0.84754822117449,
+      "win_rate": 52.862328904138
+    },
+    "4277024464": {
+      "average_damage_dealt": 32010.04040404,
+      "average_frags": 1.0686195286195,
+      "win_rate": 55.119444444444
+    },
+    "4255037136": {
+      "average_damage_dealt": 34282.026885736,
+      "average_frags": 0.57549663928305,
+      "win_rate": 48.207430918596
+    },
+    "4283381456": {
+      "average_damage_dealt": 14750.244510978,
+      "average_frags": 0.70028942115768,
+      "win_rate": 52.161761477046
+    },
+    "4183734224": {
+      "average_damage_dealt": 39342.19574102,
+      "average_frags": 0.99116154011618,
+      "win_rate": 55.801382017641
+    },
+    "4186847024": {
+      "average_damage_dealt": 17264.69223301,
+      "average_frags": 0.76858252427182,
+      "win_rate": 49.34140776699
+    },
+    "4184749776": {
+      "average_damage_dealt": 21245.757368421,
+      "average_frags": 0.63150000000001,
+      "win_rate": 49.518636842106
+    },
+    "4277057520": {
+      "average_damage_dealt": 36614.125,
+      "average_frags": 0.53815721649484,
+      "win_rate": 49.14219072165
+    },
+    "4277122768": {
+      "average_damage_dealt": 98760.546666667,
+      "average_frags": 1.3276,
+      "win_rate": 48.9119
+    },
+    "4289607664": {
+      "average_damage_dealt": 24966.603568499,
+      "average_frags": 0.79014561115669,
+      "win_rate": 53.851160787529
+    },
+    "4256085712": {
+      "average_damage_dealt": 11453.338365435,
+      "average_frags": 0.89745445080689,
+      "win_rate": 51.224752732951
+    },
+    "4279219920": {
+      "average_damage_dealt": 79193.614035088,
+      "average_frags": 1.1198684210526,
+      "win_rate": 48.648201754386
+    },
+    "4183734064": {
+      "average_damage_dealt": 29534.579246935,
+      "average_frags": 0.72902583187394,
+      "win_rate": 52.062862302976
+    },
+    "4276041712": {
+      "average_damage_dealt": 58425.172690763,
+      "average_frags": 0.67088353413656,
+      "win_rate": 48.222254016065
+    },
+    "4186912560": {
+      "average_damage_dealt": 31055.052596449,
+      "average_frags": 1.0265291683354,
+      "win_rate": 52.018705112808
+    },
+    "4280170192": {
+      "average_damage_dealt": 17199.857142857,
+      "average_frags": 1.0857142857143,
+      "win_rate": 51.062857142857
+    },
+    "4274927600": {
+      "average_damage_dealt": 22199.113036165,
+      "average_frags": 0.90308158116075,
+      "win_rate": 52.098231286793
+    },
+    "4286527184": {
+      "average_damage_dealt": 33489.721032746,
+      "average_frags": 0.91811712846347,
+      "win_rate": 53.586306675064
+    },
+    "4281284592": {
+      "average_damage_dealt": 36808.514865503,
+      "average_frags": 1.0025106182161,
+      "win_rate": 53.486033506371
+    },
+    "4184782800": {
+      "average_damage_dealt": 23859.80981717,
+      "average_frags": 0.69636526232114,
+      "win_rate": 50.666460651829
+    },
+    "4285445840": {
+      "average_damage_dealt": 40472.786944046,
+      "average_frags": 0.69513629842182,
+      "win_rate": 50.704146341464
+    },
+    "4247697392": {
+      "average_damage_dealt": 43534.666666667,
+      "average_frags": 1.5,
+      "win_rate": 58.308333333333
+    },
+    "4259231440": {
+      "average_damage_dealt": 77581.565811966,
+      "average_frags": 0.8951452991453,
+      "win_rate": 48.836675213675
+    },
+    "4284430032": {
+      "average_damage_dealt": 51089.745213549,
+      "average_frags": 0.8015832106038,
+      "win_rate": 50.801855670102
+    },
+    "4282365648": {
+      "average_damage_dealt": 54892.469945355,
+      "average_frags": 0.83526411657559,
+      "win_rate": 50.288178506375
+    },
+    "4282300112": {
+      "average_damage_dealt": 47521.878076063,
+      "average_frags": 0.64385906040268,
+      "win_rate": 49.450654362417
+    },
+    "4289640144": {
+      "average_damage_dealt": 25855.719237861,
+      "average_frags": 0.71839090350337,
+      "win_rate": 51.716188076209
+    },
+    "4185831376": {
+      "average_damage_dealt": 22745.437067972,
+      "average_frags": 0.81007344470051,
+      "win_rate": 52.431306883647
+    },
+    "4184749872": {
+      "average_damage_dealt": 21991.856095325,
+      "average_frags": 0.70095936449741,
+      "win_rate": 51.239366025053
+    },
+    "4282267344": {
+      "average_damage_dealt": 46857.426553672,
+      "average_frags": 0.78076271186441,
+      "win_rate": 48.689505649718
+    },
+    "4187895248": {
+      "average_damage_dealt": 9782.3700803627,
+      "average_frags": 0.63903152689062,
+      "win_rate": 47.665485266846
+    },
+    "4288624336": {
+      "average_damage_dealt": 50180.062388136,
+      "average_frags": 0.95468678087444,
+      "win_rate": 53.5350140629
+    },
+    "4288591856": {
+      "average_damage_dealt": 26475.942793462,
+      "average_frags": 0.67031946508174,
+      "win_rate": 48.729245913819
+    },
+    "4272830448": {
+      "average_damage_dealt": 33849.746418338,
+      "average_frags": 0.70090257879656,
+      "win_rate": 50.494541547278
+    },
+    "4186879952": {
+      "average_damage_dealt": 18149.650938033,
+      "average_frags": 0.69310687890849,
+      "win_rate": 48.366614553723
+    },
+    "4183734096": {
+      "average_damage_dealt": 33916.214675561,
+      "average_frags": 0.71725288053366,
+      "win_rate": 52.253647665252
+    },
+    "4185798448": {
+      "average_damage_dealt": 24612.739431207,
+      "average_frags": 0.95434793748399,
+      "win_rate": 53.42865488086
+    },
+    "4269717488": {
+      "average_damage_dealt": 23856.124584323,
+      "average_frags": 0.71426959619948,
+      "win_rate": 50.699741686454
+    },
+    "4185831216": {
+      "average_damage_dealt": 18903.473505756,
+      "average_frags": 0.61857514587604,
+      "win_rate": 50.75249132629
+    },
+    "4282300400": {
+      "average_damage_dealt": 29225.613969442,
+      "average_frags": 0.59705332086061,
+      "win_rate": 49.382280947925
+    },
+    "4279154384": {
+      "average_damage_dealt": 18383.791875,
+      "average_frags": 0.69692083333322,
+      "win_rate": 48.91140590277
+    },
+    "4273911792": {
+      "average_damage_dealt": 63397.756972112,
+      "average_frags": 0.86145418326693,
+      "win_rate": 48.744940239044
+    },
+    "4285511376": {
+      "average_damage_dealt": 43212.542436816,
+      "average_frags": 0.78307053941906,
+      "win_rate": 53.456225952471
+    },
+    "4277090288": {
+      "average_damage_dealt": 83159.587628866,
+      "average_frags": 0.9018703976436,
+      "win_rate": 48.70293814433
+    },
+    "4188977104": {
+      "average_damage_dealt": 6372.5181907571,
+      "average_frags": 0.97621435594887,
+      "win_rate": 52.254400196657
+    },
+    "4187895600": {
+      "average_damage_dealt": 13323.373044525,
+      "average_frags": 0.84879663056561,
+      "win_rate": 48.1896811071
+    },
+    "4186879824": {
+      "average_damage_dealt": 20106.420798065,
+      "average_frags": 0.75381499395404,
+      "win_rate": 47.852805320435
+    },
+    "4185831248": {
+      "average_damage_dealt": 30796.912034209,
+      "average_frags": 0.93117287721441,
+      "win_rate": 52.813727855833
+    },
+    "4185830864": {
+      "average_damage_dealt": 25784.227085354,
+      "average_frags": 0.83281522793404,
+      "win_rate": 53.493522672174
+    },
+    "4184782640": {
+      "average_damage_dealt": 32189.049761585,
+      "average_frags": 0.92886049639317,
+      "win_rate": 54.239511553985
+    },
+    "4286527472": {
+      "average_damage_dealt": 49304.529908515,
+      "average_frags": 0.80953905700206,
+      "win_rate": 50.761838494017
+    },
+    "4281317360": {
+      "average_damage_dealt": 66765.659259259,
+      "average_frags": 0.90766666666667,
+      "win_rate": 44.240796296296
+    },
+    "4279220208": {
+      "average_damage_dealt": 90838.721212121,
+      "average_frags": 1.1400606060606,
+      "win_rate": 45.268363636364
+    },
+    "4281219056": {
+      "average_damage_dealt": 47216.436464088,
+      "average_frags": 0.81550644567219,
+      "win_rate": 49.082909760589
+    },
+    "4269684432": {
+      "average_damage_dealt": 15861.673810544,
+      "average_frags": 0.68597428204021,
+      "win_rate": 48.811564937841
+    },
+    "4264441840": {
+      "average_damage_dealt": 21346.098007968,
+      "average_frags": 0.61233466135458,
+      "win_rate": 49.832776892431
+    },
+    "4276041424": {
+      "average_damage_dealt": 85813.505703422,
+      "average_frags": 0.82532319391635,
+      "win_rate": 48.327072243346
+    },
+    "4282365936": {
+      "average_damage_dealt": 48066.631921824,
+      "average_frags": 0.69771986970684,
+      "win_rate": 46.438151465798
+    },
+    "4187928016": {
+      "average_damage_dealt": 13626.61981474,
+      "average_frags": 0.64703584373743,
+      "win_rate": 46.783765606122
+    },
+    "4258182864": {
+      "average_damage_dealt": 13712.930653575,
+      "average_frags": 0.56575738979242,
+      "win_rate": 48.52179605196
+    },
+    "4289640432": {
+      "average_damage_dealt": 31869.673952231,
+      "average_frags": 0.93332356917529,
+      "win_rate": 52.941283235699
+    },
+    "4286461936": {
+      "average_damage_dealt": 31406.944113264,
+      "average_frags": 0.76108792846496,
+      "win_rate": 52.666710134128
+    },
+    "4288657104": {
+      "average_damage_dealt": 46233.567246987,
+      "average_frags": 0.95833556533381,
+      "win_rate": 54.464760857088
+    },
+    "4282333168": {
+      "average_damage_dealt": 53702.834095363,
+      "average_frags": 0.72499020248204,
+      "win_rate": 49.087197909863
+    },
+    "4188976592": {
+      "average_damage_dealt": 11238.757453259,
+      "average_frags": 0.90099545224863,
+      "win_rate": 51.508180899443
+    },
+    "4281251536": {
+      "average_damage_dealt": 27071.051528025,
+      "average_frags": 0.8727429080443,
+      "win_rate": 52.594206523231
+    },
+    "4266538992": {
+      "average_damage_dealt": 13193.668408146,
+      "average_frags": 0.59516579592708,
+      "win_rate": 47.562411770977
+    },
+    "4284463088": {
+      "average_damage_dealt": 40728.822368421,
+      "average_frags": 0.65771381578948,
+      "win_rate": 47.641167763158
+    },
+    "4187928400": {
+      "average_damage_dealt": 16225.94044665,
+      "average_frags": 0.65848635235732,
+      "win_rate": 44.460117866005
+    },
     "4290689008": {
       "average_damage_dealt": 22552.165414423,
       "average_frags": 0.82296219606004,
       "win_rate": 51.987772584766
     },
-    "4290721776": {
-      "average_damage_dealt": 34365.018467221,
-      "average_frags": 0.90674550749352,
-      "win_rate": 52.596258967256
+    "4186879792": {
+      "average_damage_dealt": 16238.195636751,
+      "average_frags": 0.64920805250084,
+      "win_rate": 49.194969847462
     },
-    "4290754544": {
-      "average_damage_dealt": 27586.023184642,
-      "average_frags": 0.56432810906058,
-      "win_rate": 49.49109014189
+    "4186846672": {
+      "average_damage_dealt": 14122.733517326,
+      "average_frags": 0.70653633854646,
+      "win_rate": 49.29342532965
     },
-    "4291704528": {
-      "average_damage_dealt": 25639.10130719,
-      "average_frags": 0.96178769854227,
-      "win_rate": 52.113993725093
+    "4184782288": {
+      "average_damage_dealt": 30620.038747031,
+      "average_frags": 0.77131680522573,
+      "win_rate": 53.033482036824
     },
-    "4291737040": {
-      "average_damage_dealt": 31995.773493976,
-      "average_frags": 0.86244578313255,
-      "win_rate": 52.699939759036
+    "4288559088": {
+      "average_damage_dealt": 26400.659373821,
+      "average_frags": 0.74903432666918,
+      "win_rate": 52.52262919653
     },
-    "4291737584": {
-      "average_damage_dealt": 15119.954161641,
-      "average_frags": 0.84386610373946,
-      "win_rate": 51.845672496984
+    "4267620048": {
+      "average_damage_dealt": 32421.3125,
+      "average_frags": 1.1993055555556,
+      "win_rate": 57.879652777778
     },
-    "4291770064": {
-      "average_damage_dealt": 27752.086472667,
-      "average_frags": 0.67968418678086,
-      "win_rate": 50.442456951636
+    "4184782672": {
+      "average_damage_dealt": 34410.55933356,
+      "average_frags": 0.88291397483853,
+      "win_rate": 54.303641618499
     },
-    "4292753104": {
-      "average_damage_dealt": 12554.99496419,
-      "average_frags": 0.68714637421665,
-      "win_rate": 49.150302148611
+    "4188976976": {
+      "average_damage_dealt": 5219.7292576419,
+      "average_frags": 0.65930131004367,
+      "win_rate": 48.668537117904
+    },
+    "4288624624": {
+      "average_damage_dealt": 37183.262751349,
+      "average_frags": 0.82551863658657,
+      "win_rate": 51.907273173121
+    },
+    "4280170480": {
+      "average_damage_dealt": 23223.283286119,
+      "average_frags": 0.84047419632957,
+      "win_rate": 52.047020569032
+    },
+    "4185798096": {
+      "average_damage_dealt": 19811.415752396,
+      "average_frags": 0.7939126919968,
+      "win_rate": 51.97639508026
+    },
+    "4290655952": {
+      "average_damage_dealt": 30025.087350639,
+      "average_frags": 1.0191841779976,
+      "win_rate": 53.21228265349
     },
     "4292753392": {
       "average_damage_dealt": 9255.4708649469,
@@ -1050,75 +979,157 @@
       "average_frags": 0.79289285714285,
       "win_rate": 52.068089285714
     },
-    "4292785968": {
-      "average_damage_dealt": 14535.618014362,
-      "average_frags": 0.75275210739934,
-      "win_rate": 48.695488604433
+    "4293866960": {
+      "average_damage_dealt": 48439.822546973,
+      "average_frags": 1.3149895615866,
+      "win_rate": 60.916805845512
     },
-    "4292786160": {
-      "average_damage_dealt": 10748.110232988,
-      "average_frags": 0.44947654726471,
-      "win_rate": 46.527600841629
-    },
-    "4292818736": {
-      "average_damage_dealt": 47178.564189189,
-      "average_frags": 0.62531756756756,
-      "win_rate": 46.860108108108
-    },
-    "4292818896": {
-      "average_damage_dealt": 44264.602264685,
-      "average_frags": 0.82426043878273,
-      "win_rate": 51.051907289456
+    "4292753104": {
+      "average_damage_dealt": 12554.99496419,
+      "average_frags": 0.68714637421665,
+      "win_rate": 49.150302148611
     },
     "4292851408": {
       "average_damage_dealt": 41066.19303192,
       "average_frags": 0.91133823381337,
       "win_rate": 53.250317692083
     },
+    "4291704528": {
+      "average_damage_dealt": 25639.10130719,
+      "average_frags": 0.96178769854227,
+      "win_rate": 52.113993725093
+    },
     "4292851696": {
       "average_damage_dealt": 24070.795649073,
       "average_frags": 0.44192403708987,
       "win_rate": 49.889315263907
     },
-    "4293801424": {
-      "average_damage_dealt": 28397.036363636,
-      "average_frags": 0.95598601398601,
-      "win_rate": 53.535153846154
-    },
-    "4293801680": {
-      "average_damage_dealt": 15575.335429769,
-      "average_frags": 0.95305031446541,
-      "win_rate": 52.563029350105
-    },
-    "4293834192": {
-      "average_damage_dealt": 25544.423295455,
-      "average_frags": 0.97214488636364,
-      "win_rate": 53.803529829545
-    },
-    "4293834544": {
-      "average_damage_dealt": 9260.8336853221,
-      "average_frags": 0.78612988384369,
-      "win_rate": 49.966708025343
+    "4292818896": {
+      "average_damage_dealt": 44279.446764092,
+      "average_frags": 0.82485734168407,
+      "win_rate": 51.049192762701
     },
     "4293834736": {
       "average_damage_dealt": 10152.966929726,
       "average_frags": 0.72008267568584,
       "win_rate": 49.195612551672
     },
-    "4293866960": {
-      "average_damage_dealt": 48439.822546973,
-      "average_frags": 1.3149895615866,
-      "win_rate": 60.916805845512
+    "4292818736": {
+      "average_damage_dealt": 47178.564189189,
+      "average_frags": 0.62531756756756,
+      "win_rate": 46.860108108108
+    },
+    "4292785968": {
+      "average_damage_dealt": 14535.618014362,
+      "average_frags": 0.75275210739934,
+      "win_rate": 48.695488604433
+    },
+    "4293834192": {
+      "average_damage_dealt": 25544.423295455,
+      "average_frags": 0.97214488636364,
+      "win_rate": 53.803529829545
+    },
+    "4293801680": {
+      "average_damage_dealt": 15575.335429769,
+      "average_frags": 0.95305031446541,
+      "win_rate": 52.563029350105
+    },
+    "4290721776": {
+      "average_damage_dealt": 34365.018467221,
+      "average_frags": 0.90674550749352,
+      "win_rate": 52.596258967256
+    },
+    "4291737040": {
+      "average_damage_dealt": 31995.773493976,
+      "average_frags": 0.86244578313255,
+      "win_rate": 52.699939759036
+    },
+    "4291770064": {
+      "average_damage_dealt": 27752.086472667,
+      "average_frags": 0.67968418678086,
+      "win_rate": 50.442456951636
+    },
+    "4293834544": {
+      "average_damage_dealt": 9260.8336853221,
+      "average_frags": 0.78612988384369,
+      "win_rate": 49.966708025343
     },
     "4293867216": {
       "average_damage_dealt": 19706.13763929,
       "average_frags": 0.72545879763372,
       "win_rate": 49.895050213225
     },
+    "4291737584": {
+      "average_damage_dealt": 15119.954161641,
+      "average_frags": 0.84386610373946,
+      "win_rate": 51.845672496984
+    },
+    "4292786160": {
+      "average_damage_dealt": 10748.110232988,
+      "average_frags": 0.44947654726471,
+      "win_rate": 46.527600841629
+    },
+    "4290754544": {
+      "average_damage_dealt": 27586.023184642,
+      "average_frags": 0.56432810906058,
+      "win_rate": 49.49109014189
+    },
     "4293867504": {
       "average_damage_dealt": 20558.162386318,
       "average_frags": 0.68667162386295,
       "win_rate": 49.063674140584
-    }
+    },
+    "4293801424": {
+      "average_damage_dealt": 28397.036363636,
+      "average_frags": 0.95598601398601,
+      "win_rate": 53.535153846154
+    },
+    "4287510224": {
+      "average_damage_dealt": 27329.886899919,
+      "average_frags": 0.63131814483319,
+      "win_rate": 48.914943043125
+    },
+    "4288558800": {
+      "average_damage_dealt": 23914.968241673,
+      "average_frags": 0.64932223082884,
+      "win_rate": 50.877550348567
+    },
+    "4284364496": {
+      "average_damage_dealt": 31549.579341317,
+      "average_frags": 0.6240119760479,
+      "win_rate": 48.143952095808
+    },
+    "4289607376": {
+      "average_damage_dealt": 24235.959027169,
+      "average_frags": 0.67828659070991,
+      "win_rate": 51.675987072741
+    },
+    "4184749520": {
+      "average_damage_dealt": 23580.427491409,
+      "average_frags": 0.83207731958761,
+      "win_rate": 53.325343642614
+    },
+    "4183700944": {
+      "average_damage_dealt": 24520.182809917,
+      "average_frags": 0.75441983471074,
+      "win_rate": 53.893504132232
+    },
+    "4180555216": {
+      "average_damage_dealt": 30971.087221095,
+      "average_frags": 0.78893847194048,
+      "win_rate": 53.145054090602
+    },
+    "4181603792": {
+      "average_damage_dealt": 29103.915492958,
+      "average_frags": 0.63179257362356,
+      "win_rate": 50.155704225352
+    },
+    "3660461904": [],
+    "3660462032": [],
+    "4077860816": [],
+    "4185864144": [],
+    "4183766992": [],
+    "4184815568": [],
+    "4186912720": []
   }
 }
