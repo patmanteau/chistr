@@ -85,14 +85,14 @@ export default {
 <style scoped>
 .update-warning {
   color: #c33;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 100;
   font-family: 'Roboto Slab', serif;
   margin: 0px;
   margin-bottom: 5px;
   text-align: center;
-  /* border-top: 1px solid #c33; */
-  /*border-bottom: 1px solid #c33;*/
+  border-top: 1px solid #c33;
+  /* border-bottom: 1px solid #c33; */
 }
 
 .update-warning a {

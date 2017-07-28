@@ -1,17 +1,17 @@
 <template>
 <div id="view">
-   <div id="header" class="ui">
-      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
-        <!-- <button class="text" >Save &amp; close</button> -->
-        <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
-      </router-link>
-   </div>
+  <div id="header" class="ui">
+    <router-link class="text link" :to="{ name: 'statistics', params: {} }">
+      <!-- <button class="text" >Save &amp; close</button> -->
+      <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
+    </router-link>
+  </div>
   <!-- <div id="header">
     <div class="rowflexed">
     <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
     </div>
   </div> -->
-  <div class="view">
+  <div class="gridcontainer">
     <div class="config-item">
 
     </div>

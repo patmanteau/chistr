@@ -23,6 +23,11 @@ body {
   background-color: #f7f7f7;
   color: #333;
   margin: 0;
+  box-sizing: border-box;
+
+  font-size: 15px;
+  line-height: 1.3;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -82,7 +87,8 @@ body {
 }
 
 .gridcontainer {
-  width: 90%;
+  width: 97.5%;
+  margin: 0px 10px;
 
 }
 
@@ -118,13 +124,13 @@ body {
 .text {
   font-family: 'Roboto Condensed', sans-serif;
   /* font-weight: 400; */
-  font-size: 14px;
+  /* font-size: 14px; */
   }
 
 .number {
   font-family: 'Roboto Condensed', sans-serif;
   /* font-weight: 400; */
-  font-size: 14px;
+  /* font-size: 14px; */
   text-align: center;
 }
 
@@ -133,7 +139,7 @@ body {
   text-align: center;
   font-family: 'Roboto', sans-serif;
   /* font-weight: 400; */
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 
 /*.no-data {
