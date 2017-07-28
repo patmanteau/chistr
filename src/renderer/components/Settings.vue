@@ -1,14 +1,21 @@
 <template>
-  <div class="container">
+<div id="view">
+  <!-- <div id="header">
+    <div class="rowflexed">
+    <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
+    </div>
+  </div> -->
+  <div class="view">
     <div class="config-item">
-      <router-link class="text link ui" :to="{ name: 'statistics', params: {} }">
-        <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</span>
-      </router-link>
+      
     </div>
     <!-- <div class="Rcell Rcell-2of2"> -->
     <div class="config-item ui">
         <!-- <div class="Rcontent"> -->
-      <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
+    <router-link class="text savebutton link ui" :to="{ name: 'statistics', params: {} }">
+      <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Go Back</span>
+    </router-link>
+      
         <!-- </div> -->
     </div>
     <div class="config-item">
@@ -61,6 +68,7 @@
       <button class="text" @click="clearShipCache">Clear ship cache</button>
     </div>
   </div>
+</div>
 </template>
 
 <script type="text/javascript">

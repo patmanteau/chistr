@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="gridcontainer"> -->
-  <transition-group name="flip-list" tag="div" class="gridcontainer">
+  <transition-group name="flip-list" tag="div">
     <icon-row v-if="!noheader" @set-sort="key => setSort(key)" key="header"></icon-row>
     <div v-for="(player, index) in filteredPlayers"
       :key="player.playerName"
@@ -9,13 +9,23 @@
 
       <!-- Player and ship name -->
       <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border" :style="trstyle">
-          <span class="dg-cell text"><a v-if="player.accountId !== undefined"
-             :href="wowsNumbersLink(player)"
-             :title="wowsNumbersLink(player)"
-             class="external-link"
-             target="_blank">{{ player.playerName }}</a>
+        <span class="dg-cell text">
+          <a v-if="player.accountId !== undefined"
+            :href="wowsNumbersLink(player)"
+            :title="wowsNumbersLink(player)"
+            class="external-link"
+            target="_blank">{{ player.playerName }}</a>
             <span v-else title="Can't visit this player, his profile is hidden" class="external-link disabled">{{ player.playerName }}</span>
-          </span>
+            <transition name="fade">
+              <popper v-if="player.clanHasRecord" trigger="hover" :options="{ placement: 'bottom' }">
+                <div class="popper">
+                  {{ player.clanName }}
+                </div>
+                <span slot="reference" class="popover ui text text-subdued">[{{ player.clanTag }}]</span>
+              </popper>
+              
+            </transition>
+        </span>
         <transition name="fade" mode="out-in">
           <span class="dg-cell text" v-if="player.shipName">
             <a v-if="player.shipName !== ''"
@@ -38,7 +48,7 @@
           <!-- <div class="dg-cell number text-subdued">{{ player.playerAvgExp }}</div> -->
         </div>
         <!-- No player stats, not yet loaded -->
-        <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="!player.playerFinishedLoading" key="without-player-stats-not-loaded">
+        <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="!player.playerFinishedLoading || !player.shipFinishedLoading" key="without-player-stats-not-loaded">
           <span class="dg-cell text text-centered ui">Loading player</span>
         </div>
         <!-- No player stats at all -->
@@ -49,7 +59,7 @@
 
       <!-- Ship stats -->
       <transition name="fade" mode="out-in">
-        <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.shipHasRecord && player.shipBattles > 0" key="with-ship-stats">
+        <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.playerFinishedLoading && player.shipHasRecord && player.shipBattles > 0" key="with-ship-stats">
           <div class="dg-cell number">{{ player.shipBattles }}</div>
           <div class="dg-cell number text-centered" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</div>
           <div class="dg-cell number" :class="prclass(player.shipBattles, player.shipPR)">{{ player.shipPR | denan }}</div>
@@ -58,11 +68,11 @@
           <!-- <div class="dg-cell number text-subdued">{{ player.shipAvgExp }}</div> -->
         </div>
         <!-- No ship stats, not yet loaded -->
-        <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="!player.shipFinishedLoading" key="without-ship-stats-not-loaded">
+        <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.playerFinishedLoading && !player.shipFinishedLoading" key="without-ship-stats-not-loaded">
           <span class="dg-cell text text-centered">Loading ship</span>
         </div>
         <!-- No ship stats at all -->
-        <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.playerHasRecord" key="without-ship-stats">
+        <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.playerFinishedLoading && player.playerHasRecord" key="without-ship-stats">
           <span class="dg-cell text text-centered">First match with this ship</span>
         </div>
       </transition>
@@ -73,20 +83,23 @@
 </template>
 
 <script type="text/javascript">
+import _ from 'lodash/fp'
 import { shell } from 'electron'
 import IconRow from './PlayerList/IconRow'
 import { mapState } from 'vuex'
+import Popper from 'vue-popperjs'
+import 'vue-popperjs/dist/css/vue-popper.css'
 
 export default {
   name: 'player-list',
   props: ['title', 'bordercolor', 'players', 'noheader', 'filterby'],
-  components: { IconRow },
+  components: { IconRow, 'popper': Popper },
 
   filters: {
     denan (number) {
-      if (isNaN(number) || !isFinite(number)) return '-'
+      if (isNaN(number)) return '-'
       else if (!isFinite(number)) return '∞'
-      else return number
+      else return number.toString()
     }
   },
 
@@ -128,31 +141,43 @@ export default {
     },
 
     prclass (matches, pr) {
-      if (matches < 10) return 'rating-nonsensical'
-      else if (pr < 750) return 'rating-bad'
-      else if (pr < 1100) return 'rating-subpar'
-      else if (pr < 1350) return 'rating-par'
-      else if (pr < 1550) return 'rating-good'
-      else if (pr < 1750) return 'rating-verygood'
-      else if (pr < 2100) return 'rating-great'
-      else if (pr < 2450) return 'rating-unicum'
-      else return 'rating-superunicum'
+      return (matches < 10)
+        ? 'rating-nonsensical'
+        : _.find(p => pr < p.r)([
+          { r: 750, c: 'rating-bad' },
+          { r: 1100, c: 'rating-subpar' },
+          { r: 1350, c: 'rating-par' },
+          { r: 1550, c: 'rating-good' },
+          { r: 1750, c: 'rating-verygood' },
+          { r: 2100, c: 'rating-great' },
+          { r: 2450, c: 'rating-unicum' },
+          { r: Infinity, c: 'rating-superunicum' }
+        ]).c
     },
 
     winrateclass (matches, rate) {
-      if (matches < 10) return 'rating-nonsensical'
-      else if (rate < 47) return 'rating-bad'
-      else if (rate < 49) return 'rating-subpar'
-      else if (rate < 52) return 'rating-par'
-      else if (rate < 54) return 'rating-good'
-      else if (rate < 56) return 'rating-verygood'
-      else if (rate < 60) return 'rating-great'
-      else if (rate < 65) return 'rating-unicum'
-      else return 'rating-superunicum'
+      return (matches < 10)
+        ? 'rating-nonsensical'
+        : _.find(p => rate < p.r)([
+          { r: 47, c: 'rating-bad' },
+          { r: 49, c: 'rating-subpar' },
+          { r: 52, c: 'rating-par' },
+          { r: 54, c: 'rating-good' },
+          { r: 56, c: 'rating-verygood' },
+          { r: 60, c: 'rating-great' },
+          { r: 65, c: 'rating-unicum' },
+          { r: Infinity, c: 'rating-superunicum' }
+        ]).c
     },
 
     openInBrowser (url) {
       shell.openExternal(url)
+    },
+
+    maxLen (propname) {
+      _.reduce((biggest, cur) => {
+        return _.max([biggest, cur.length])
+      }, 0)(this.players[propname])
     }
   },
 
@@ -172,7 +197,6 @@ export default {
 <style media="screen">
 .dg-row, .dg-row--head {
   display: flex;
-  margin: 0 5% 0 5%;
 }
 
 .dg-row--stripe {
@@ -180,7 +204,6 @@ export default {
 }
 
 .dg-row:hover {
-  /*background-color: #ddd;*/
   box-shadow: inset 0 0 2px #777;
 }
 
@@ -189,18 +212,37 @@ export default {
   overflow: visible;
 }
 
-.dg-cellgroup-1of3 { flex: 0 0 33.33%;}
-.dg-cellgroup-2of3 { flex: 0 0 66.66%;}
-.dg-cellgroup-3of3 { flex: 0 0 100%;}
+.dg-cellgroup-1of3 { flex: 1 1 33.33%;}
+.dg-cellgroup-2of3 { flex: 1 1 66.66%;}
+.dg-cellgroup-3of3 { flex: 1 1 100%;}
 
-.dg-cellgroup-1of2 { flex: 0 0 50%;}
-.dg-cellgroup-2of2 { flex: 0 0 100%;}
+.dg-cellgroup-1of2 { flex: 1 1 50%;}
+.dg-cellgroup-2of2 { flex: 1 1 100%;}
 
 .dg-cell {
   flex: 1;
   padding: 3px 2px 3px 2px;
   align-self: center;
 }
+
+.dg-cell-small {
+  flex: 0;
+  padding: 3px 2px 3px 2px;
+  align-self: center;
+}
+
+/* .popover {
+  cursor: pointer;
+}
+
+.popover-body {
+  background-color: #f7f7f7;
+}
+
+.popover-text {
+  color: #aaa;
+  font-size: x-small;
+} */
 
 .grey-top-border {
   border-top-style: solid;

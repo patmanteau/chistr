@@ -13,12 +13,20 @@
 </script>
 
 <style>
-@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400|Roboto:400|Roboto+Slab:400);
+/* @import url(https://fonts.googleapis.com/css?family=Archivo+Narrow:400,400i,700,700i|Roboto+Condensed:400,400i,700,700i|Roboto+Slab:400,700|Roboto:400,400i,700,700i&subset=latin-ext); */
+@import url(../../static/fonts/roboto.css);
+@import url(../../static/fonts/roboto-slab.css);
+@import url(../../static/fonts/roboto-condensed.css);
+@import url(../../static/fonts/archivo-narrow.css);
 
 body {
   background-color: #f7f7f7;
   color: #333;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 
 .ui {
   -moz-user-select: none;
@@ -35,10 +43,7 @@ body {
 }
 
 .colflexed {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* justify-content: space-around; */
 }
 
 .rowflexed {
@@ -46,17 +51,39 @@ body {
   align-items: center;
 }
 
-.headgrid {
+#view {
+  /* height: 85vh; */
+  padding-top: 61px;
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  height: 40px;
+  padding: 10px 30px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.25);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  width: 90%;
+  width: 100%;
 }
 
-.maingrid {
+#maingrid {
+  position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+  /* height: 90vh; */
+  justify-content: center;
+  align-items: center;
   /*justify-content: center;*/
+}
+
+.gridcontainer {
+  width: 90%;
+  
 }
 
 .link {
@@ -89,14 +116,14 @@ body {
 }
 
 .text {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
+  font-family: 'Roboto Condensed', sans-serif;
+  /* font-weight: 400; */
   font-size: 14px;
   }
 
 .number {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
+  font-family: 'Roboto Condensed', sans-serif;
+  /* font-weight: 400; */
   font-size: 14px;
   text-align: center;
 }
@@ -104,8 +131,8 @@ body {
 .icon {
   color: #777;
   text-align: center;
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+  /* font-weight: 400; */
   font-size: 14px;
 }
 
@@ -135,4 +162,30 @@ body {
   text-decoration: none;
   font-weight: bold;
 }
+
+.popper {
+  width: auto;
+  background-color: #f7f7f7;
+  color: #333;
+  text-align: center;
+  padding: 4px;
+  display: inline-block;
+  border-radius: 3px;
+  position: absolute;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 14px;
+  /* font-weight: normal; */
+  border: 1px #ebebeb solid;
+  z-index: 200000;
+  /* -moz-box-shadow: rgb(58, 58, 58) 0 0 6px 0;
+  -webkit-box-shadow: rgb(58, 58, 58) 0 0 6px 0;
+  box-shadow: rgb(58, 58, 58) 0 0 6px 0; */
+}
+
+.savebutton {
+  font-family: 'Roboto Condensed', serif;
+  font-size: 16px;
+  color: #333;
+}
+
 </style>

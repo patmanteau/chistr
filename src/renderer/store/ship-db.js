@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash/fp'
 
 const ElectronStore = require('electron-store')
 
@@ -11,6 +11,14 @@ export class ShipDB {
       defaults: datasource,
       name: 'chistr-ships'
     })
+
+    if (datasource.time > this.db.get('time')) {
+      console.log('Updating expected values...')
+      _.each(datasource.data, (shipId, data) => {
+        this.set(shipId, data)
+      })
+      this.db.set('time', datasource.time)
+    }
   }
 
   clear () {
@@ -26,9 +34,9 @@ export class ShipDB {
 
   hasName (shipId) {
     return this.has(shipId) &&
-            this.get(shipId).hasOwnProperty('name') &&
-            // refresh ship names after some time
-            this.get(shipId).timestamp > Date.now() - (1000 * 60 * 60 * 24 * 7)
+      this.get(shipId).hasOwnProperty('name') &&
+      // refresh ship names after some time
+      this.get(shipId).timestamp > _.now() - (1000 * 60 * 60 * 24 * 7)
   }
 
   get (shipId) {
@@ -46,9 +54,9 @@ export class ShipDB {
   set (shipId, dataObj) {
     const _shipId = shipId.toString()
     if (this.has(_shipId)) {
-      this.db.set(`data.${_shipId}`, Object.assign(dataObj, this.db.get(`data.${_shipId}`)))
+      this.db.set(`data.${_shipId}`, {...this.db.get(`data.${_shipId}`), ...dataObj})
     } else {
-      this.db.set(_shipId, dataObj)
+      this.db.set(`data.${_shipId}`, dataObj)
     }
   }
 
