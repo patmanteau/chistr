@@ -4804,6 +4804,10 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
+popper.js@^1.9.1:
+  version "1.10.8"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.10.8.tgz#0fd6343e68aa8c1cc8cfe35e02c673500a1bc609"
+
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -6338,6 +6342,10 @@ vue-html-loader@^1.2.2:
     loader-utils "^1.0.2"
     object-assign "^4.1.0"
 
+vue-i18n@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-7.0.5.tgz#f603962bff98a75f75ef1d46d26ecc8551ea68cf"
+
 vue-jsonp@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/vue-jsonp/-/vue-jsonp-0.1.5.tgz#e5850be99521281dc0c81edbdfc7f665f34014b4"
@@ -6359,6 +6367,13 @@ vue-loader@^12.2.1:
     vue-hot-reload-api "^2.1.0"
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.2.2"
+
+vue-popperjs@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-popperjs/-/vue-popperjs-1.1.4.tgz#1e9bc858c02872d5b17dd934dd2e1345e5689fbd"
+  dependencies:
+    popper.js "^1.9.1"
+    vue "^2.3.3"
 
 vue-router@^2.5.3:
   version "2.7.0"
