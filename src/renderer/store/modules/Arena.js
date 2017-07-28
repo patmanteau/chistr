@@ -156,9 +156,9 @@ const actions = {
       log.info(`Resolve player ${name}`)
       dispatch('findPlayer', name)
         .then(() => {
+          dispatch('resolveShip', name)
           dispatch('resolveClan', name)
           dispatch('resolvePlayer', name)
-          dispatch('resolveShip', name)
         })
         .catch(error => {
           commit(types.SET_PLAYER_DATA, {
@@ -178,7 +178,7 @@ const actions = {
     }
   },
 
-  findPlayer ({ commit, getters }, name) {
+  findPlayer ({ state, commit }, name) {
     return new Promise((resolve, reject) => {
       // Get the player's account ID
       wows.findPlayer(name)
@@ -199,7 +199,7 @@ const actions = {
     })
   },
 
-  resolveClan ({ commit, getters }, name) {
+  resolveClan ({ state, commit }, name) {
     return new Promise((resolve, reject) => {
       const player = state.players[state.playerNames[name]]
       if (!player.accountId) {
@@ -218,7 +218,7 @@ const actions = {
     })
   },
 
-  resolveShip ({ commit, rootState }, name) {
+  resolveShip ({ state, commit, rootState }, name) {
     return new Promise((resolve, reject) => {
       // Select the correct match group
       let matchGroup = rootState.Settings.wows.matchgroup

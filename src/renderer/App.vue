@@ -188,6 +188,9 @@ body {
   color: #555;
   text-decoration: none;
   font-weight: 400;
+  /* box-shadow: 0 0 2px rgba(0,0,0,0.25); */
+  border: 1px solid rgba(0,0,0,0.25);
+  padding: 2px 4px;
 }
 
 </style>

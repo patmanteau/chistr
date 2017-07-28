@@ -23,7 +23,7 @@
                 </div>
                 <span slot="reference" class="popover ui text text-subdued">[{{ player.clanTag }}]</span>
               </popper>
-              
+
             </transition>
         </span>
         <transition name="fade" mode="out-in">
@@ -48,7 +48,7 @@
           <!-- <div class="dg-cell number text-subdued">{{ player.playerAvgExp }}</div> -->
         </div>
         <!-- No player stats, not yet loaded -->
-        <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="!player.playerFinishedLoading || !player.shipFinishedLoading" key="without-player-stats-not-loaded">
+        <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="!player.playerFinishedLoading && !player.shipFinishedLoading" key="without-player-stats-not-loaded">
           <span class="dg-cell text text-centered ui">Loading player</span>
         </div>
         <!-- No player stats at all -->
@@ -59,7 +59,7 @@
 
       <!-- Ship stats -->
       <transition name="fade" mode="out-in">
-        <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.playerFinishedLoading && player.shipHasRecord && player.shipBattles > 0" key="with-ship-stats">
+        <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.playerFinishedLoading && player.shipHasRecord && player.shipBattles" key="with-ship-stats">
           <div class="dg-cell number">{{ player.shipBattles }}</div>
           <div class="dg-cell number text-centered" :class="winrateclass(player.shipBattles, player.shipWinrate)">{{ player.shipWinrate }}%</div>
           <div class="dg-cell number" :class="prclass(player.shipBattles, player.shipPR)">{{ player.shipPR | denan }}</div>
