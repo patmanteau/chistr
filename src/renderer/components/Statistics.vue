@@ -36,7 +36,6 @@
 <script type="text/javascript">
 import { mapState, mapGetters } from 'vuex'
 import { remote } from 'electron'
-// import * as yaml from 'js-yaml'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
 

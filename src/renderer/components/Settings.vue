@@ -1,5 +1,11 @@
 <template>
 <div id="view">
+   <div id="header" class="ui">
+      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
+        <!-- <button class="text" >Save &amp; close</button> -->
+        <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
+      </router-link>
+   </div>
   <!-- <div id="header">
     <div class="rowflexed">
     <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
@@ -7,15 +13,12 @@
   </div> -->
   <div class="view">
     <div class="config-item">
-      
+
     </div>
     <!-- <div class="Rcell Rcell-2of2"> -->
     <div class="config-item ui">
         <!-- <div class="Rcontent"> -->
-    <router-link class="text savebutton link ui" :to="{ name: 'statistics', params: {} }">
-      <span><i class="fa fa-chevron-left" aria-hidden="true"></i> Go Back</span>
-    </router-link>
-      
+
         <!-- </div> -->
     </div>
     <div class="config-item">

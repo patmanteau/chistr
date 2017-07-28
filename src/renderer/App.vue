@@ -61,7 +61,7 @@ body {
   top: 0;
   height: 40px;
   padding: 10px 30px;
-  box-shadow: 0 0 2px rgba(0,0,0,0.25);
+  /* box-shadow: 0 0 2px rgba(0,0,0,0.25); */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -83,7 +83,7 @@ body {
 
 .gridcontainer {
   width: 90%;
-  
+
 }
 
 .link {
@@ -185,7 +185,9 @@ body {
 .savebutton {
   font-family: 'Roboto Condensed', serif;
   font-size: 16px;
-  color: #333;
+  color: #555;
+  text-decoration: none;
+  font-weight: 400;
 }
 
 </style>

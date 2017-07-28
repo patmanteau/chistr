@@ -243,7 +243,7 @@ const actions = {
       }
 
       if (!player.accountId) {
-        reject(Error('Invalid account id'))
+        return reject(Error('Invalid account id'))
       } else {
         wows.getPlayerShip(player.shipId, player.accountId, matchGroup)
           .then(shipData => {
