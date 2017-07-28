@@ -87,7 +87,7 @@ body {
 }
 
 .gridcontainer {
-  width: 97.5%;
+  width: 95%;
   margin: 0px 10px;
 
 }
