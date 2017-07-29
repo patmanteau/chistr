@@ -106,6 +106,15 @@ body {
   transition: transform .2s;
 }
 
+.flip-list-enter-active, .list-leave-active {
+  transition: none;
+}
+.flip-list-enter, .list-leave-to /* .list-leave-active for <2.1.8 */ {
+  opacity: 0;
+  /*transform: translateY(30px);*/
+}
+
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s
 }
