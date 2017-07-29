@@ -21,6 +21,11 @@ const config = new ElectronStore({
   name: 'chistr'
 })
 
+// This is kludgy - if an older config file exists, it won't
+// have a playerListSort key, but the ElectronStore default
+// only seems to apply top-level properties, ignoring the already
+// existing app key. So, either use a new top-level property
+// or insert the key after ElectronStore creation if needed
 if (!config.has('app.playerListSort')) {
   config.set('app.playerListSort', {
     key: 'playerWinrate',
