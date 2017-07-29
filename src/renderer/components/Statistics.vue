@@ -38,6 +38,7 @@ import { mapState, mapGetters } from 'vuex'
 import { remote } from 'electron'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
+import semver from 'semver'
 
 export default {
   name: 'statistics',
@@ -72,7 +73,7 @@ export default {
 
     this.$http.get('https://api.github.com/repos/patmanteau/chistr/releases/latest')
       .then(response => {
-        this.updateAvailable = remote.app.getVersion() !== response.data.name
+        this.updateAvailable = semver.lt(remote.app.getVersion(), semver.clean(response.data.name))
       })
       .catch(error => {
         console.log(error)
