@@ -111,6 +111,7 @@ const mutations = {
         shipAvgExp: 0,
         shipAvgDmg: 0,
         shipKdRatio: 0.0,
+        shipPR: 0,
         shipFinishedLoading: false,
         shipError: [],
         relation: player.relation
