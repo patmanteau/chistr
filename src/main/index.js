@@ -2,14 +2,11 @@
 
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import * as windowState from 'electron-window-state'
-import { esSettings } from '../defaultsettings'
+import config from '../config'
 
 const log = require('electron-log')
 log.transports.console.level = 'info'
 log.transports.file.level = 'info'
-
-const ElectronStore = require('electron-store')
-const electronstore = new ElectronStore(esSettings)
 
 /**
  * Set `__static` path to static files in production
@@ -104,8 +101,8 @@ function createMenu () {
     }
   ]
 
-  if (electronstore.get('app.debug')) {
-    template[0].submenu.unshift({ label: 'Edit settings file...', click () { electronstore.openInEditor() } })
+  if (config.get('app.debug')) {
+    template[0].submenu.unshift({ label: 'Edit settings file...', click () { config.openInEditor() } })
     template[1].submenu.push({ role: 'toggledevtools', accelerator: 'CmdOrCtrl+Shift+I' })
   }
   const menu = Menu.buildFromTemplate(template)
