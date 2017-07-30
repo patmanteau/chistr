@@ -19,7 +19,9 @@
             <transition name="fade">
               <popper v-if="player.clanHasRecord" trigger="hover" :options="{ placement: 'bottom' }">
                 <div class="popper">
-                  {{ player.clanName }}
+                  <div>{{ player.clanName }}</div>
+                  <div>Created {{ new Date(player.clanCreatedAt * 1000).toLocaleString() }}</div>
+                  <div>{{ player.clanMembersCount }} members</div>
                 </div>
                 <span slot="reference" class="popover ui text text-subdued">[{{ player.clanTag }}]</span>
               </popper>
