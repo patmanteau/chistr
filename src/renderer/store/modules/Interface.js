@@ -5,8 +5,6 @@ const state = {
   playerListSort: config.get('app.playerListSort')
 }
 
-console.log(state)
-
 const getters = {}
 
 const mutations = {
