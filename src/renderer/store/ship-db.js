@@ -4,7 +4,7 @@ const ElectronStore = require('electron-store')
 
 export class ShipDB {
   constructor () {
-    let datasource = require('./expected')
+    let datasource = require('../../data/expected.json')
     datasource.data = _.omitBy(datasource.data, _.isEmpty)
 
     this.db = new ElectronStore({
@@ -23,7 +23,7 @@ export class ShipDB {
 
   clear () {
     this.db.clear()
-    let datasource = require('./expected')
+    let datasource = require('../../data/expected.json')
     datasource.data = _.omitBy(datasource.data, _.isEmpty)
     this.db.store = datasource
   }

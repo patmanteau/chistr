@@ -1,0 +1,44 @@
+{
+    "PVP": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_pvp.png",
+        "tag": "PVP",
+        "description": "Fight against real players. The matchmaker will create teams randomly.",
+        "name": "Random Battle"
+    },
+    "TEAM_RANKED": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_team_ranked.png",
+        "tag": "TEAM_RANKED",
+        "description": "Fight for Rating as a member of your own Team or as a mercenary.",
+        "name": "Team Battle"
+    },
+    "RANKED": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_ranked.png",
+        "tag": "RANKED",
+        "description": "Fight against real players and earn Ranks.",
+        "name": "Ranked Battle"
+    },
+    "PVE": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_pve.png",
+        "tag": "PVE",
+        "description": "Complete tasks as described in the scenario and receive rewards.",
+        "name": "Scenarios"
+    },
+    "PVE_PREMADE": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_pve_premade.png",
+        "tag": "PVE_PREMADE",
+        "description": "Complete tasks as described in the scenario and receive rewards.",
+        "name": "Scenarios"
+    },
+    "COOPERATIVE": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_cooperative.png",
+        "tag": "COOPERATIVE",
+        "description": "Fight against bots in cooperation with other players.",
+        "name": "Co-op Battle"
+    },
+    "TUTORIAL": {
+        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_tutorial.png",
+        "tag": "TUTORIAL",
+        "description": "Introductory Mission",
+        "name": "Introductory Mission"
+    }
+}
