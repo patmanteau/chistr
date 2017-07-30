@@ -183,12 +183,12 @@ body {
   background-color: #f7f7f7;
   color: #333;
   text-align: center;
-  padding: 4px;
-  display: inline-block;
-  border-radius: 3px;
-  position: absolute;
+  padding: 6px 8px;
+  /* display: inline-block; */
+  /* border-radius: 3px; */
+  /* position: absolute; */
   font-family: 'Roboto Condensed', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   /* font-weight: normal; */
   border: 1px #ebebeb solid;
   z-index: 200000;
