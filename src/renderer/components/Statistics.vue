@@ -15,16 +15,14 @@
         <player-list
           title="Foes"
           bordercolor="#f77"
-          :players="foes"
-          :filterby="filterstring">
+          :players="foes">
         </player-list>
         <p></p>
         <player-list
           title="Friends"
           bordercolor="#8f8"
           noheader="true"
-          :players="friends"
-          :filterby="filterstring">
+          :players="friends">
         </player-list>
         </div>
       </div>
@@ -49,19 +47,19 @@ export default {
       arena: state => state.Arena.arena,
       hasData: state => state.Arena.hasData,
       active: state => state.Arena.active
+      // players: state => state.Arena.players
     }),
 
     ...mapGetters([
       'friends',
       'foes',
+      // 'players',
       'finishedLoading'
     ])
   },
 
   data () {
     return {
-      gridColumns: ['playerName', 'shipName', 'playerBattles', 'playerWinrate', 'playerAvgExp', 'playerAvgDmg', 'playerKdRatio'],
-      filterstring: '',
       updateAvailable: false
     }
   },

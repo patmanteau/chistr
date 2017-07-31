@@ -45,7 +45,7 @@ export class WowsApi {
           // Player found, so return his account ID
           return resolve({
             accountId: playerRecord.account_id,
-            playerName: playerRecord.nickname
+            name: playerRecord.nickname
           })
         })
         .catch(error => {
@@ -84,12 +84,11 @@ export class WowsApi {
 
           const group = playerStats.statistics[matchGroup]
           const playerData = {
-            playerHasRecord: true,
-            playerBattles: group.battles,
-            playerWinrate: (group.wins / group.battles * 100).toFixed(2),
-            playerAvgExp: (group.xp / group.battles).toFixed(),
-            playerAvgDmg: (group.damage_dealt / group.battles).toFixed(),
-            playerKdRatio: (group.frags / (group.battles - group.survived_battles)).toFixed(2)
+            battles: group.battles,
+            winrate: (group.wins / group.battles * 100),
+            avgExp: (group.xp / group.battles),
+            avgDmg: (group.damage_dealt / group.battles),
+            kdRatio: (group.frags / (group.battles - group.survived_battles))
           }
 
           return resolve(playerData)
@@ -109,11 +108,11 @@ export class WowsApi {
               response.data.data[accountId].clan) {
             const clan = response.data.data[accountId].clan
             return resolve({
-              clanId: clan.clan_id,
-              clanCreatedAt: clan.created_at,
-              clanMembersCount: clan.members_count,
-              clanName: clan.name,
-              clanTag: clan.tag
+              id: clan.clan_id,
+              createdAt: clan.created_at,
+              membersCount: clan.members_count,
+              name: clan.name,
+              tag: clan.tag
             })
           } else {
             return reject(Error('Player is not in a clan.'))
@@ -178,31 +177,34 @@ export class WowsApi {
 
           const group = shipStats[matchGroup]
           const shipData = {
-            shipHasRecord: true,
-            shipBattles: group.battles,
-            shipVictories: group.wins,
-            shipWinrate: (group.wins / group.battles * 100).toFixed(2),
-            shipSurvived: group.survived_battles,
-            shipFrags: group.frags,
-            shipAvgExp: (group.xp / group.battles).toFixed(),
-            shipAvgDmg: (group.damage_dealt / group.battles).toFixed(),
-            shipKdRatio: (group.frags / (group.battles - group.survived_battles)).toFixed(2),
-            shipPR: 0
+            battles: group.battles,
+            victories: group.wins,
+            winrate: group.battles ? (group.wins / group.battles * 100) : 0,
+            survived: group.survived_battles,
+            frags: group.frags,
+            avgExp: group.battles ? (group.xp / group.battles) : 0,
+            avgDmg: group.battles ? (group.damage_dealt / group.battles) : 0,
+            kdRatio: (group.battles - group.survived_battles) ? (group.frags / (group.battles - group.survived_battles)) : 0,
+            pr: 0
           }
 
           if (this.shipdb.has(shipId)) {
             // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
             const exp = this.shipdb.get(shipId)
 
-            const rDmg = shipData.shipAvgDmg / exp.average_damage_dealt
-            const rWins = shipData.shipWinrate / exp.win_rate
-            const rFrags = shipData.shipFrags / (exp.average_frags * shipData.shipBattles)
+            if (exp.average_damage_dealt && exp.win_rate && (exp.average_frags * shipData.battles)) {
+              const rDmg = shipData.avgDmg / exp.average_damage_dealt
+              const rWins = shipData.winrate / exp.win_rate
+              const rFrags = shipData.frags / (exp.average_frags * shipData.battles)
 
-            const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
-            const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
-            const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
+              const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4))
+              const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7))
+              const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1))
 
-            shipData.shipPR = (700 * nDmg + 300 * nFrags + 150 * nWins).toFixed()
+              shipData.pr = (700 * nDmg + 300 * nFrags + 150 * nWins)
+            } else {
+              shipData.pr = 0
+            }
           }
 
           return resolve(shipData)

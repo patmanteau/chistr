@@ -1,3 +1,4 @@
+// import Vue from 'vue'
 import _ from 'lodash/fp'
 import * as types from '../mutation-types'
 import {WowsApi} from '../wows-api'
@@ -18,27 +19,28 @@ const state = {
     matchGroup: ''
   },
   players: [],
-  playerNames: {}
+  playerIndex: {},
+  errors: []
 }
 
 const shipnames = new Map()
 let wows
 
 const getters = {
-  friends () {
-    return state.players.filter(player => player.relation <= 1)
+  friends (state, getters) {
+    return _.filter(player => player.relation <= 1)(state.players)
   },
 
-  foes () {
-    return state.players.filter(player => player.relation > 1)
+  foes (state, getters) {
+    return _.filter(player => player.relation > 1)(state.players)
   },
 
-  players () {
+  players (state, getters) {
     return state.players
   },
 
-  finishedLoading () {
-    return _.all({ playerFinishedLoading: true, clanFinishedLoading: true, shipFinishedLoading: true })(state.players)
+  finishedLoading (state, getters) {
+    return _.all(player => player.personal.finishedLoading && player.clan.finishedLoading && player.ship.finishedLoading)(state.players)
   }
 }
 
@@ -52,7 +54,7 @@ const mutations = {
 
   [types.SET_ARENA_DATA] (state, arenaData) {
     state.arena = {
-      mapname: arenaData.mapDisplayName,
+      mapName: arenaData.mapDisplayName,
       playerName: arenaData.playerName,
       lastMatchDate: arenaData.dateTime,
       matchGroup: arenaData.matchGroup
@@ -77,52 +79,78 @@ const mutations = {
     state.hasData = true
   },
 
+  [types.ADD_ERROR] (state, error) {
+    state.errors.push(error)
+  },
+
+  [types.CLEAR_ERRORS] (state) {
+    state.errors = []
+  },
+
   [types.INITIALIZE_PLAYER_DATA] (state, playerList) {
-    const newPlayers = []
-    const newPlayerNames = {}
-    for (const player of playerList) {
-      // Keep a lookup table from player names to indices
-      newPlayerNames[player.name] = newPlayers.length
-      newPlayers.push({
+    const tempPlayers = []
+    const tempIndex = {}
+    state.playerIndex = {}
+    for (const item of playerList) {
+      tempIndex[item.name] = tempPlayers.length
+      tempPlayers.push({
         accountId: '',
-        playerName: player.name,
-        playerHasRecord: false,
-        playerBattles: 0,
-        playerWinrate: 0,
-        playerAvgExp: 0,
-        playerAvgDmg: 0,
-        playerKdRatio: 0.0,
-        playerFinishedLoading: false,
-        playerError: [],
-        clanHasRecord: false,
-        clanFinishedLoading: false,
-        clanId: '',
-        clanCreatedAt: '',
-        clanMembersCount: 0,
-        clanName: '',
-        clanTag: '',
-        shipId: player.shipId,
-        shipHasRecord: false,
-        shipName: '',
-        shipBattles: 0,
-        shipVictories: 0,
-        shipSurvived: 0,
-        shipFrags: 0,
-        shipAvgExp: 0,
-        shipAvgDmg: 0,
-        shipKdRatio: 0.0,
-        shipPR: 0,
-        shipFinishedLoading: false,
-        shipError: [],
-        relation: player.relation
+        name: item.name,
+        relation: item.relation,
+        errors: [],
+        personal: {
+          hasRecord: false,
+          battles: 0,
+          winrate: 0,
+          avgExp: 0,
+          avgDmg: 0,
+          kdRatio: 0.0,
+          finishedLoading: false
+        },
+        clan: {
+          id: '',
+          hasRecord: false,
+          finishedLoading: false,
+          createdAt: '',
+          membersCount: 0,
+          name: '',
+          tag: ''
+        },
+        ship: {
+          id: item.shipId,
+          hasRecord: false,
+          name: '',
+          battles: 0,
+          victories: 0,
+          survived: 0,
+          frags: 0,
+          avgExp: 0,
+          avgDmg: 0,
+          kdRatio: 0.0,
+          winrate: 0.0,
+          pr: 0,
+          finishedLoading: false
+        }
       })
+      state.players = tempPlayers
+      state.playerIndex = tempIndex
     }
-    state.players = newPlayers
-    state.playerNames = newPlayerNames
   },
 
   [types.SET_PLAYER_DATA] (state, { name, data }) {
-    Object.assign(state.players[state.playerNames[name]], data)
+    Object.assign(state.players[state.playerIndex[name]], data)
+  },
+
+  [types.SET_PERSONAL_DATA] (state, { name, data }) {
+    Object.assign(state.players[state.playerIndex[name]].personal, data)
+  },
+
+  [types.SET_CLAN_DATA] (state, { name, data }) {
+    Object.assign(state.players[state.playerIndex[name]].clan, data)
+  },
+
+  [types.SET_SHIP_DATA] (state, { name, data }) {
+    Object.assign(state.players[state.playerIndex[name]].ship, data)
   }
 }
 
@@ -152,8 +180,8 @@ const actions = {
   resolvePlayers ({ state, dispatch, commit, rootState }) {
     wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url, shipdb)
 
-    for (const player of state.players) {
-      const name = player.playerName
+    for (let { name } of state.players) {
+      // const name = key
       log.info(`Resolve player ${name}`)
       dispatch('findPlayer', name)
         .then(() => {
@@ -162,18 +190,15 @@ const actions = {
           dispatch('resolvePlayer', name)
         })
         .catch(error => {
-          commit(types.SET_PLAYER_DATA, {
-            name: name,
-            data: {
-              playerFinishedLoading: true,
-              playerHasRecord: false,
-              clanFinishedLoading: true,
-              clanHasRecord: false,
-              shipFinishedLoading: true,
-              shipHasRecord: false,
-              errors: [error]
-            }
-          })
+          for (const typ of [types.SET_PERSONAL_DATA, types.SET_CLAN_DATA, types.SET_SHIP_DATA]) {
+            commit(typ, {
+              name: name,
+              data: {
+                finishedLoading: true,
+                hasRecord: false
+              }
+            })
+          }
           console.log(error)
         })
     }
@@ -186,9 +211,7 @@ const actions = {
         .then(playerData => {
           commit(types.SET_PLAYER_DATA, {
             name: name,
-            data: {
-              ...playerData
-            }
+            data: { ...playerData }
           })
           console.log(`Found player: ${name} => ${playerData.accountId}`)
           return resolve(playerData.accountId)
@@ -202,17 +225,18 @@ const actions = {
 
   resolveClan ({ state, commit }, name) {
     return new Promise((resolve, reject) => {
-      const player = state.players[state.playerNames[name]]
+      const player = state.players[state.playerIndex[name]]
       if (!player.accountId) {
         return reject(Error('Invalid account id'))
       } else {
         wows.getPlayerClan(player.accountId)
         .then(clanData => {
-          commit(types.SET_PLAYER_DATA, { name: player.playerName, data: { clanHasRecord: true, clanFinishedLoading: true, ...clanData } })
+          commit(types.SET_CLAN_DATA, { name: name, data: { hasRecord: true, finishedLoading: true, ...clanData } })
           return resolve()
         })
         .catch(error => {
-          commit(types.SET_PLAYER_DATA, { name: player.playerName, data: { clanFinishedLoading: true, clanHasRecord: false, errors: [error] } })
+          commit(types.SET_CLAN_DATA, { name: name, data: { finishedLoading: true } })
+          console.log(error)
           return resolve()
         })
       }
@@ -227,15 +251,15 @@ const actions = {
         matchGroup = state.arena.matchGroup
       }
 
-      const player = state.players[state.playerNames[name]]
+      const player = state.players[state.playerIndex[name]]
       // Resolve the ship's name first
-      if (shipnames.has(player.shipId)) {
-        commit(types.SET_PLAYER_DATA, { name: player.playerName, data: { shipName: shipnames.get(player.shipId) } })
+      if (shipnames.has(player.ship.id)) {
+        commit(types.SET_SHIP_DATA, { name: name, data: { name: shipnames.get(player.ship.id) } })
       } else {
-        wows.getShipName(player.shipId)
+        wows.getShipName(player.ship.id)
         .then(shipName => {
-          commit(types.SET_PLAYER_DATA, { name: player.playerName, data: { shipName: shipName } })
-          shipnames.set(player.shipId, shipName)
+          commit(types.SET_SHIP_DATA, { name: name, data: { name: shipName } })
+          shipnames.set(player.ship.id, shipName)
         })
         .catch(error => {
           log.error(error)
@@ -246,25 +270,24 @@ const actions = {
       if (!player.accountId) {
         return reject(Error('Invalid account id'))
       } else {
-        wows.getPlayerShip(player.shipId, player.accountId, matchGroup)
+        wows.getPlayerShip(player.ship.id, player.accountId, matchGroup)
           .then(shipData => {
-            commit(types.SET_PLAYER_DATA, {
-              name: player.playerName,
+            commit(types.SET_SHIP_DATA, {
+              name: name,
               data: {
-                shipFinishedLoading: true,
-                shipHasRecord: true,
+                finishedLoading: true,
+                hasRecord: true,
                 ...shipData
               }
             })
             return resolve()
           })
           .catch(error => {
-            commit(types.SET_PLAYER_DATA, {
-              name: player.playerName,
+            commit(types.SET_SHIP_DATA, {
+              name: name,
               data: {
-                shipFinishedLoading: true,
-                shipHasRecord: false,
-                errors: [error]
+                finishedLoading: true,
+                hasRecord: false
               }
             })
             log.warn(error)
@@ -283,30 +306,29 @@ const actions = {
         matchGroup = state.arena.matchGroup
       }
 
-      const player = state.players[state.playerNames[name]]
+      const player = state.players[state.playerIndex[name]]
       wows.getPlayer(player.accountId, matchGroup)
       .then(playerData => {
-        commit(types.SET_PLAYER_DATA, {
-          name: player.playerName,
+        commit(types.SET_PERSONAL_DATA, {
+          name: name,
           data: {
-            playerFinishedLoading: true,
-            playerHasRecord: true,
+            finishedLoading: true,
+            hasRecord: true,
             ...playerData
           }
         })
         return resolve(playerData)
       })
       .catch(error => {
-        commit(types.SET_PLAYER_DATA, {
-          name: player.playerName,
-          data: {
-            playerFinishedLoading: true,
-            shipFinishedLoading: true,
-            playerHasRecord: false,
-            shipHasRecord: false,
-            errors: [error]
-          }
-        })
+        for (const typ of [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA]) {
+          commit(typ, {
+            name: name,
+            data: {
+              finishedLoading: true,
+              hasRecord: false
+            }
+          })
+        }
         log.warn(error)
         console.log(error)
         return reject(error)

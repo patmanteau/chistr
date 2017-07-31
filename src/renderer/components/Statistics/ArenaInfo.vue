@@ -2,20 +2,19 @@
   <div class="rowflexed">
     <div>
       <transition name="fade" mode="out-in">
-        <h1 v-if="active">{{ arena.mapname | getmapname }}</h1>
+        <h1 v-if="active">{{ arena.mapName | translateMapName }}</h1>
         <h1 v-else>No active match</h1>
       </transition>
     </div>
     <transition name="fade" mode="out-in">
       <div v-if="active">
-        <img :src="arena.matchGroup | getmatchgroupimg" class="type-image" height="40"></img>
+        <img :src="arena.matchGroup | matchGroupImg" class="type-image" height="40"></img>
       </div>
     </transition>
     <div class="header-item">
       <transition name="fade" mode="out-in">
         <h2 class="header-item">
-          {{ arena.matchGroup | getmatchgroup }}<br>
-          {{ arena.lastMatchDate }}
+          {{ arena.matchGroup | translateMatchGroup }}
         </h2>
       </transition>
     </div>
@@ -24,22 +23,28 @@
 
 <script>
 import _ from 'lodash/fp'
-import battleTypes from '../../../data/battle-types.json'
-import mapNames from '../../../data/map-names.json'
+import battleTypes from './../../../data/battle-types.json'
+import mapNames from './../../../data/map-names.json'
 
 export default {
   props: ['active', 'arena'],
   filters: {
-    getmapname (name) {
-      return mapNames[name]
+    translateMapName (name) {
+      return name
+        ? mapNames[name]
+        : ''
     },
 
-    getmatchgroup (name) {
-      return battleTypes[_.upperCase(name)].name
+    translateMatchGroup (name) {
+      return name
+        ? battleTypes[name.toUpperCase()]['name']
+        : ''
     },
 
-    getmatchgroupimg (name) {
-      return battleTypes[_.upperCase(name)].image
+    matchGroupImg (name) {
+      return name
+        ? battleTypes[_.upperCase(name)].image
+        : ''
     }
   }
 }
@@ -58,7 +63,7 @@ h1 {
   font-size: 40px;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
-  margin: 0px 30px 0px 0px;
+  margin: 0px 18px 0px 0px;
   /*text-align: center;*/
 }
 

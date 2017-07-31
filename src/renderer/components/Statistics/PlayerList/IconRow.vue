@@ -7,85 +7,85 @@
     <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border">
 
       <div title="# of battles overall" class="dg-cell icon"
-          :class="{ active: sort.key === 'playerBattles'}"
-          @click="setSort('playerBattles')">
+          :class="{ active: sort.key === 'personal.battles'}"
+          @click="setSort('personal.battles')">
         <i class="fa fa-repeat" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerBattles' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerBattles' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.battles' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.battles' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Player winrate" class="dg-cell icon ui"
-          :class="{ active: sort.key === 'playerWinrate'}"
-          @click="setSort('playerWinrate')">
+          :class="{ active: sort.key === 'personal.winrate'}"
+          @click="setSort('personal.winrate')">
         <i class="fa fa-pie-chart" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerWinrate' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerWinrate' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.winrate' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.winrate' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Player Kill/Death ratio" class="dg-cell icon"
-          :class="{ active: sort.key === 'playerKdRatio'}"
-          @click="setSort('playerKdRatio')">
+          :class="{ active: sort.key === 'personal.kdRatio'}"
+          @click="setSort('personal.kdRatio')">
         <i class="fa fa-bullseye" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerKdRatio' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerKdRatio' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.kdRatio' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.kdRatio' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Player average damage" class="dg-cell icon"
-          :class="{ active: sort.key === 'playerAvgDmg'}"
-          @click="setSort('playerAvgDmg')">
+          :class="{ active: sort.key === 'personal.avgDmg'}"
+          @click="setSort('personal.avgDmg')">
         <i class="fa fa-rocket" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerAvgDmg' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerAvgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.avgDmg' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personal.avgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <!-- <div title="Player average experience" class="dg-cell icon"
-          :class="{ active: sort.key === 'playerAvgExp'}"
-          @click="setSort('playerAvgExp')">
+          :class="{ active: sort.key === 'personalAvgExp'}"
+          @click="setSort('personalAvgExp')">
         <i class="fa fa-line-chart" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerAvgExp' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'playerAvgExp' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personalAvgExp' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'personalAvgExp' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div> -->
     </div>
     <div class="dg-cellgroup dg-cellgroup-1of3 white-right-border">
 
       <div title="# of battles in this ship" class="dg-cell icon"
-          :class="{ active: sort.key === 'shipBattles'}"
-          @click="setSort('shipBattles')">
+          :class="{ active: sort.key === 'ship.battles'}"
+          @click="setSort('ship.battles')">
         <i class="fa fa-repeat" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipBattles' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipBattles' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.battles' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.battles' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Ship winrate" class="dg-cell icon"
-          :class="{ active: sort.key === 'shipWinrate'}"
-          @click="setSort('shipWinrate')">
+          :class="{ active: sort.key === 'ship.winrate'}"
+          @click="setSort('ship.winrate')">
         <i class="fa fa-pie-chart" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipWinrate' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipWinrate' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.winrate' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.winrate' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Player's Personal Rating for this ship" class="dg-cell icon ui"
-          :class="{ active: sort.key === 'shipPR'}"
-          @click="setSort('shipPR')">
+          :class="{ active: sort.key === 'ship.pr'}"
+          @click="setSort('ship.pr')">
         <span>PR</span>
-        <i v-if="sort.key === 'shipPR' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipPR' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.pr' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.pr' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Ship Kill/Death ratio" class="dg-cell icon"
-          :class="{ active: sort.key === 'shipKdRatio'}"
-          @click="setSort('shipKdRatio')">
+          :class="{ active: sort.key === 'ship.kdRatio'}"
+          @click="setSort('ship.kdRatio')">
         <i class="fa fa-bullseye" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipKdRatio' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipKdRatio' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.kdRatio' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.kdRatio' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <div title="Ship average damage" class="dg-cell icon"
-          :class="{ active: sort.key === 'shipAvgDmg'}"
-          @click="setSort('shipAvgDmg')">
+          :class="{ active: sort.key === 'ship.avgDmg'}"
+          @click="setSort('ship.avgDmg')">
         <i class="fa fa-rocket" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipAvgDmg' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipAvgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.avgDmg' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
+        <i v-if="sort.key === 'ship.avgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
 
       <!-- <div title="Ship average experience" class="dg-cell icon"
