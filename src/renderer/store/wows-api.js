@@ -12,8 +12,21 @@ export class WowsApi {
       }
     })
 
-    this.shipdb = shipdb
+    const responseHandler = (response) => {
+      if (response.data.status !== 'ok' || _.get('data.error', response)) {
+        return Promise.reject(_.get('data.error', response))
+      } else {
+        return response
+      }
+    }
 
+    const errorHandler = (error) => {
+      return Promise.reject(error)
+    }
+
+    this.api.interceptors.response.use(responseHandler, errorHandler)
+
+    this.shipdb = shipdb
     this.key = key
     this.url = url
   }
@@ -29,28 +42,20 @@ export class WowsApi {
       // players whose names match our search (i.e. searching for 'Alfred'
       // returns 'Alfred1', 'Alfred_accurate', 'AlfredAlfred' an so on), so
       // we have to search the response list ourselves for the right player
-
       this.api.get(`/wows/account/list/?search=${encodeURIComponent(playerName)}`)
         .then(response => {
-          if (response.data.status !== 'ok' || !response.data.meta.count) {
-            return reject(Error('Player not found at all.'))
-          }
-
-          // Get the correct player or give up
           const playerRecord = _.find({nickname: playerName})(response.data.data)
-          if (!playerRecord) {
-            return reject(Error('Player not found in list.'))
-          }
-
-          // Player found, so return his account ID
-          return resolve({
-            accountId: playerRecord.account_id,
-            name: playerRecord.nickname
-          })
+          return playerRecord
+            ? resolve({
+              // Player found, so return his account ID
+              accountId: playerRecord.account_id,
+              name: playerRecord.nickname
+            })
+            : reject(Error('Player not found'))
         })
         .catch(error => {
-          log.error(error)
-          return reject(error)
+          console.log(error)
+          return Error('Player not found')
         })
     })
   }
@@ -61,17 +66,14 @@ export class WowsApi {
     return new Promise((resolve, reject) => {
       // Our second step is looking up the player's stats using his account ID.
       const params = {
-        account_id: accountId.toString()
+        account_id: accountId.toString(),
+        extra: ''
       }
       if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
       if (matchGroup === 'pve') params.extra = 'statistics.pve'
 
       this.api.get('/wows/account/info/', { params: params })
         .then(response => {
-          if (response.data.status !== 'ok') {
-            return reject(Error(`Error retrieving player info (${response.data.error.message})`))
-          }
-
           const playerStats = response.data.data[accountId]
           // If the player's profile is hidden, give up
           if (playerStats.hidden_profile) {
@@ -103,20 +105,16 @@ export class WowsApi {
     return new Promise((resolve, reject) => {
       this.api.get('/wows/clans/accountinfo/', { params: { account_id: accountId, extra: 'clan' } })
         .then(response => {
-          if (response.data.status === 'ok' &&
-              response.data.data[accountId] &&
-              response.data.data[accountId].clan) {
-            const clan = response.data.data[accountId].clan
-            return resolve({
+          const clan = _.get(`data.data.${accountId}.clan`, response)
+          return clan
+            ? resolve({
               id: clan.clan_id,
               createdAt: clan.created_at,
               membersCount: clan.members_count,
               name: clan.name,
               tag: clan.tag
             })
-          } else {
-            return reject(Error('Player is not in a clan.'))
-          }
+            : reject(Error('Player is not in a clan.'))
         })
         .catch(error => {
           console.log(error)
@@ -135,9 +133,10 @@ export class WowsApi {
         log.info(`Cache miss: ${shipId}`)
         this.api.get(`/wows/encyclopedia/ships/?ship_id=${shipId}`)
           .then(response => {
-            if (response.data.status === 'ok' && response.data.data[shipId]) {
-              this.shipdb.setName(shipId, response.data.data[shipId].name)
-              return resolve(response.data.data[shipId].name)
+            const ship = _.get(`data.data.${shipId}`, response)
+            if (ship) {
+              this.shipdb.setName(shipId, ship.name)
+              return resolve(ship.name)
             } else {
               return reject(Error('Ship not found.'))
             }
@@ -162,16 +161,13 @@ export class WowsApi {
       if (matchGroup === 'pve') params.extra = 'pve'
       this.api.get('/wows/ships/stats/', { params: params })
         .then(response => {
-          if (response.data.status !== 'ok' || !response.data.data[accountId]) {
+          const ship = _.get(`data.data.${accountId}`, response)
+          if (!ship) {
             return reject(Error('No ship data found.'))
           }
 
-          if (!response.data.data[accountId][0].pvp) {
-            return reject(Error('Player has no PVP battles in ship.'))
-          }
-
-          let shipStats = response.data.data[accountId][0]
-          if (!shipStats.hasOwnProperty(matchGroup)) {
+          const shipStats = ship[0]
+          if (!_.get(`${matchGroup}`, shipStats)) {
             return reject(Error('Player has no record in the selected matchGroup'))
           }
 
@@ -206,7 +202,6 @@ export class WowsApi {
               shipData.pr = 0
             }
           }
-
           return resolve(shipData)
         })
         .catch(error => {
