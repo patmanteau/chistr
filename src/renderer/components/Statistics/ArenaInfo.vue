@@ -14,7 +14,8 @@
     <div class="header-item">
       <transition name="fade" mode="out-in">
         <h2 class="header-item">
-          {{ arena.matchGroup | translateMatchGroup }}
+          {{ arena.matchGroup | translateMatchGroup }}<br>
+          {{ arena.lastMatchDate }}
         </h2>
       </transition>
     </div>
@@ -63,7 +64,7 @@ h1 {
   font-size: 40px;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
-  margin: 0px 18px 0px 0px;
+  margin: 0px 40px 0px 0px;
   /*text-align: center;*/
 }
 
