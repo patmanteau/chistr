@@ -1,11 +1,11 @@
-import _ from 'lodash/fp'
+import R from 'ramda'
 
 const ElectronStore = require('electron-store')
 
 export class ShipDB {
   constructor () {
     let datasource = require('../../data/expected.json')
-    datasource.data = _.omitBy(datasource.data, _.isEmpty)
+    datasource.data = R.pickBy((key, val) => !R.isEmpty(val), datasource.data)
 
     this.db = new ElectronStore({
       defaults: datasource,
@@ -14,7 +14,7 @@ export class ShipDB {
 
     if (datasource.time > this.db.get('time')) {
       console.log('Updating expected values...')
-      _.each(datasource.data, (shipId, data) => {
+      R.forEach(datasource.data, (shipId, data) => {
         this.set(shipId, data)
       })
       this.db.set('time', datasource.time)
@@ -24,7 +24,7 @@ export class ShipDB {
   clear () {
     this.db.clear()
     let datasource = require('../../data/expected.json')
-    datasource.data = _.omitBy(datasource.data, _.isEmpty)
+    datasource.data = R.pickBy((key, val) => !R.isEmpty(val), datasource.data)
     this.db.store = datasource
   }
 
@@ -36,7 +36,7 @@ export class ShipDB {
     return this.has(shipId) &&
       this.get(shipId).hasOwnProperty('name') &&
       // refresh ship names after some time
-      this.get(shipId).timestamp > _.now() - (1000 * 60 * 60 * 24 * 7)
+      this.get(shipId).timestamp > Date.now() - (1000 * 60 * 60 * 24 * 7)
   }
 
   get (shipId) {

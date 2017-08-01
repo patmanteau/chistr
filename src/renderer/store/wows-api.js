@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as log from 'electron-log'
-import _ from 'lodash/fp'
+import R from 'ramda'
 
 export class WowsApi {
   constructor (key, url, shipdb) {
@@ -13,8 +13,8 @@ export class WowsApi {
     })
 
     const responseHandler = (response) => {
-      if (response.data.status !== 'ok' || _.get('data.error', response)) {
-        return Promise.reject(_.get('data.error', response))
+      if (response.data.status !== 'ok' || R.path(['data', 'error'], response)) {
+        return Promise.reject(R.path(['data', 'error'], response))
       } else {
         return response
       }
@@ -44,7 +44,7 @@ export class WowsApi {
       // we have to search the response list ourselves for the right player
       this.api.get(`/wows/account/list/?search=${encodeURIComponent(playerName)}`)
         .then(response => {
-          const playerRecord = _.find({nickname: playerName})(response.data.data)
+          const playerRecord = R.find(R.propEq('nickname', playerName))(response.data.data)
           return playerRecord
             ? resolve({
               // Player found, so return his account ID
@@ -60,13 +60,54 @@ export class WowsApi {
     })
   }
 
-  getPlayer (accountId, matchGroup = 'pvp') {
+  // getPlayer (accountId, matchGroup = 'pvp') {
+  //   if (matchGroup === 'ranked') matchGroup = 'rank_solo'
+  //   else if (matchGroup === 'cooperative') matchGroup = 'pve'
+  //   return new Promise((resolve, reject) => {
+  //     // Our second step is looking up the player's stats using his account ID.
+  //     const params = {
+  //       account_id: accountId.toString(),
+  //       extra: ''
+  //     }
+  //     if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
+  //     if (matchGroup === 'pve') params.extra = 'statistics.pve'
+
+  //     this.api.get('/wows/account/info/', { params: params })
+  //       .then(response => {
+  //         const playerStats = response.data.data[accountId]
+  //         // If the player's profile is hidden, give up
+  //         if (playerStats.hidden_profile) {
+  //           return reject(Error('Player profile is hidden.'))
+  //         }
+
+  //         if (!playerStats.statistics.hasOwnProperty(matchGroup)) {
+  //           return reject(Error('Player has no record in the selected matchGroup'))
+  //         }
+
+  //         const group = playerStats.statistics[matchGroup]
+  //         const playerData = {
+  //           battles: group.battles,
+  //           winrate: (group.wins / group.battles * 100),
+  //           avgExp: (group.xp / group.battles),
+  //           avgDmg: (group.damage_dealt / group.battles),
+  //           kdRatio: (group.frags / (group.battles - group.survived_battles))
+  //         }
+
+  //         return resolve(playerData)
+  //       })
+  //       .catch(error => {
+  //         return reject(error)
+  //       })
+  //   })
+  // }
+
+  getPlayers (accountIds, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     else if (matchGroup === 'cooperative') matchGroup = 'pve'
     return new Promise((resolve, reject) => {
-      // Our second step is looking up the player's stats using his account ID.
+      // Our second step is looking up the player's stats using their account IDs.
       const params = {
-        account_id: accountId.toString(),
+        account_id: R.map(R.prop('accountId'), accountIds).join(','),
         extra: ''
       }
       if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
@@ -74,26 +115,25 @@ export class WowsApi {
 
       this.api.get('/wows/account/info/', { params: params })
         .then(response => {
-          const playerStats = response.data.data[accountId]
-          // If the player's profile is hidden, give up
-          if (playerStats.hidden_profile) {
-            return reject(Error('Player profile is hidden.'))
-          }
-
-          if (!playerStats.statistics.hasOwnProperty(matchGroup)) {
-            return reject(Error('Player has no record in the selected matchGroup'))
-          }
-
-          const group = playerStats.statistics[matchGroup]
-          const playerData = {
-            battles: group.battles,
-            winrate: (group.wins / group.battles * 100),
-            avgExp: (group.xp / group.battles),
-            avgDmg: (group.damage_dealt / group.battles),
-            kdRatio: (group.frags / (group.battles - group.survived_battles))
-          }
-
-          return resolve(playerData)
+          const players = R.mapObjIndexed((playerStats, accountId, obj) => {
+            if (playerStats.hidden_profile || !R.path(['statistics', matchGroup], playerStats)) {
+              return {
+                name: playerStats.nickname,
+                hidden: true
+              }
+            } else {
+              const group = playerStats.statistics[matchGroup]
+              return {
+                battles: group.battles,
+                winrate: (group.wins / group.battles * 100),
+                avgExp: (group.xp / group.battles),
+                avgDmg: (group.damage_dealt / group.battles),
+                kdRatio: (group.frags / (group.battles - group.survived_battles)),
+                name: playerStats.nickname
+              }
+            }
+          })(response.data.data)
+          return resolve(players)
         })
         .catch(error => {
           return reject(error)
@@ -105,7 +145,7 @@ export class WowsApi {
     return new Promise((resolve, reject) => {
       this.api.get('/wows/clans/accountinfo/', { params: { account_id: accountId, extra: 'clan' } })
         .then(response => {
-          const clan = _.get(`data.data.${accountId}.clan`, response)
+          const clan = R.path(['data', 'data', accountId, 'clan'], response)
           return clan
             ? resolve({
               id: clan.clan_id,
@@ -133,7 +173,7 @@ export class WowsApi {
         log.info(`Cache miss: ${shipId}`)
         this.api.get(`/wows/encyclopedia/ships/?ship_id=${shipId}`)
           .then(response => {
-            const ship = _.get(`data.data.${shipId}`, response)
+            const ship = R.path(['data', 'data', shipId], response)
             if (ship) {
               this.shipdb.setName(shipId, ship.name)
               return resolve(ship.name)
@@ -161,13 +201,13 @@ export class WowsApi {
       if (matchGroup === 'pve') params.extra = 'pve'
       this.api.get('/wows/ships/stats/', { params: params })
         .then(response => {
-          const ship = _.get(`data.data.${accountId}`, response)
+          const ship = R.path(['data', 'data', accountId], response)
           if (!ship) {
             return reject(Error('No ship data found.'))
           }
 
           const shipStats = ship[0]
-          if (!_.get(`${matchGroup}`, shipStats)) {
+          if (!R.prop(matchGroup, shipStats)) {
             return reject(Error('Player has no record in the selected matchGroup'))
           }
 

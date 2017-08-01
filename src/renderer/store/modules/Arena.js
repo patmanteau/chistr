@@ -1,5 +1,5 @@
 // import Vue from 'vue'
-import _ from 'lodash/fp'
+import R from 'ramda'
 import * as types from '../mutation-types'
 import {WowsApi} from '../wows-api'
 import {ShipDB} from '../ship-db'
@@ -41,11 +41,11 @@ let wows
 
 const getters = {
   friends (state, getters) {
-    return _.filter(player => player.relation <= 1)(state.players)
+    return R.filter(player => player.relation <= 1)(state.players)
   },
 
   foes (state, getters) {
-    return _.filter(player => player.relation > 1)(state.players)
+    return R.filter(player => player.relation > 1)(state.players)
   },
 
   players (state, getters) {
@@ -53,7 +53,11 @@ const getters = {
   },
 
   finishedLoading (state, getters) {
-    return _.all(player => player.personal.finishedLoading && player.clan.finishedLoading && player.ship.finishedLoading)(state.players)
+    return R.allPass([
+      R.path(['personal', 'finishedLoading']),
+      R.path(['clan', 'finishedLoading']),
+      R.path(['ship', 'finishedLoading'])
+    ])(state.players)
   }
 }
 
@@ -184,29 +188,30 @@ const actions = {
           commit(types.SET_ARENA_DATA, obj)
           commit(types.SET_ARENA_ACTIVE, true)
           commit(types.INITIALIZE_PLAYER_DATA, obj.vehicles)
-          dispatch('resolvePlayers')
+          dispatch('resolve')
         }
       }
     })
   },
 
-  resolvePlayers ({ state, dispatch, commit, rootState }) {
+  resolve ({ state, dispatch, commit, rootState }) {
     wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url, shipdb)
-
-    for (let { name } of state.players) {
-      // const name = key
-      log.info(`Resolve player ${name}`)
-      dispatch('findPlayer', name)
-        .then((accountId) => {
-          dispatch('resolveShip', name)
-          dispatch('resolveClan', name)
-          dispatch('resolvePlayer', name)
-        })
-        .catch(error => {
-          _.each(typ => commit(typ, finishedOk(name, false)))([types.SET_PERSONAL_DATA, types.SET_CLAN_DATA, types.SET_SHIP_DATA])
-          console.log(error)
-        })
+    let matchGroup = rootState.Settings.wows.matchgroup
+    if (matchGroup === 'auto') {
+      matchGroup = state.arena.matchGroup
     }
+
+    Promise.all(state.players.map(player => dispatch('findPlayer', player.name)).map(p => p.catch(e => e)))
+    .then(results => {
+      // filter Error objects
+      const players = R.filter(r => !(r instanceof Error), results)
+      dispatch('resolvePlayer', { players, matchGroup })
+      for (const player of players) {
+        dispatch('resolveShip', { name: player.name, matchGroup: matchGroup })
+        dispatch('resolveClan', player.name)
+      }
+    })
+    .catch(e => console.log(e))
   },
 
   findPlayer ({ state, commit }, name) {
@@ -219,9 +224,10 @@ const actions = {
             data: playerData
           })
           console.log(`Found player: ${name} => ${playerData.accountId}`)
-          return resolve(playerData.accountId)
+          return resolve(playerData)
         })
         .catch(error => {
+          R.forEach(typ => commit(typ, finishedOk(name, false)))([types.SET_PERSONAL_DATA, types.SET_CLAN_DATA, types.SET_SHIP_DATA])
           console.log(error)
           return reject(error)
         })
@@ -246,13 +252,9 @@ const actions = {
     }
   },
 
-  resolveShip ({ state, commit, rootState }, name) {
+  resolveShip ({ state, commit, rootState }, { name, matchGroup }) {
+    console.log(`Resolving ship for ${name}`)
       // Select the correct match group
-    let matchGroup = rootState.Settings.wows.matchgroup
-    if (matchGroup === 'auto') {
-      matchGroup = state.arena.matchGroup
-    }
-
     const player = state.players[state.playerIndex[name]]
     // Resolve the ship's name first
     wows.getShipName(player.ship.id)
@@ -280,21 +282,21 @@ const actions = {
     }
   },
 
-  resolvePlayer ({ state, commit, rootState }, name) {
-    // Select the correct match group
-    let matchGroup = rootState.Settings.wows.matchgroup
-    if (matchGroup === 'auto') {
-      matchGroup = state.arena.matchGroup
-    }
-
-    const player = state.players[state.playerIndex[name]]
-    wows.getPlayer(player.accountId, matchGroup)
+  resolvePlayer ({ state, commit, rootState }, { players, matchGroup }) {
+    // const player = state.players[state.playerIndex[name]]
+    wows.getPlayers(players, matchGroup)
     .then(playerData => {
-      commit(types.SET_PERSONAL_DATA, finishedOk(name, true, playerData))
-      return Promise.resolve(playerData)
+      for (const player of Object.values(playerData)) {
+        // console.log(accountId)
+        if (player.hidden) {
+          R.forEach(typ => commit(typ, finishedOk(player.name, false)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
+        } else {
+          commit(types.SET_PERSONAL_DATA, finishedOk(player.name, true, R.omit(['name'], player)))
+        }
+      }
+      return Promise.resolve()
     })
     .catch(error => {
-      _.each(typ => commit(typ, finishedOk(name, false)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
       console.log(error)
       return Promise.reject(error)
     })
