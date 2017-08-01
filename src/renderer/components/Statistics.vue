@@ -9,12 +9,13 @@
       </span>
     </div>
     <div v-if="updateAvailable" class="ui update-warning"><a target="_blank" href="https://github.com/patmanteau/chistr/releases/latest">Update available. Click here to download.</a></div>
-    <transition appear name="fade">
-      <div v-if="hasData" id="maingrid">
+    <transition name="fade">
+      <div v-if="finishedLoading" id="maingrid">
         <div class="gridcontainer">
         <player-list
           title="Foes"
           bordercolor="#f77"
+          :finishedLoading="finishedLoading"
           :players="foes">
         </player-list>
         <p></p>
@@ -22,9 +23,13 @@
           title="Friends"
           bordercolor="#8f8"
           noheader="true"
+          :finishedLoading="finishedLoading"
           :players="friends">
         </player-list>
         </div>
+      </div>
+      <div v-else>
+        <spinner></spinner>
       </div>
     </transition>
     <!-- <div v-if="finishedLoading">Finished Loading</div> -->
@@ -36,11 +41,12 @@ import { mapState, mapGetters } from 'vuex'
 import { remote } from 'electron'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
+import Spinner from './Statistics/Spinner'
 import semver from 'semver'
 
 export default {
   name: 'statistics',
-  components: { ArenaInfo, PlayerList },
+  components: { ArenaInfo, PlayerList, Spinner },
 
   computed: {
     ...mapState({

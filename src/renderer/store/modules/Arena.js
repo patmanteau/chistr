@@ -53,11 +53,10 @@ const getters = {
   },
 
   finishedLoading (state, getters) {
-    return R.allPass([
-      R.path(['personal', 'finishedLoading']),
-      R.path(['clan', 'finishedLoading']),
-      R.path(['ship', 'finishedLoading'])
-    ])(state.players)
+    return state.hasData &&
+      R.all(R.path(['personal', 'finishedLoading']) &&
+      R.path(['clan', 'finishedLoading']) &&
+      R.path(['ship', 'finishedLoading']))(state.players)
   },
 
   player: (state) => (name) => {
@@ -97,7 +96,7 @@ const mutations = {
       // scenarioConfigId:90
       // teamsCount:2
     }
-    state.hasData = true
+    // state.hasData = true
   },
 
   [types.ADD_ERROR] (state, error) {
@@ -109,6 +108,7 @@ const mutations = {
   },
 
   [types.INITIALIZE_PLAYER_DATA] (state, playerList) {
+    state.hasData = false
     const tempPlayers = []
     const tempIndex = {}
     state.playerIndex = {}
@@ -155,6 +155,7 @@ const mutations = {
       })
       state.players = tempPlayers
       state.playerIndex = tempIndex
+      state.hasData = true
     }
   },
 
@@ -209,7 +210,7 @@ const actions = {
     .then(results => {
       // filter Error objects
       const players = R.filter(r => !(r instanceof Error), results)
-      dispatch('resolvePlayer', { players, matchGroup })
+      dispatch('resolvePlayers', { players, matchGroup })
       for (const player of players) {
         dispatch('resolveShip', { name: player.name, matchGroup: matchGroup })
         dispatch('resolveClan', player.name)
@@ -284,7 +285,7 @@ const actions = {
     }
   },
 
-  resolvePlayer ({ state, commit, rootState }, { players, matchGroup }) {
+  resolvePlayers ({ state, commit, rootState }, { players, matchGroup }) {
     wows.getPlayers(players, matchGroup)
     .then(playerData => {
       for (const player of Object.values(playerData)) {

@@ -43,11 +43,13 @@
       <!-- Player stats -->
       <!-- No player stats, not yet loaded -->
       <!-- <transition name="fade" mode="out-in"> -->
-      <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-if="!player.personal.finishedLoading && !player.ship.finishedLoading" key="without-player-stats-not-loaded">
-        <span class="dg-cell text text-centered ui">Loading player</span>
+      <!-- <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-if="!player.personal.finishedLoading && !player.ship.finishedLoading" key="without-player-stats-not-loaded"> -->
+      <!-- <transition name="fade" mode="out-in"> -->
+      <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-if="!finishedLoading" key="without-player-stats-not-loaded">
+        <span class="dg-cell text text-centered ui dg-loading">Loading player</span>
       </div>
       <!-- No player stats at all -->
-      <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="!player.personal.hasRecord" key="without-player-stats">
+      <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
         <span class="dg-cell text text-centered ui">This profile is hidden</span>
       </div>
       <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border ui" v-else key="with-player-stats">
@@ -57,9 +59,11 @@
         <div class="dg-cell number text-subdued">{{ player.personal.avgDmg.toFixed(0) }}</div>
       </div>
       <!-- </transition> -->
+      <!-- </transition> -->
       <!-- Ship stats -->
-      <transition name="fade" mode="out-in">
-      <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.personal.finishedLoading && player.ship.finishedLoading && player.personal.hasRecord && player.ship.hasRecord && player.ship.battles" key="with-ship-stats">
+      <!-- <transition name="fade" mode="out-in"> -->
+      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.personal.finishedLoading && player.ship.finishedLoading && player.personal.hasRecord && player.ship.hasRecord && player.ship.battles" key="with-ship-stats"> -->
+      <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats">
         <div class="dg-cell number">{{ player.ship.battles }}</div>
         <div class="dg-cell number text-centered" :class="winrateclass(player.ship.battles, player.ship.winrate)">{{ player.ship.winrate.toFixed(2) }}%</div>
         <div class="dg-cell number" :class="prclass(player.ship.battles, player.ship.pr)">{{ player.ship.pr | denan(0) }}</div>
@@ -67,14 +71,14 @@
         <div class="dg-cell number text-subdued">{{ player.ship.avgDmg.toFixed(0) }}</div>
       </div>
       <!-- Ship still loading -->
-      <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord && !player.ship.finishedLoading && !player.ship.hasRecord" key="without-ship-stats">
+      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord && !player.ship.finishedLoading && !player.ship.hasRecord" key="without-ship-stats">
         <span class="dg-cell text text-centered">Loading ship</span>
-      </div>
+      </div> -->
       <!-- No ship stats at all -->
-      <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord && player.ship.finishedLoading && !player.ship.hasRecord" key="without-ship-stats">
+      <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
         <span class="dg-cell text text-centered">First battle in this ship</span>
       </div>
-      </transition>
+      <!-- </transition> -->
     </div>
     <icon-row v-if="noheader" @set-sort="key => setSort(key)" key="footer"></icon-row>
   </transition-group>
@@ -91,7 +95,7 @@ import 'vue-popperjs/dist/css/vue-popper.css'
 
 export default {
   name: 'player-list',
-  props: ['title', 'bordercolor', 'players', 'noheader', 'filterby'],
+  props: ['title', 'bordercolor', 'players', 'noheader', 'filterby', 'finishedLoading'],
   components: { IconRow, 'popper': Popper },
 
   filters: {
@@ -198,6 +202,11 @@ export default {
 }
 
 .dg-row--stripe {
+  background: #eee;
+}
+
+.dg-loading {
+  /* margin: 2px; */
   background: #eee;
 }
 
