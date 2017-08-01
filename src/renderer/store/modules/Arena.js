@@ -58,6 +58,10 @@ const getters = {
       R.path(['clan', 'finishedLoading']),
       R.path(['ship', 'finishedLoading'])
     ])(state.players)
+  },
+
+  player: (state) => (name) => {
+    return state.players[state.playerIndex[name]]
   }
 }
 
@@ -234,10 +238,10 @@ const actions = {
     })
   },
 
-  resolveClan ({ state, commit }, name) {
-    const player = state.players[state.playerIndex[name]]
+  resolveClan ({ state, getters, commit }, name) {
+    const player = getters.player(name)
     if (!player.accountId) {
-      return Promise.reject(Error('Invalid account id'))
+      return Promise.reject(Error(`Invalid account id for player ${name}`))
     } else {
       wows.getPlayerClan(player.accountId)
       .then(clanData => {
@@ -252,10 +256,8 @@ const actions = {
     }
   },
 
-  resolveShip ({ state, commit, rootState }, { name, matchGroup }) {
-    console.log(`Resolving ship for ${name}`)
-      // Select the correct match group
-    const player = state.players[state.playerIndex[name]]
+  resolveShip ({ state, getters, commit, rootState }, { name, matchGroup }) {
+    const player = getters.player(name)
     // Resolve the ship's name first
     wows.getShipName(player.ship.id)
     .then(shipName => {
@@ -283,7 +285,6 @@ const actions = {
   },
 
   resolvePlayer ({ state, commit, rootState }, { players, matchGroup }) {
-    // const player = state.players[state.playerIndex[name]]
     wows.getPlayers(players, matchGroup)
     .then(playerData => {
       for (const player of Object.values(playerData)) {
