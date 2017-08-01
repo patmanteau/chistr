@@ -1,16 +1,16 @@
 <template>
   <div class="rowflexed">
+    <transition name="fade" mode="out-in">
+      <div v-if="active">
+        <img :src="arena.matchGroup | matchGroupImg" class="type-image" height="40"></img>
+      </div>
+    </transition>
     <div>
       <transition name="fade" mode="out-in">
         <h1 v-if="active">{{ arena.mapName | translateMapName }}</h1>
         <h1 v-else>No active match</h1>
       </transition>
     </div>
-    <transition name="fade" mode="out-in">
-      <div v-if="active">
-        <img :src="arena.matchGroup | matchGroupImg" class="type-image" height="40"></img>
-      </div>
-    </transition>
     <div class="header-item">
       <transition name="fade" mode="out-in">
         <h2 class="header-item">
@@ -64,7 +64,7 @@ h1 {
   font-size: 40px;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
-  margin: 0px 40px 0px 0px;
+  margin: 0px 10px 0px 10px;
   /*text-align: center;*/
 }
 
