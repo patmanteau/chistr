@@ -66,8 +66,12 @@
         <div class="dg-cell number text-centered">{{ player.ship.kdRatio | denan }}</div>
         <div class="dg-cell number text-subdued">{{ player.ship.avgDmg.toFixed(0) }}</div>
       </div>
+      <!-- Ship still loading -->
+      <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord && !player.ship.finishedLoading && !player.ship.hasRecord" key="without-ship-stats">
+        <span class="dg-cell text text-centered">Loading ship</span>
+      </div>
       <!-- No ship stats at all -->
-      <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord" key="without-ship-stats">
+      <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord && player.ship.finishedLoading && !player.ship.hasRecord" key="without-ship-stats">
         <span class="dg-cell text text-centered">First battle in this ship</span>
       </div>
       </transition>
