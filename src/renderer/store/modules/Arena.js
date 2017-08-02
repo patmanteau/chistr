@@ -8,7 +8,7 @@ const jsonfile = require('jsonfile')
 const path = require('path')
 const shipdb = new ShipDB()
 
-const didFinishOk = function (name, ok, extraData = null) {
+const didFinishOk = function (ok, name, extraData = null) {
   const obj = {
     name: name,
     data: {
