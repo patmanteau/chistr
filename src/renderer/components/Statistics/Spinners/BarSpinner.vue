@@ -6,7 +6,7 @@
     <div class="rect3"></div>
     <div class="rect4"></div>
     <div class="rect5"></div>
-    <p>Loading</p>
+    <p>Loading match</p>
   </div>
 </div>
 </template>
@@ -32,7 +32,7 @@ export default {
 
 .spinner {
   margin: 100px auto;
-  width: 50px;
+  width: 100px;
   height: 40px;
   text-align: center;
   font-size: 10px;
