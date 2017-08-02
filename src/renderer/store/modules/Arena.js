@@ -1,4 +1,3 @@
-// import Vue from 'vue'
 import R from 'ramda'
 import * as types from '../mutation-types'
 import {WowsApi} from '../wows-api'
@@ -9,7 +8,7 @@ const jsonfile = require('jsonfile')
 const path = require('path')
 const shipdb = new ShipDB()
 
-const finishedOk = function (name, ok, extraData = null) {
+const didFinishOk = function (name, ok, extraData = null) {
   const obj = {
     name: name,
     data: {
@@ -232,7 +231,7 @@ const actions = {
           return resolve(playerData)
         })
         .catch(error => {
-          R.forEach(typ => commit(typ, finishedOk(name, false)))([types.SET_PERSONAL_DATA, types.SET_CLAN_DATA, types.SET_SHIP_DATA])
+          R.forEach(typ => commit(typ, didFinishOk(false, name)))([types.SET_PERSONAL_DATA, types.SET_CLAN_DATA, types.SET_SHIP_DATA])
           console.log(error)
           return reject(error)
         })
@@ -246,11 +245,11 @@ const actions = {
     } else {
       wows.getPlayerClan(player.accountId)
       .then(clanData => {
-        commit(types.SET_CLAN_DATA, finishedOk(name, true, clanData))
+        commit(types.SET_CLAN_DATA, didFinishOk(true, name, clanData))
         return Promise.resolve()
       })
       .catch(error => {
-        commit(types.SET_CLAN_DATA, finishedOk(name, false))
+        commit(types.SET_CLAN_DATA, didFinishOk(false, name))
         console.log(error)
         return Promise.resolve()
       })
@@ -274,11 +273,11 @@ const actions = {
     } else {
       wows.getPlayerShip(player.ship.id, player.accountId, matchGroup)
         .then(shipData => {
-          commit(types.SET_SHIP_DATA, finishedOk(name, true, shipData))
+          commit(types.SET_SHIP_DATA, didFinishOk(true, name, shipData))
           return Promise.resolve()
         })
         .catch(error => {
-          commit(types.SET_SHIP_DATA, finishedOk(name, false))
+          commit(types.SET_SHIP_DATA, didFinishOk(false, name))
           console.log(error)
           return Promise.resolve()
         })
@@ -291,9 +290,9 @@ const actions = {
       for (const player of Object.values(playerData)) {
         // console.log(accountId)
         if (player.hidden) {
-          R.forEach(typ => commit(typ, finishedOk(player.name, false)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
+          R.forEach(typ => commit(typ, didFinishOk(false, player.name)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
         } else {
-          commit(types.SET_PERSONAL_DATA, finishedOk(player.name, true, R.omit(['name'], player)))
+          commit(types.SET_PERSONAL_DATA, didFinishOk(true, player.name, R.omit(['name'], player)))
         }
       }
       return Promise.resolve()
