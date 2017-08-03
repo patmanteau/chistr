@@ -10,7 +10,7 @@
     <div class="container">
       <div class="centered">
         <h1 class="ui">Ahoy captain!</h1>
-        <h2 class="ui">Waiting for the next battle to begin.</h2>
+        <h2 class="ui">Waiting for the next battle to start.</h2>
         <!-- <span class="standout ui">Chistr <small>{{ version }}</small></span>
         <span class="author">Copyright &copy; 2017 Patrick Haas &lt;<a href="mailto:patmanteau@posteo.de" class="external-link" target="_blank">patmanteau@posteo.de</a>&gt;.</span>
         <span class="text ui"> Distributed under The MIT License.</span>
