@@ -1,5 +1,27 @@
 <template>
   <div id="view">
+
+    <template v-if="!hasData">
+    <!-- <div id="header" class="ui">
+      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
+        <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
+      </router-link>
+    </div> -->
+    <div class="container">
+      <div class="centered">
+        <h1 class="ui">Ahoy captain!</h1>
+        <h2 class="ui">Waiting for the next battle to begin.</h2>
+        <!-- <span class="standout ui">Chistr <small>{{ version }}</small></span>
+        <span class="author">Copyright &copy; 2017 Patrick Haas &lt;<a href="mailto:patmanteau@posteo.de" class="external-link" target="_blank">patmanteau@posteo.de</a>&gt;.</span>
+        <span class="text ui"> Distributed under The MIT License.</span>
+        <span class="text ui">Inspired by <a class="external-link text" href="https://github.com/tianweiliu/wows-stats" target="_blank">wows-stats</a>. PR courtesy of <a class="external-link text" href="http://wows-numbers.com" target="_blank">WoWS Stats &amp; Numbers</a>.</span>
+        <span class="text ui">&lsquo;World of Warships&rsquo; is a registered trademark of <a href="https://eu.wargaming.net/" target="_blank" class="external-link text">Wargaming</a>.</span>
+        <span class="text ui"><a class="external-link text" href="http://fontawesome.io" target="_blank">Font Awesome</a> icons by Dave Gandy.</span>
+        <span class="github ui"><a href="https://github.com/patmanteau/chistr" class="external-link github" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></span> -->
+      </div>
+    </div>
+    </template>
+    <template v-else>
     <div id="header">
       <span>
       <arena-info
@@ -32,8 +54,10 @@
         <bar-spinner></bar-spinner>
       </div>
     </transition>
+    </template>
     <!-- <div v-if="finishedLoading">Finished Loading</div> -->
   </div>
+
 </template>
 
 <script type="text/javascript">
@@ -88,6 +112,41 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 500px;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  color: #777;
+  font-size: 40px;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 400;
+  margin: 0px 10px 0px 10px;
+  /*text-align: center;*/
+}
+
+h2 {
+  color: #999;
+  font-size: 15px;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 400;
+  margin: 0px 0px 0px 2px;
+  /*text-align: center;*/
+}
+
+
 .update-warning {
   color: #c33;
   font-size: 13px;
