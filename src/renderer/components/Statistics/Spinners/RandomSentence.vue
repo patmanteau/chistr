@@ -9,19 +9,7 @@ export default {
 
   methods: {
     getSentence () {
-      const sentences = _.shuffle([
-        'Polishing torpedoes',
-        'Pre-heating smoke generators',
-        'Buffing Battleships',
-        'Teaching German gun crews trigonometry',
-        'Warshipping RNGesus',
-        'Patrolling map border',
-        'Capturing ‘D’',
-        'Calculating optimal snipe distance',
-        'Reinforcing British cruiser armour',
-        'Humming ‘La Marseillaise’'
-      ])
-      return sentences[this.sentenceIdx++ % sentences.length]
+      return this.sentences[this.sentenceIdx++ % this.sentences.length]
     }
   },
 
@@ -34,6 +22,18 @@ export default {
 
   data () {
     return {
+      sentences: _.shuffle([
+        'Polishing torpedoes',
+        'Pre-heating smoke generators',
+        'Buffing Battleships',
+        'Teaching German gun crews trigonometry',
+        'Warshipping RNGesus',
+        'Patrolling map border',
+        'Capturing ‘D’',
+        'Calculating optimal snipe distance',
+        'Reinforcing British cruiser armour',
+        'Humming ‘La Marseillaise’'
+      ]),
       sentence: '',
       sentenceIdx: 0
     }
