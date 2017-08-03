@@ -6,14 +6,16 @@
     <div class="rect3"></div>
     <div class="rect4"></div>
     <div class="rect5"></div>
-    <p>Loading match</p>
+    <random-sentence></random-sentence>
   </div>
 </div>
 </template>
 
 <script type="text/javascript">
+import RandomSentence from './RandomSentence'
 export default {
   name: 'bar-spinner',
+  components: { RandomSentence },
   data () {
     return {
 
@@ -32,7 +34,7 @@ export default {
 
 .spinner {
   margin: 100px auto;
-  width: 100px;
+  width: 300px;
   height: 40px;
   text-align: center;
   font-size: 10px;
@@ -49,7 +51,7 @@ export default {
 }
 
 .spinner > p {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Roboto Slab', sans-serif;
   font-weight: 400;
   font-size: 14px;
 }
