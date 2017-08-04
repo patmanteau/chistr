@@ -15,7 +15,7 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     this.sentence = this.getSentence()
     setInterval(() => {
       this.sentence = this.getSentence()
@@ -29,9 +29,11 @@ export default {
         'Pre-heating smoke generators',
         'Buffing Battleships',
         'Giving trigonometry lessons to German gun crews',
-        'Warshipping RNGesus',
+        'Thanking RNGesus',
         'Patrolling map border',
+        'Flattening broadsides',
         'Capturing D',
+        'Counting stars',
         'Calculating optimal snipe distance',
         'Reinforcing British cruiser armour',
         'Humming ‘La Marseillaise’'

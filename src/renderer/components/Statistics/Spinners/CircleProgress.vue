@@ -1,7 +1,7 @@
 <template>
   <div class="spinnercontainer">
-    <progress-bar id="progress" type="circle" ref="circle" :options="options"></progress-bar>
-    <!-- <p>{{ (progress * 100).toFixed() }}%</p> -->
+    <!-- <progress-bar class="progressbar" type="circle" ref="circle" :options="options"></progress-bar> -->
+    <div id="progressbar"></div>
     <random-sentence></random-sentence>
   </div>
 </template>
@@ -9,6 +9,7 @@
 <script type="text/javascript">
 import RandomSentence from './RandomSentence'
 import { mapGetters } from 'vuex'
+import ProgressBar from 'progressbar.js'
 export default {
   name: 'circle-progress',
   components: { RandomSentence },
@@ -19,41 +20,29 @@ export default {
     ])
   },
 
+  watch: {
+    progress (newValue, oldValue) {
+      this.bar.animate(newValue)
+      this.bar.setText(`${(newValue * 100).toFixed()}%`)
+    }
+  },
+
   data () {
     return {
       options: {
-        color: '#aaa',
-        // This has to be the same size as the maximum width to
-        // prevent clipping
+        color: '#777',
         strokeWidth: 4,
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        text: {
-          fontFamily: 'Roboto Slab',
-          fontSize: '14px',
-          autoStyleContainer: false
-        },
-        from: { color: '#aaa', width: 1 },
-        to: { color: '#333', width: 4 },
-        // Set default step function for all animate calls
-        step: function (state, circle) {
-          circle.path.setAttribute('stroke', state.color)
-          circle.path.setAttribute('stroke-width', state.width)
-
-          var value = Math.round(circle.value() * 100)
-          if (value === 0) {
-            circle.setText('')
-          } else {
-            circle.setText(value)
-          }
-        }
+        trailWidth: 2,
+        easing: 'linear',
+        duration: 100,
+        className: 'progressbar-text',
+        warnings: false
       }
     }
   },
 
-  updated: function () {
-    this.$refs.circle.animate(this.progress)
+  mounted () {
+    this.bar = new ProgressBar.Circle('#progressbar', this.options)
   }
 }
 </script>
@@ -64,73 +53,17 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
-#progress {
+#progressbar {
+  color: #777;
   margin: 20px;
-  width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
   text-align: center;
-  font-size: 10px;
+  font-family: 'Roboto Slab';
+  font-size: 24px;
 }
 
-/* .spinner>div {
-  background-color: #ccc;
-  height: 100%;
-  width: 6px;
-  display: inline-block;
-
-  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-  animation: sk-stretchdelay 1.2s infinite ease-in-out;
-}
-
-.spinner>p {
-  font-family: 'Roboto Slab', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-}
-
-.spinner .rect2 {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
-}
-
-.spinner .rect3 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-.spinner .rect4 {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
-
-.spinner .rect5 {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
-}
-
-@-webkit-keyframes sk-stretchdelay {
-  0%,
-  40%,
-  100% {
-    -webkit-transform: scaleY(0.4)
-  }
-  20% {
-    -webkit-transform: scaleY(1.0)
-  }
-}
-
-@keyframes sk-stretchdelay {
-  0%,
-  40%,
-  100% {
-    transform: scaleY(0.4);
-    -webkit-transform: scaleY(0.4);
-  }
-  20% {
-    transform: scaleY(1.0);
-    -webkit-transform: scaleY(1.0);
-  }
-} */
 </style>

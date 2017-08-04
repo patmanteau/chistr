@@ -51,8 +51,8 @@
         </div>
       </div>
       <div v-else-if="hasData" key="loadingScreen">
-        <bar-spinner></bar-spinner>
-        <!-- <circle-progress></circle-progress> -->
+        <!-- <bar-spinner></bar-spinner> -->
+        <circle-progress></circle-progress>
       </div>
     </transition>
     </template>
@@ -66,13 +66,14 @@ import { mapState, mapGetters } from 'vuex'
 import { remote } from 'electron'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
-import BarSpinner from './Statistics/Spinners/BarSpinner'
-// import CircleProgress from './Statistics/Spinners/CircleProgress'
+// import BarSpinner from './Statistics/Spinners/BarSpinner'
+import CircleProgress from './Statistics/Spinners/CircleProgress'
 import semver from 'semver'
 
 export default {
   name: 'statistics',
-  components: { ArenaInfo, PlayerList, BarSpinner },
+  // components: { ArenaInfo, PlayerList, BarSpinner },
+  components: { ArenaInfo, PlayerList, CircleProgress },
 
   computed: {
     ...mapState({
