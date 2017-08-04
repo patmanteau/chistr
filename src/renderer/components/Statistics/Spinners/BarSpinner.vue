@@ -1,6 +1,7 @@
 <template>
 <div class="spinnercontainer">
   <div class="spinner">
+    <p class="percentage">{{ (progress * 100).toFixed() }}%</p>
     <div class="rect1"></div>
     <div class="rect2"></div>
     <div class="rect3"></div>
@@ -13,9 +14,17 @@
 
 <script type="text/javascript">
 import RandomSentence from './RandomSentence'
+import { mapGetters } from 'vuex'
 export default {
   name: 'bar-spinner',
   components: { RandomSentence },
+
+  computed: {
+    ...mapGetters([
+      'progress'
+    ])
+  },
+
   data () {
     return {
 
@@ -40,6 +49,10 @@ export default {
   font-size: 10px;
 }
 
+.spinner > .percentage {
+  color: #aaa;
+  font-size: 16px;
+}
 .spinner > div {
   background-color: #ccc;
   height: 100%;
@@ -52,6 +65,7 @@ export default {
 
 .spinner > p {
   font-family: 'Roboto Slab', sans-serif;
+  color: #aaa;
   font-weight: 400;
   font-size: 14px;
 }

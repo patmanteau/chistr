@@ -7,7 +7,7 @@
         <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
       </router-link>
     </div> -->
-    <div class="container">
+    <div class="container" key="statsDisplay">
       <div class="centered">
         <h1 class="ui">Ahoy captain!</h1>
         <h2 class="ui">Waiting for the next battle to start.</h2>
@@ -32,7 +32,7 @@
     </div>
     <div v-if="updateAvailable" class="ui update-warning"><a target="_blank" href="https://github.com/patmanteau/chistr/releases/latest">Update available. Click here to download.</a></div>
     <transition name="fade" mode="out-in">
-      <div v-if="finishedLoading" id="maingrid">
+      <div v-if="finishedLoading" id="maingrid" key="statsDisplay">
         <div class="gridcontainer">
         <player-list
           title="Foes"
@@ -50,8 +50,9 @@
         </player-list>
         </div>
       </div>
-      <div v-else-if="hasData">
+      <div v-else-if="hasData" key="loadingScreen">
         <bar-spinner></bar-spinner>
+        <!-- <circle-progress></circle-progress> -->
       </div>
     </transition>
     </template>
@@ -66,6 +67,7 @@ import { remote } from 'electron'
 import ArenaInfo from './Statistics/ArenaInfo'
 import PlayerList from './Statistics/PlayerList'
 import BarSpinner from './Statistics/Spinners/BarSpinner'
+// import CircleProgress from './Statistics/Spinners/CircleProgress'
 import semver from 'semver'
 
 export default {

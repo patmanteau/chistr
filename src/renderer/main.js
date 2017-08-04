@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import VueProgress from 'vue-progress'
 // import VeeValidate from 'vee-validate'
 import axios from 'axios'
 
@@ -15,6 +16,7 @@ Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
+Vue.use(VueProgress)
 // Vue.use(VeeValidate)
 
 // handle window menu events

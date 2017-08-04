@@ -1,5 +1,7 @@
 <template>
-  <p class="text">{{ sentence }}</p>
+  <transition name="fade" mode="out-in">
+  <p class="text" :key="sentence">{{ sentence }}</p>
+  </transition>
 </template>
 
 <script type="text/javascript">
@@ -26,10 +28,10 @@ export default {
         'Polishing torpedoes',
         'Pre-heating smoke generators',
         'Buffing Battleships',
-        'Teaching German gun crews trigonometry',
+        'Giving trigonometry lessons to German gun crews',
         'Warshipping RNGesus',
         'Patrolling map border',
-        'Capturing ‘D’',
+        'Capturing D',
         'Calculating optimal snipe distance',
         'Reinforcing British cruiser armour',
         'Humming ‘La Marseillaise’'
@@ -47,5 +49,17 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0
+}
+
+.slide-fade-enter-active {
+  transition: all .2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(10px);
+  opacity: 0;
 }
 </style>

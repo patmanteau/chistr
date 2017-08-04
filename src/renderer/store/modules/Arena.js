@@ -33,7 +33,10 @@ const state = {
   },
   players: [],
   playerIndex: {},
-  errors: []
+  errors: [],
+  // for progress display
+  completedOperations: 0,
+  totalOperations: 1
 }
 
 let wows
@@ -49,6 +52,10 @@ const getters = {
 
   players (state, getters) {
     return state.players
+  },
+
+  progress (state) {
+    return R.clamp(0, 1, state.completedOperations / state.totalOperations)
   },
 
   finishedLoading (state, getters) {
@@ -154,6 +161,8 @@ const mutations = {
       })
       state.players = tempPlayers
       state.playerIndex = tempIndex
+      state.completedOperations = 0
+      state.totalOperations = 1
       state.hasData = true
     }
   },
@@ -172,6 +181,14 @@ const mutations = {
 
   [types.SET_SHIP_DATA] (state, { name, data }) {
     Object.assign(state.players[state.playerIndex[name]].ship, data)
+  },
+
+  [types.SET_TOTAL_OPERATIONS] (state, { count }) {
+    state.totalOperations = count
+  },
+
+  [types.INC_COMPLETED_OPERATIONS] (state) {
+    state.completedOperations++
   }
 }
 
@@ -199,6 +216,18 @@ const actions = {
   },
 
   resolve ({ state, dispatch, commit, rootState }) {
+    // set progress count
+    commit(types.SET_TOTAL_OPERATIONS, {
+      // For each player,
+      // 1. find accountId by name
+      // 2. set player stats
+      // 3. set ship name
+      // 4. set ship stats
+      // 5. set clan info
+      // Then set all player stats
+      count: 5 * state.players.length
+    })
+
     wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url, shipdb)
     let matchGroup = rootState.Settings.wows.matchgroup
     if (matchGroup === 'auto') {
@@ -227,11 +256,13 @@ const actions = {
             name: name,
             data: playerData
           })
+          commit(types.INC_COMPLETED_OPERATIONS)
           console.log(`Found player: ${name} => ${playerData.accountId}`)
           return resolve(playerData)
         })
         .catch(error => {
           R.forEach(typ => commit(typ, didFinishOk(false, name)))([types.SET_PERSONAL_DATA, types.SET_CLAN_DATA, types.SET_SHIP_DATA])
+          commit(types.INC_COMPLETED_OPERATIONS)
           console.log(error)
           return reject(error)
         })
@@ -246,10 +277,12 @@ const actions = {
       wows.getPlayerClan(player.accountId)
       .then(clanData => {
         commit(types.SET_CLAN_DATA, didFinishOk(true, name, clanData))
+        commit(types.INC_COMPLETED_OPERATIONS)
         return Promise.resolve()
       })
       .catch(error => {
         commit(types.SET_CLAN_DATA, didFinishOk(false, name))
+        commit(types.INC_COMPLETED_OPERATIONS)
         console.log(error)
         return Promise.resolve()
       })
@@ -262,8 +295,11 @@ const actions = {
     wows.getShipName(player.ship.id)
     .then(shipName => {
       commit(types.SET_SHIP_DATA, { name: name, data: { name: shipName } })
+      commit(types.INC_COMPLETED_OPERATIONS)
     })
     .catch(error => {
+      commit(types.SET_SHIP_DATA, { name: name, data: { name: 'Ship not found' } })
+      commit(types.INC_COMPLETED_OPERATIONS)
       log.error(error)
       console.log(error)
     })
@@ -274,10 +310,12 @@ const actions = {
       wows.getPlayerShip(player.ship.id, player.accountId, matchGroup)
         .then(shipData => {
           commit(types.SET_SHIP_DATA, didFinishOk(true, name, shipData))
+          commit(types.INC_COMPLETED_OPERATIONS)
           return Promise.resolve()
         })
         .catch(error => {
           commit(types.SET_SHIP_DATA, didFinishOk(false, name))
+          commit(types.INC_COMPLETED_OPERATIONS)
           console.log(error)
           return Promise.resolve()
         })
@@ -291,8 +329,10 @@ const actions = {
         // console.log(accountId)
         if (player.hidden) {
           R.forEach(typ => commit(typ, didFinishOk(false, player.name)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
+          commit(types.INC_COMPLETED_OPERATIONS)
         } else {
           commit(types.SET_PERSONAL_DATA, didFinishOk(true, player.name, R.omit(['name'], player)))
+          commit(types.INC_COMPLETED_OPERATIONS)
         }
       }
       return Promise.resolve()
