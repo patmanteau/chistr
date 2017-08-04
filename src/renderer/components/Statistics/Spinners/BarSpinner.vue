@@ -43,14 +43,14 @@ export default {
 
 .spinner {
   margin: 100px auto;
-  width: 300px;
+  width: 400px;
   height: 40px;
   text-align: center;
   font-size: 10px;
 }
 
 .spinner > .percentage {
-  color: #aaa;
+  color: #777;
   font-size: 16px;
 }
 .spinner > div {
