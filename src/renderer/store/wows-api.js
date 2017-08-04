@@ -60,47 +60,6 @@ export class WowsApi {
     })
   }
 
-  // getPlayer (accountId, matchGroup = 'pvp') {
-  //   if (matchGroup === 'ranked') matchGroup = 'rank_solo'
-  //   else if (matchGroup === 'cooperative') matchGroup = 'pve'
-  //   return new Promise((resolve, reject) => {
-  //     // Our second step is looking up the player's stats using his account ID.
-  //     const params = {
-  //       account_id: accountId.toString(),
-  //       extra: ''
-  //     }
-  //     if (matchGroup === 'rank_solo') params.extra = 'statistics.rank_solo'
-  //     if (matchGroup === 'pve') params.extra = 'statistics.pve'
-
-  //     this.api.get('/wows/account/info/', { params: params })
-  //       .then(response => {
-  //         const playerStats = response.data.data[accountId]
-  //         // If the player's profile is hidden, give up
-  //         if (playerStats.hidden_profile) {
-  //           return reject(Error('Player profile is hidden.'))
-  //         }
-
-  //         if (!playerStats.statistics.hasOwnProperty(matchGroup)) {
-  //           return reject(Error('Player has no record in the selected matchGroup'))
-  //         }
-
-  //         const group = playerStats.statistics[matchGroup]
-  //         const playerData = {
-  //           battles: group.battles,
-  //           winrate: (group.wins / group.battles * 100),
-  //           avgExp: (group.xp / group.battles),
-  //           avgDmg: (group.damage_dealt / group.battles),
-  //           kdRatio: (group.frags / (group.battles - group.survived_battles))
-  //         }
-
-  //         return resolve(playerData)
-  //       })
-  //       .catch(error => {
-  //         return reject(error)
-  //       })
-  //   })
-  // }
-
   getPlayers (accountIds, matchGroup = 'pvp') {
     if (matchGroup === 'ranked') matchGroup = 'rank_solo'
     else if (matchGroup === 'cooperative') matchGroup = 'pve'
