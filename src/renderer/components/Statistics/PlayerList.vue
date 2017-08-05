@@ -42,16 +42,11 @@
 
       <!-- Player stats -->
       <!-- No player stats, not yet loaded -->
-      <!-- <transition name="fade" mode="out-in"> -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-if="!player.personal.finishedLoading && !player.ship.finishedLoading" key="without-player-stats-not-loaded"> -->
-      <!-- <transition name="fade" mode="out-in"> -->
       <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-if="!finishedLoading" key="without-player-stats-not-loaded">
         <span class="dg-cell text text-centered ui dg-loading">Loading player</span>
       </div>
       <!-- No player stats at all -->
       <div class="dg-cellgroup dg-cellgroup-2of3 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
-        <!-- <div class="dg-cell text text-centered ui hidden">This profile is hidden</div> -->
-        <!-- <div class="dg-cell text text-centered ui hidden" title="This player has hidden his profile"></div> -->
         <div class="dg-cell text text-centered ui" title="This player has hidden his profile"><hr class="grey"></hr></div>
       </div>
       <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border ui" v-else key="with-player-stats">
@@ -60,11 +55,7 @@
         <div class="dg-cell number text-centered">{{ player.personal.kdRatio | denan }}</div>
         <div class="dg-cell number text-subdued">{{ player.personal.avgDmg.toFixed(0) }}</div>
       </div>
-      <!-- </transition> -->
-      <!-- </transition> -->
       <!-- Ship stats -->
-      <!-- <transition name="fade" mode="out-in"> -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="player.personal.finishedLoading && player.ship.finishedLoading && player.personal.hasRecord && player.ship.hasRecord && player.ship.battles" key="with-ship-stats"> -->
       <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats">
         <div class="dg-cell number">{{ player.ship.battles }}</div>
         <div class="dg-cell number text-centered" :class="winrateclass(player.ship.battles, player.ship.winrate)">{{ player.ship.winrate.toFixed(2) }}%</div>
@@ -72,17 +63,10 @@
         <div class="dg-cell number text-centered">{{ player.ship.kdRatio | denan }}</div>
         <div class="dg-cell number text-subdued">{{ player.ship.avgDmg.toFixed(0) }}</div>
       </div>
-      <!-- Ship still loading -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.finishedLoading && player.personal.hasRecord && !player.ship.finishedLoading && !player.ship.hasRecord" key="without-ship-stats">
-        <span class="dg-cell text text-centered">Loading ship</span>
-      </div> -->
       <!-- No ship stats at all -->
       <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
-        <div class="dg-cell text text-centered ui" title="This player fights his first battle in this ship"></div>
-        <!-- <span class="dg-cell text text-centered">First battle in this ship</span> -->
-        <span class="dg-cell text text-centered"><hr></hr></span>
+        <div class="dg-cell text text-centered ui" title="This player fights his first battle in this ship"><hr></hr></div>
       </div>
-      <!-- </transition> -->
     </div>
     <icon-row v-if="noheader" @set-sort="key => setSort(key)" key="footer"></icon-row>
   </transition-group>
@@ -250,10 +234,11 @@ export default {
 
 hr {
   display: block;
-  width: 70%;
+  width: 50%;
   height: 1px;
   border: 0;
-  border-top: 1px solid #ccc;
+  border-top: 2px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
   padding: 0;
 }
 
