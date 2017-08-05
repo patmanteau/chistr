@@ -170,6 +170,12 @@ body {
   /* font-weight: bold; */
 }
 
+.external-link-bold {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 .popper {
   width: auto;
   background-color: #f7f7f7;
