@@ -19,7 +19,7 @@ export default {
     this.sentence = this.getSentence()
     setInterval(() => {
       this.sentence = this.getSentence()
-    }, 1500)
+    }, 2000)
   },
 
   data () {
@@ -37,7 +37,20 @@ export default {
         'Calculating optimal snipe distance',
         'Reinforcing British cruiser armour',
         'Humming ‘La Marseillaise’',
-        'Shooting some poor mountain'
+        'Shooting some poor mountain',
+        'Flipping some birds',
+        'Requesting support',
+        'Looking for intelligence data',
+        'Nerfing IJN destroyers',
+        'Deliberately colliding with an island',
+        'Entering the Channel of Shattered Dreams on Two Brothers',
+        'Pinging like a madman',
+        'Impersonating Leeroy Jenkins',
+        'Lighting a pipe like Douglas MacArthur',
+        'Opening a supercontainer',
+        'Clubbing seals',
+        'Scratching and sniffing',
+        'Letting the dogs out'
       ]),
       sentence: '',
       sentenceIdx: 0
