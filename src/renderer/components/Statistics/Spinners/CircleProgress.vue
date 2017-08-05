@@ -31,7 +31,7 @@ export default {
     return {
       options: {
         color: '#777',
-        strokeWidth: 4,
+        strokeWidth: 8,
         trailWidth: 2,
         easing: 'linear',
         duration: 100,
