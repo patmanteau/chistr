@@ -51,7 +51,8 @@
       <!-- No player stats at all -->
       <div class="dg-cellgroup dg-cellgroup-2of3 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
         <!-- <div class="dg-cell text text-centered ui hidden">This profile is hidden</div> -->
-        <div class="dg-cell text text-centered ui hidden" title="This player has hidden his profile"></div>
+        <!-- <div class="dg-cell text text-centered ui hidden" title="This player has hidden his profile"></div> -->
+        <div class="dg-cell text text-centered ui" title="This player has hidden his profile"><hr class="grey"></hr></div>
       </div>
       <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border ui" v-else key="with-player-stats">
         <div class="dg-cell number">{{ player.personal.battles }}</div>
@@ -77,9 +78,9 @@
       </div> -->
       <!-- No ship stats at all -->
       <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
-        <div class="dg-cell text text-centered ui hidden" title="This player fights his first battle in this ship"></div>
+        <div class="dg-cell text text-centered ui" title="This player fights his first battle in this ship"></div>
         <!-- <span class="dg-cell text text-centered">First battle in this ship</span> -->
-        <span class="dg-cell text text-centered hidden"></span>
+        <span class="dg-cell text text-centered"><hr></hr></span>
       </div>
       <!-- </transition> -->
     </div>
@@ -241,11 +242,19 @@ export default {
   align-self: center;
 }
 
-.hidden {
-  height: 0.25em;
-  /* padding: 1px 3px 1px 3px; */
+/* .hidden {
   margin: 2px 20px 2px 22px;
+  color: #ddd;
   background-color: #dadada;
+} */
+
+hr {
+  display: block;
+  width: 70%;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  padding: 0;
 }
 
 .grey-top-border {
