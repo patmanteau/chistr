@@ -50,7 +50,12 @@ export default {
         'Opening a supercontainer',
         'Clubbing seals',
         'Scratching and sniffing',
-        'Letting the dogs out'
+        'Letting the dogs out',
+        'Uninstalling',
+        'Waiting for cyclone to end',
+        'Torping tropical beach',
+        'Getting sunk after 90 seconds',
+        'Parking behind island'
       ]),
       sentence: '',
       sentenceIdx: 0
