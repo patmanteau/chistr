@@ -55,7 +55,7 @@ const getters = {
   },
 
   progress (state) {
-    return R.clamp(0, 1, state.completedOperations / state.totalOperations)
+    return R.clamp(0, 1, (state.completedOperations / state.totalOperations) * 1.1)
   },
 
   finishedLoading (state, getters) {
