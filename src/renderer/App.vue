@@ -25,7 +25,7 @@ body {
   margin: 0;
   box-sizing: border-box;
 
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.3;
 
   -webkit-font-smoothing: antialiased;
@@ -37,13 +37,6 @@ body {
   -moz-user-select: none;
   -webkit-user-select:none;
   user-select: none;
-}
-
-.ui .number {
-  cursor: default;
-}
-
-.ui .no-data {
   cursor: default;
 }
 
@@ -172,9 +165,9 @@ body {
 }
 
 .external-link {
-  color: #555;
+  color: #333;
   text-decoration: none;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .popper {

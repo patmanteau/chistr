@@ -36,7 +36,8 @@ export default {
         'Counting stars',
         'Calculating optimal snipe distance',
         'Reinforcing British cruiser armour',
-        'Humming ‘La Marseillaise’'
+        'Humming ‘La Marseillaise’',
+        'Shooting some poor mountain'
       ]),
       sentence: '',
       sentenceIdx: 0

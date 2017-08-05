@@ -10,12 +10,12 @@
       <!-- Player and ship name -->
       <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border" :style="trstyle">
         <span class="dg-cell text">
-          <a v-if="player.accountId !== undefined"
+          <a v-if="player.personal.hasRecord"
             :href="wowsNumbersLink(player)"
             :title="wowsNumbersLink(player)"
             class="external-link"
             target="_blank">{{ player.name }}</a>
-            <span v-else title="Can't visit this player, his profile is hidden" class="external-link disabled">{{ player.name }}</span>
+            <span v-else title="This player has hidden his profile" class="external-link disabled">{{ player.name }}</span>
             <transition name="fade">
               <popper v-if="player.clan.hasRecord" trigger="hover" :options="{ placement: 'bottom' }">
                 <div class="popper">
@@ -49,8 +49,9 @@
         <span class="dg-cell text text-centered ui dg-loading">Loading player</span>
       </div>
       <!-- No player stats at all -->
-      <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
-        <span class="dg-cell text text-centered ui">This profile is hidden</span>
+      <div class="dg-cellgroup dg-cellgroup-2of3 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
+        <!-- <div class="dg-cell text text-centered ui hidden">This profile is hidden</div> -->
+        <div class="dg-cell text text-centered ui hidden" title="This player has hidden his profile"></div>
       </div>
       <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border ui" v-else key="with-player-stats">
         <div class="dg-cell number">{{ player.personal.battles }}</div>
@@ -76,7 +77,9 @@
       </div> -->
       <!-- No ship stats at all -->
       <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
-        <span class="dg-cell text text-centered">First battle in this ship</span>
+        <div class="dg-cell text text-centered ui hidden" title="This player fights his first battle in this ship"></div>
+        <!-- <span class="dg-cell text text-centered">First battle in this ship</span> -->
+        <span class="dg-cell text text-centered hidden"></span>
       </div>
       <!-- </transition> -->
     </div>
@@ -238,18 +241,12 @@ export default {
   align-self: center;
 }
 
-/* .popover {
-  cursor: pointer;
+.hidden {
+  height: 0.25em;
+  /* padding: 1px 3px 1px 3px; */
+  margin: 2px 20px 2px 22px;
+  background-color: #dadada;
 }
-
-.popover-body {
-  background-color: #f7f7f7;
-}
-
-.popover-text {
-  color: #aaa;
-  font-size: x-small;
-} */
 
 .grey-top-border {
   border-top-style: solid;
@@ -285,6 +282,18 @@ export default {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #f7f7f7;
+}
+
+.invisible-left-border {
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #f2f2f2;
+}
+
+.invisible-right-border {
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #f2f2f2;
 }
 
 .disabled {
