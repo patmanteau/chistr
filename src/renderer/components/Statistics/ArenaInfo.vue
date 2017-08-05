@@ -1,17 +1,17 @@
 <template>
   <div class="rowflexed">
     <transition name="fade" mode="out-in">
-      <div v-if="active">
-        <img :src="arena.matchGroup | matchGroupImg" class="type-image" height="40"></img>
+      <div class="ui" v-if="active">
+        <img :src="arena.matchGroup | matchGroupImg" class="type-image ui" height="40"></img>
       </div>
     </transition>
-    <div>
+    <div class="ui">
       <transition name="fade" mode="out-in">
         <h1 v-if="active">{{ arena.mapName | translateMapName }}</h1>
         <h1 v-else>No active match</h1>
       </transition>
     </div>
-    <div class="header-item">
+    <div class="header-item ui">
       <transition name="fade" mode="out-in">
         <h2 class="header-item">
           {{ arena.matchGroup | translateMatchGroup }}<br>
