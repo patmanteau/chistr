@@ -234,10 +234,10 @@ export default {
 
 hr {
   display: block;
-  width: 50%;
+  width: 60%;
   height: 1px;
   border: 0;
-  border-top: 2px solid #ccc;
+  border-top: 1px solid #ccc;
   /* border-bottom: 1px solid #ccc; */
   padding: 0;
 }

@@ -32,7 +32,7 @@ export default {
       options: {
         color: '#777',
         strokeWidth: 8,
-        trailWidth: 2,
+        trailWidth: 4,
         easing: 'linear',
         duration: 100,
         className: 'progressbar-text',
