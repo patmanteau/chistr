@@ -105,6 +105,23 @@ function createMenu () {
     template[0].submenu.unshift({ label: 'Edit settings file...', click () { config.openInEditor() } })
     template[1].submenu.push({ role: 'toggledevtools', accelerator: 'CmdOrCtrl+Shift+I' })
   }
+
+  if (process.platform === 'darwin') {
+    template.splice(1, 0, {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        // { role: 'pasteandmatchstyle' },
+        { role: 'delete' },
+        { role: 'selectall' }
+      ]
+    })
+  }
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 }
