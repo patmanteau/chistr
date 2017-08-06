@@ -225,7 +225,7 @@ const actions = {
       // 4. set ship stats
       // 5. set clan info
       // Then set all player stats
-      count: 5 * state.players.length
+      count: 4 * state.players.length + 1
     })
 
     wows = new WowsApi(rootState.Settings.wows.api.key, rootState.Settings.wows.api.url, shipdb)
@@ -329,16 +329,16 @@ const actions = {
         // console.log(accountId)
         if (player.hidden) {
           R.forEach(typ => commit(typ, didFinishOk(false, player.name)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
-          commit(types.INC_COMPLETED_OPERATIONS)
         } else {
           commit(types.SET_PERSONAL_DATA, didFinishOk(true, player.name, R.omit(['name'], player)))
-          commit(types.INC_COMPLETED_OPERATIONS)
         }
       }
+      commit(types.INC_COMPLETED_OPERATIONS)
       return Promise.resolve()
     })
     .catch(error => {
       console.log(error)
+      commit(types.INC_COMPLETED_OPERATIONS)
       return Promise.reject(error)
     })
   },
