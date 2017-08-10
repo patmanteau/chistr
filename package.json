@@ -1,6 +1,6 @@
 {
   "name": "chistr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Patrick Haas <patmanteau@posteo.de>",
   "description": "A player statistics viewer for World of Warships",
   "license": "MIT",
