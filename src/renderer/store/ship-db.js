@@ -14,9 +14,9 @@ export class ShipDB {
 
     if (datasource.time > this.db.get('time')) {
       console.log('Updating expected values...')
-      R.forEach(datasource.data, (shipId, data) => {
+      R.forEach((shipId, data) => {
         this.set(shipId, data)
-      })
+      })(datasource.data)
       this.db.set('time', datasource.time)
     }
   }
