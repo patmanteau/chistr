@@ -235,16 +235,16 @@ const actions = {
     }
 
     Promise.all(state.players.map(player => dispatch('findPlayer', player.name)).map(p => p.catch(e => e)))
-    .then(results => {
+      .then(results => {
       // filter Error objects
-      const players = R.filter(r => !(r instanceof Error), results)
-      dispatch('resolvePlayers', { players, matchGroup })
-      for (const player of players) {
-        dispatch('resolveShip', { name: player.name, matchGroup: matchGroup })
-        dispatch('resolveClan', player.name)
-      }
-    })
-    .catch(e => console.log(e))
+        const players = R.filter(r => !(r instanceof Error), results)
+        dispatch('resolvePlayers', { players, matchGroup })
+        for (const player of players) {
+          dispatch('resolveShip', { name: player.name, matchGroup: matchGroup })
+          dispatch('resolveClan', player.name)
+        }
+      })
+      .catch(e => console.log(e))
   },
 
   findPlayer ({ state, commit }, name) {
@@ -275,17 +275,17 @@ const actions = {
       return Promise.reject(Error(`Invalid account id for player ${name}`))
     } else {
       wows.getPlayerClan(player.accountId)
-      .then(clanData => {
-        commit(types.SET_CLAN_DATA, didFinishOk(true, name, clanData))
-        commit(types.INC_COMPLETED_OPERATIONS)
-        return Promise.resolve()
-      })
-      .catch(error => {
-        commit(types.SET_CLAN_DATA, didFinishOk(false, name))
-        commit(types.INC_COMPLETED_OPERATIONS)
-        console.log(error)
-        return Promise.resolve()
-      })
+        .then(clanData => {
+          commit(types.SET_CLAN_DATA, didFinishOk(true, name, clanData))
+          commit(types.INC_COMPLETED_OPERATIONS)
+          return Promise.resolve()
+        })
+        .catch(error => {
+          commit(types.SET_CLAN_DATA, didFinishOk(false, name))
+          commit(types.INC_COMPLETED_OPERATIONS)
+          console.log(error)
+          return Promise.resolve()
+        })
     }
   },
 
@@ -293,16 +293,16 @@ const actions = {
     const player = getters.player(name)
     // Resolve the ship's name first
     wows.getShipName(player.ship.id)
-    .then(shipName => {
-      commit(types.SET_SHIP_DATA, { name: name, data: { name: shipName } })
-      commit(types.INC_COMPLETED_OPERATIONS)
-    })
-    .catch(error => {
-      commit(types.SET_SHIP_DATA, { name: name, data: { name: 'Ship not found' } })
-      commit(types.INC_COMPLETED_OPERATIONS)
-      log.error(error)
-      console.log(error)
-    })
+      .then(shipName => {
+        commit(types.SET_SHIP_DATA, { name: name, data: { name: shipName } })
+        commit(types.INC_COMPLETED_OPERATIONS)
+      })
+      .catch(error => {
+        commit(types.SET_SHIP_DATA, { name: name, data: { name: 'Ship not found' } })
+        commit(types.INC_COMPLETED_OPERATIONS)
+        log.error(error)
+        console.log(error)
+      })
 
     if (!player.accountId) {
       return Promise.reject(Error('Invalid account id'))
@@ -324,23 +324,23 @@ const actions = {
 
   resolvePlayers ({ state, commit, rootState }, { players, matchGroup }) {
     wows.getPlayers(players, matchGroup)
-    .then(playerData => {
-      for (const player of Object.values(playerData)) {
+      .then(playerData => {
+        for (const player of Object.values(playerData)) {
         // console.log(accountId)
-        if (player.hidden) {
-          R.forEach(typ => commit(typ, didFinishOk(false, player.name)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
-        } else {
-          commit(types.SET_PERSONAL_DATA, didFinishOk(true, player.name, R.omit(['name'], player)))
+          if (player.hidden) {
+            R.forEach(typ => commit(typ, didFinishOk(false, player.name)), [types.SET_PERSONAL_DATA, types.SET_SHIP_DATA])
+          } else {
+            commit(types.SET_PERSONAL_DATA, didFinishOk(true, player.name, R.omit(['name'], player)))
+          }
         }
-      }
-      commit(types.INC_COMPLETED_OPERATIONS)
-      return Promise.resolve()
-    })
-    .catch(error => {
-      console.log(error)
-      commit(types.INC_COMPLETED_OPERATIONS)
-      return Promise.reject(error)
-    })
+        commit(types.INC_COMPLETED_OPERATIONS)
+        return Promise.resolve()
+      })
+      .catch(error => {
+        console.log(error)
+        commit(types.INC_COMPLETED_OPERATIONS)
+        return Promise.reject(error)
+      })
   },
 
   clearApiCache () {
