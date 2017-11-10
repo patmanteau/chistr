@@ -8,17 +8,17 @@ export default new Router({
     {
       path: '/',
       name: 'statistics',
-      component: require('@/components/Statistics')
+      component: require('@/components/Statistics').default
     },
     {
       path: '/settings',
       name: 'settings',
-      component: require('@/components/Settings')
+      component: require('@/components/Settings').default
     },
     {
       path: '/about',
       name: 'about',
-      component: require('@/components/about')
+      component: require('@/components/about').default
     },
     {
       path: '*',
