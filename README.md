@@ -2,7 +2,9 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/8iulnpq4sldtekeo?svg=true)](https://ci.appveyor.com/project/patmanteau/chistr)
 
-A player statistics viewer for World of Warships
+A player statistics viewer for World of Warships. At the start of a match, it pulls each player's personal and ship statistics - if available - from Wargaming's API and displays them.
+
+If anything breaks, feel free to [raise an issue](https://github.com/patmanteau/chistr/issues) here on Github.
 
 ## Installation
 
