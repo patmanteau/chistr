@@ -75,7 +75,7 @@ export class WowsApi {
       this.api.get('/wows/account/info/', { params: params })
         .then(response => {
           const players = R.mapObjIndexed((playerStats, accountId, obj) => {
-            if (playerStats && (playerStats.hidden_profile || !R.path(['statistics', matchGroup], playerStats))) {
+            if (playerStats && (!playerStats.statistics || playerStats.hidden_profile || !R.path(['statistics', matchGroup], playerStats))) {
               return {
                 name: playerStats.nickname,
                 hidden: true
