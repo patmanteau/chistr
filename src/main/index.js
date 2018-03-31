@@ -4,6 +4,7 @@ import { app, BrowserWindow, Menu, shell } from 'electron'
 import * as windowState from 'electron-window-state'
 import config from '../config'
 
+const path = require('path')
 const log = require('electron-log')
 log.transports.console.level = 'info'
 log.transports.file.level = 'info'
@@ -13,7 +14,7 @@ log.transports.file.level = 'info'
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
@@ -83,6 +84,17 @@ function createMenu () {
         {
           role: 'forcereload',
           accelerator: 'CmdOrCtrl+Shift+R'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'zoomin',
+          accelerator: 'CmdOrCtrl+plus'
+        },
+        {
+          role: 'zoomout',
+          accelerator: 'CmdOrCtrl+Shift+-'
         }
         // {
         //   role: 'toggledevtools',
@@ -103,6 +115,7 @@ function createMenu () {
 
   if (config.get('app.debug')) {
     template[0].submenu.unshift({ label: 'Edit settings file...', click () { config.openInEditor() } })
+    template[1].submenu.push({ type: 'separator' })
     template[1].submenu.push({ role: 'toggledevtools', accelerator: 'CmdOrCtrl+Shift+I' })
   }
 
