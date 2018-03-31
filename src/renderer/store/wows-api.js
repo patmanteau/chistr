@@ -45,13 +45,15 @@ export class WowsApi {
       this.api.get(`/wows/account/list/?search=${encodeURIComponent(playerName)}`)
         .then(response => {
           const playerRecord = R.find(R.propEq('nickname', playerName))(response.data.data)
-          return playerRecord
-            ? resolve({
+          if (playerRecord) {
+            return resolve({
               // Player found, so return his account ID
               accountId: playerRecord.account_id,
               name: playerRecord.nickname
             })
-            : reject(Error('Player not found'))
+          } else {
+            return reject(Error('Player not found'))
+          }
         })
         .catch(error => {
           console.log(error)
