@@ -1,0 +1,19 @@
+/* archivo-regular - latin-ext_latin */
+@font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Archivo Regular'), local('Archivo-Regular'),
+         url('./archivo-v3-latin-ext_latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('./archivo-v3-latin-ext_latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+
+  /* archivo-italic - latin-ext_latin */
+  @font-face {
+    font-family: 'Archivo';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Archivo Italic'), local('Archivo-Italic'),
+         url('./archivo-v3-latin-ext_latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('./archivo-v3-latin-ext_latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
