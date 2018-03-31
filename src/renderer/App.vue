@@ -14,9 +14,8 @@
 
 <style>
 /* @import url(https://fonts.googleapis.com/css?family=Archivo+Narrow:400,400i,700,700i|Roboto+Condensed:400,400i,700,700i|Roboto+Slab:400,700|Roboto:400,400i,700,700i&subset=latin-ext); */
-@import url(../../static/fonts/roboto.css);
-@import url(../../static/fonts/roboto-slab.css);
-@import url(../../static/fonts/roboto-condensed.css);
+@import url(../../static/fonts/oswald.css);
+@import url(../../static/fonts/archivo.css);
 @import url(../../static/fonts/archivo-narrow.css);
 
 body {
@@ -123,13 +122,13 @@ body {
 }
 
 .text {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Archivo Narrow', sans-serif;
   /* font-weight: 400; */
   /* font-size: 14px; */
   }
 
 .number {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Archivo Narrow', sans-serif;
   /* font-weight: 400; */
   /* font-size: 14px; */
   text-align: center;
@@ -138,7 +137,7 @@ body {
 .icon {
   color: #777;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Archivo Narrow', sans-serif;
   /* font-weight: 400; */
   /* font-size: 14px; */
 }
@@ -149,6 +148,7 @@ body {
 
 .text-subdued {
   color: #aaa;
+  font-family: 'Archivo', sans-serif;
   font-size: x-small;
 }
 
@@ -185,7 +185,7 @@ body {
   /* display: inline-block; */
   /* border-radius: 3px; */
   /* position: absolute; */
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Archivo Narrow', sans-serif;
   font-size: 13px;
   /* font-weight: normal; */
   border: 1px #ebebeb solid;
@@ -196,7 +196,7 @@ body {
 }
 
 .savebutton {
-  font-family: 'Roboto Condensed', serif;
+  font-family: 'Archivo Narrow', sans-serif;
   font-size: 16px;
   color: #555;
   text-decoration: none;

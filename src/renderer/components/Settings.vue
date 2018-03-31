@@ -66,7 +66,7 @@
       <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
       <div class="title">Cache settings</div>
       <div class="explanation">
-        Chistr caches ship names to reduce loading times. If you notice wrong or missing ship names, try clearing the cache.
+        Chistr caches ship data to reduce loading times. If ship names are wrong or missing or some PRs are equal to 0, try clearing the cache.
       </div>
       <button class="text" @click="clearShipCache">Clear ship cache</button>
     </div>
@@ -176,8 +176,8 @@ export default {
 }
 
 .config-item {
-  font-family: 'Roboto Condensed', serif;
-  font-weight: 400;
+  font-family: 'Archivo Narrow', sans-serif;
+  font-weight: 500;
   align-items: left;
   margin: 10px;
   position: relative;
@@ -216,8 +216,8 @@ input, select {
 h1 {
   color: #777;
   font-size: 28px;
-  font-family: 'Roboto Slab', serif;
-  font-weight: 400;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
   margin: 4px 4px 0px 0px;
   text-align: left;
 }
@@ -225,8 +225,8 @@ h1 {
 h2 {
   color: #999;
   font-size: 14px;
-  font-family: 'Roboto Slab', serif;
-  font-weight: 400;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
   margin: 4px 4px 0px 20px;
 }
 

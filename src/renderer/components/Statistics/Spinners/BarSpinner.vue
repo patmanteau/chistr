@@ -64,7 +64,7 @@ export default {
 }
 
 .spinner > p {
-  font-family: 'Roboto Slab', sans-serif;
+  font-family: 'Archivo Narrow', sans-serif;
   color: #aaa;
   font-weight: 400;
   font-size: 14px;

@@ -10,7 +10,7 @@
     <div class="container" key="statsDisplay">
       <div class="centered">
         <h1 class="ui">Ahoy captain!</h1>
-        <h2 class="ui">Waiting for the next battle to start.</h2>
+        <h2 class="ui">Waiting for your next battle to start.</h2>
         <!-- <span class="standout ui">Chistr <small>{{ version }}</small></span>
         <span class="author">Copyright &copy; 2017 Patrick Haas &lt;<a href="mailto:patmanteau@posteo.de" class="external-link" target="_blank">patmanteau@posteo.de</a>&gt;.</span>
         <span class="text ui"> Distributed under The MIT License.</span>
@@ -134,17 +134,17 @@ export default {
 h1 {
   color: #777;
   font-size: 40px;
-  font-family: 'Roboto Slab', serif;
-  font-weight: 400;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
   margin: 0px 10px 0px 10px;
   /*text-align: center;*/
 }
 
 h2 {
   color: #999;
-  font-size: 15px;
-  font-family: 'Roboto Slab', serif;
-  font-weight: 400;
+  font-size: 20px;
+  font-family: 'Archivo Narrow', sans-serif;
+  font-weight: 500;
   margin: 0px 0px 0px 2px;
   /*text-align: center;*/
 }
@@ -153,8 +153,8 @@ h2 {
 .update-warning {
   color: #c33;
   font-size: 13px;
-  font-weight: 100;
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Archivo Narrow', sans-serif;
+  font-weight: 500;
   margin: 0px;
   margin-bottom: 5px;
   text-align: center;

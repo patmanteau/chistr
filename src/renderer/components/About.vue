@@ -36,8 +36,8 @@ export default {
 .standout {
   color: #555;
   font-size: 48px;
-  font-weight: 100;
-  font-family: 'Roboto Slab', serif;
+  font-weight: 500;
+  font-family: 'Oswald', sans-serif;
   /*margin: 5px;*/
   text-align: center;
 }
@@ -50,8 +50,8 @@ export default {
 .author {
   color: #777;
   font-size: 16px;
-  font-weight: 100;
-  font-family: 'Roboto Slab', serif;
+  font-weight: 500;
+  font-family: 'Archivo Narrow', sans-serif;
   margin: 0px 0px 30px 0;
   text-align: center;
 }
@@ -82,8 +82,8 @@ export default {
 .about-text {
   color: #777;
   font-size: 16px;
-  font-weight: 100;
-  font-family: 'Roboto Slab', serif;
+  font-weight: 300;
+  font-family: 'Archivo Narrow', sans-serif;
   margin: 10px;
   text-align: center;
 }

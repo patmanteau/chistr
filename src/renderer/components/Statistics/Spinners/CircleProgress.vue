@@ -62,7 +62,7 @@ export default {
   width: 120px;
   height: 120px;
   text-align: center;
-  font-family: 'Roboto Slab';
+  font-family: 'Archivo Narrow';
   font-size: 24px;
 }
 

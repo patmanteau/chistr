@@ -32,7 +32,7 @@ export default {
   filters: {
     translateMapName (name) {
       return name
-        ? mapNames[name]
+        ? mapNames[name].toUpperCase()
         : ''
     },
 
@@ -62,17 +62,17 @@ export default {
 h1 {
   color: #777;
   font-size: 40px;
-  font-family: 'Roboto Slab', serif;
-  font-weight: 400;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
   margin: 0px 10px 0px 10px;
   /*text-align: center;*/
 }
 
 h2 {
   color: #999;
-  font-size: 15px;
-  font-family: 'Roboto Slab', serif;
-  font-weight: 400;
+  font-size: 16px;
+  font-family: 'Archivo Narrow', sans-serif;
+  font-weight: 500;
   margin: 0px 0px 0px 2px;
   /*text-align: center;*/
 }
