@@ -155,6 +155,6 @@ h2 {
 }
 
 .vspace {
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 </style>
