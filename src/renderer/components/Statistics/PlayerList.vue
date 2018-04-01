@@ -7,7 +7,7 @@
       class="dg-row grey-right-border">
 
       <!-- Player name -->
-      <div class="dg-cellgroup dg-cellgroup-5of20" :style="trstyle">
+      <div class="dg-cellgroup dg-cellgroup-5of20 ui" :style="trstyle">
         <div class="dg-cell text">
             <popper v-if="player.clan.hasRecord" trigger="hover" :options="{ placement: 'bottom' }">
               <div class="popper">
@@ -29,7 +29,7 @@
       </div>
 
       <!-- Ship name -->
-      <div class="dg-cellgroup dg-cellgroup-4of20 grey-right-border">
+      <div class="dg-cellgroup dg-cellgroup-4of20 grey-right-border ui">
         <div class="dg-cell text">
           <div v-if="player.ship.name">
             <a v-if="player.ship.name !== ''"
@@ -45,14 +45,16 @@
       <!-- Player stats -->
 
       <!-- No player stats, not yet loaded -->
-      <div class="dg-cellgroup dg-cellgroup-11of20 no-data" v-if="!finishedLoading" key="without-player-stats-not-loaded">
+      <div class="dg-cellgroup dg-cellgroup-11of20 no-data ui" v-if="!finishedLoading" key="without-player-stats-not-loaded">
         <span class="dg-cell text text-centered ui dg-loading">Loading player</span>
       </div>
 
       <!-- Got no player stats at all -->
-      <div class="dg-cellgroup dg-cellgroup-11of20 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
+      <div class="dg-cellgroup dg-cellgroup-11of20 no-data invisible-right-border ui" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
         <div class="dg-cell text text-centered ui" title="This player has hidden his profile"><hr class="grey"></hr></div>
       </div>
+
+      <!-- Got player stats -->
       <div class="dg-cellgroup dg-cellgroup-5of20 grey-right-border ui" v-else key="with-player-stats">
         <div class="dg-cell number">{{ player.personal.battles }}</div>
         <div class="dg-cell number text-centered" v-bind:class="winrateclass(player.personal.battles, player.personal.winrate)">{{ player.personal.winrate.toFixed(2) }}%</div>
@@ -61,7 +63,7 @@
       </div>
 
       <!-- Ship stats -->
-        <div class="dg-cellgroup dg-cellgroup-6of20 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats">
+      <div class="dg-cellgroup dg-cellgroup-6of20 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats">
         <div class="dg-cell number">{{ player.ship.battles }}</div>
         <div class="dg-cell number text-centered" :class="winrateclass(player.ship.battles, player.ship.winrate)">{{ player.ship.winrate.toFixed(2) }}%</div>
         <div class="dg-cell number" :class="prclass(player.ship.battles, player.ship.pr)">{{ player.ship.pr | denan(0) }}</div>
@@ -70,8 +72,8 @@
       </div>
 
       <!-- Got no ship stats at all -->
-        <div class="dg-cellgroup dg-cellgroup-6of20 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
-        <div class="dg-cell text text-centered ui" title="This player fights his first battle in this ship"><hr></hr></div>
+      <div class="dg-cellgroup dg-cellgroup-6of20 ui" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
+        <div class="dg-cell text text-centered" title="This player fights his first battle in this ship"><hr></hr></div>
       </div>
     </div>
     <icon-row v-if="noheader" @set-sort="key => setSort(key)" key="footer"></icon-row>
@@ -277,19 +279,19 @@ export default {
 .dg-cellgroup-10of20 { flex: 1 1 50%; }
 .dg-cellgroup-11of20 { flex: 1 1 55%; }
 .dg-cellgroup-12of20 { flex: 1 1 60%; }
-.dg-cellgroup-10of20 { flex: 1 1 65%; }
-.dg-cellgroup-11of20 { flex: 1 1 70%; }
-.dg-cellgroup-12of20 { flex: 1 1 75%; }
-.dg-cellgroup-10of20 { flex: 1 1 80%; }
-.dg-cellgroup-11of20 { flex: 1 1 85%; }
-.dg-cellgroup-12of20 { flex: 1 1 90%; }
-.dg-cellgroup-10of20 { flex: 1 1 95%; }
-.dg-cellgroup-11of20 { flex: 1 1 100%; }
+.dg-cellgroup-13of20 { flex: 1 1 65%; }
+.dg-cellgroup-14of20 { flex: 1 1 70%; }
+.dg-cellgroup-15of20 { flex: 1 1 75%; }
+.dg-cellgroup-16of20 { flex: 1 1 80%; }
+.dg-cellgroup-17of20 { flex: 1 1 85%; }
+.dg-cellgroup-18of20 { flex: 1 1 90%; }
+.dg-cellgroup-19of20 { flex: 1 1 95%; }
+.dg-cellgroup-20of20 { flex: 1 1 100%; }
 
 
 .dg-cell {
   flex: 1;
-  padding: 3px 2px 3px 2px;
+  padding: 2px 2px;
   align-self: center;
 }
 
@@ -297,7 +299,7 @@ export default {
   flex: 1;
   flex-grow: 0;
   /* flex-shrink: 10; */
-  padding: 3px 2px 3px 2px;
+  padding: 2px 2px;
   align-self: center;
 }
 
