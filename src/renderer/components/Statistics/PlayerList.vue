@@ -1,16 +1,23 @@
 <template>
-  <!-- <div class="gridcontainer"> -->
-  <transition-group name="flip-list" tag="div">
+  <div>
     <icon-row v-if="!noheader" @set-sort="key => setSort(key)" key="header"></icon-row>
     <div v-for="(player, index) in filteredPlayers"
       :key="player.name"
       :class="{'dg-row--stripe': index % 2 === 0}"
       class="dg-row grey-right-border">
 
-      <!-- Player and ship name -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border" :style="trstyle"> -->
-        <div class="dg-cellgroup dg-cellgroup-4of10 grey-right-border" :style="trstyle">
-        <span class="dg-cell text">
+      <!-- Player name -->
+      <div class="dg-cellgroup dg-cellgroup-5of20" :style="trstyle">
+        <div class="dg-cell text">
+            <popper v-if="player.clan.hasRecord" trigger="hover" :options="{ placement: 'bottom' }">
+              <div class="popper">
+                <div>{{ player.clan.name }}</div>
+                <div>Created {{ new Date(player.clan.createdAt * 1000).toLocaleString() }}</div>
+                <div>{{ player.clan.membersCount }} members</div>
+              </div>
+              <!-- <span slot="reference" class="popover ui text text-subdued">[{{ player.clan.tag }}]</span> -->
+              <span slot="reference" class="popover ui text text-small text-gray">[{{ player.clan.tag }}]</span>
+            </popper>
           <a v-if="player.personal.hasRecord"
             :href="wowsNumbersLink(player)"
             :title="wowsNumbersLink(player)"
@@ -18,65 +25,57 @@
             target="_blank">{{ player.name }}
           </a>
           <span v-else title="This player has hidden his profile" class="external-link disabled">{{ player.name }}</span>
-          <transition name="fade">
-            <popper v-if="player.clan.hasRecord" trigger="hover" :options="{ placement: 'bottom' }">
-              <div class="popper">
-                <div>{{ player.clan.name }}</div>
-                <div>Created {{ new Date(player.clan.createdAt * 1000).toLocaleString() }}</div>
-                <div>{{ player.clan.membersCount }} members</div>
-              </div>
-              <span slot="reference" class="popover ui text text-subdued">[{{ player.clan.tag }}]</span>
-            </popper>
-          </transition>
-        </span>
-        <transition name="fade" mode="out-in">
-          <span class="dg-cell text" v-if="player.ship.name">
+        </div>
+      </div>
+
+      <!-- Ship name -->
+      <div class="dg-cellgroup dg-cellgroup-4of20 grey-right-border">
+        <div class="dg-cell text">
+          <div v-if="player.ship.name">
             <a v-if="player.ship.name !== ''"
               :href="wikiLink(player)"
               :title="wikiLink(player)"
               class="external-link"
               target="_blank"><i>{{ player.ship.name }}</i>
             </a>
-          </span>
-        </transition>
-      </div>
+          </div>
+        </div>
 
+      </div>
       <!-- Player stats -->
+
       <!-- No player stats, not yet loaded -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-2of3 no-data" v-if="!finishedLoading" key="without-player-stats-not-loaded"> -->
-        <div class="dg-cellgroup dg-cellgroup-6of10 no-data" v-if="!finishedLoading" key="without-player-stats-not-loaded">
+      <div class="dg-cellgroup dg-cellgroup-11of20 no-data" v-if="!finishedLoading" key="without-player-stats-not-loaded">
         <span class="dg-cell text text-centered ui dg-loading">Loading player</span>
       </div>
-      <!-- No player stats at all -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-2of3 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats"> -->
-        <div class="dg-cellgroup dg-cellgroup-6of10 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
+
+      <!-- Got no player stats at all -->
+      <div class="dg-cellgroup dg-cellgroup-11of20 no-data invisible-right-border" v-else-if="player.personal.finishedLoading && !player.personal.hasRecord" key="without-player-stats">
         <div class="dg-cell text text-centered ui" title="This player has hidden his profile"><hr class="grey"></hr></div>
       </div>
-      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border ui" v-else key="with-player-stats"> -->
-        <div class="dg-cellgroup dg-cellgroup-3of10 grey-right-border ui" v-else key="with-player-stats">
+      <div class="dg-cellgroup dg-cellgroup-5of20 grey-right-border ui" v-else key="with-player-stats">
         <div class="dg-cell number">{{ player.personal.battles }}</div>
         <div class="dg-cell number text-centered" v-bind:class="winrateclass(player.personal.battles, player.personal.winrate)">{{ player.personal.winrate.toFixed(2) }}%</div>
         <div class="dg-cell number text-centered">{{ player.personal.kdRatio | denan }}</div>
         <div class="dg-cell number text-subdued">{{ player.personal.avgDmg.toFixed(0) }}</div>
       </div>
+
       <!-- Ship stats -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats"> -->
-        <div class="dg-cellgroup dg-cellgroup-3of10 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats">
+        <div class="dg-cellgroup dg-cellgroup-6of20 ui" v-if="finishedLoading && player.ship.battles" key="with-ship-stats">
         <div class="dg-cell number">{{ player.ship.battles }}</div>
         <div class="dg-cell number text-centered" :class="winrateclass(player.ship.battles, player.ship.winrate)">{{ player.ship.winrate.toFixed(2) }}%</div>
         <div class="dg-cell number" :class="prclass(player.ship.battles, player.ship.pr)">{{ player.ship.pr | denan(0) }}</div>
         <div class="dg-cell number text-centered">{{ player.ship.kdRatio | denan }}</div>
         <div class="dg-cell number text-subdued">{{ player.ship.avgDmg.toFixed(0) }}</div>
       </div>
-      <!-- No ship stats at all -->
-      <!-- <div class="dg-cellgroup dg-cellgroup-1of3 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats"> -->
-        <div class="dg-cellgroup dg-cellgroup-3of10 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
+
+      <!-- Got no ship stats at all -->
+        <div class="dg-cellgroup dg-cellgroup-6of20 no-data" v-else-if="player.personal.hasRecord && player.ship.finishedLoading && (!player.ship.hasRecord || !player.ship.battles)" key="without-ship-stats">
         <div class="dg-cell text text-centered ui" title="This player fights his first battle in this ship"><hr></hr></div>
       </div>
     </div>
     <icon-row v-if="noheader" @set-sort="key => setSort(key)" key="footer"></icon-row>
-  </transition-group>
-  <!-- </div> -->
+  </div>
 </template>
 
 <script type="text/javascript">
@@ -208,7 +207,42 @@ export default {
   box-shadow: inset 0 0 2px #777;
 }
 
-.dg-cellgroup, .dg-cellgroup-1of3, .dg-cellgroup-2of3, .dg-cellgroup-3of3, .dg-cellgroup-1of2, .dg-cellgroup-2of2, .dg-cellgroup-1of10, .dg-cellgroup-2of10, .dg-cellgroup-3of10, .dg-cellgroup-4of10, .dg-cellgroup-5of10, .dg-cellgroup-6of10, .dg-cellgroup-7of10, .dg-cellgroup-8of10, .dg-cellgroup-9of10, .dg-cellgroup-10of10 {
+.dg-cellgroup,
+.dg-cellgroup-1of3,
+.dg-cellgroup-2of3,
+.dg-cellgroup-3of3,
+.dg-cellgroup-1of2,
+.dg-cellgroup-2of2,
+.dg-cellgroup-1of10,
+.dg-cellgroup-2of10,
+.dg-cellgroup-3of10,
+.dg-cellgroup-4of10,
+.dg-cellgroup-5of10,
+.dg-cellgroup-6of10,
+.dg-cellgroup-7of10,
+.dg-cellgroup-8of10,
+.dg-cellgroup-9of10,
+.dg-cellgroup-10of10,
+.dg-cellgroup-1of20,
+.dg-cellgroup-2of20,
+.dg-cellgroup-3of20,
+.dg-cellgroup-4of20,
+.dg-cellgroup-5of20,
+.dg-cellgroup-6of20,
+.dg-cellgroup-7of20,
+.dg-cellgroup-8of20,
+.dg-cellgroup-9of20,
+.dg-cellgroup-10of20,
+.dg-cellgroup-11of20,
+.dg-cellgroup-12of20,
+.dg-cellgroup-13of20,
+.dg-cellgroup-14of20,
+.dg-cellgroup-15of20,
+.dg-cellgroup-16of20,
+.dg-cellgroup-17of20,
+.dg-cellgroup-18of20,
+.dg-cellgroup-19of20,
+.dg-cellgroup-20of20 {
   display: flex;
   overflow: visible;
 }
@@ -230,6 +264,28 @@ export default {
 .dg-cellgroup-8of10 { flex: 1 1 80%; }
 .dg-cellgroup-9of10 { flex: 1 1 90%; }
 .dg-cellgroup-10of10 { flex: 1 1 100%; }
+
+.dg-cellgroup-1of20 { flex: 1 1 5%; }
+.dg-cellgroup-2of20 { flex: 1 1 10%; }
+.dg-cellgroup-3of20 { flex: 1 1 15%; }
+.dg-cellgroup-4of20 { flex: 1 1 20%; }
+.dg-cellgroup-5of20 { flex: 1 1 25%; }
+.dg-cellgroup-6of20 { flex: 1 1 30%; }
+.dg-cellgroup-7of20 { flex: 1 1 35%; }
+.dg-cellgroup-8of20 { flex: 1 1 40%; }
+.dg-cellgroup-9of20 { flex: 1 1 45%; }
+.dg-cellgroup-10of20 { flex: 1 1 50%; }
+.dg-cellgroup-11of20 { flex: 1 1 55%; }
+.dg-cellgroup-12of20 { flex: 1 1 60%; }
+.dg-cellgroup-10of20 { flex: 1 1 65%; }
+.dg-cellgroup-11of20 { flex: 1 1 70%; }
+.dg-cellgroup-12of20 { flex: 1 1 75%; }
+.dg-cellgroup-10of20 { flex: 1 1 80%; }
+.dg-cellgroup-11of20 { flex: 1 1 85%; }
+.dg-cellgroup-12of20 { flex: 1 1 90%; }
+.dg-cellgroup-10of20 { flex: 1 1 95%; }
+.dg-cellgroup-11of20 { flex: 1 1 100%; }
+
 
 .dg-cell {
   flex: 1;

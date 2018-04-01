@@ -1,12 +1,14 @@
 <template>
   <div class="dg-row--head white-left-border">
     <!-- <div class="dg-cellgroup dg-cellgroup-1of3 white-right-border"> -->
-      <div class="dg-cellgroup dg-cellgroup-4of10 white-right-border">
+    <div class="dg-cellgroup dg-cellgroup-5of20">
       <div title="Player" class="dg-cell icon ui">&nbsp;</div>
+    </div>
+    <div class="dg-cellgroup dg-cellgroup-4of20 white-right-border">
       <div title="Ship" class="dg-cell icon ui">&nbsp;</div>
     </div>
     <!-- <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border"> -->
-    <div class="dg-cellgroup dg-cellgroup-3of10 grey-right-border">
+    <div class="dg-cellgroup dg-cellgroup-5of20 grey-right-border">
       <div title="# of battles overall" class="dg-cell icon"
           :class="{ active: sort.key === 'personal.battles'}"
           @click="setSort('personal.battles')">
@@ -38,17 +40,9 @@
         <i v-if="sort.key === 'personal.avgDmg' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
         <i v-if="sort.key === 'personal.avgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
-
-      <!-- <div title="Player average experience" class="dg-cell icon"
-          :class="{ active: sort.key === 'personalAvgExp'}"
-          @click="setSort('personalAvgExp')">
-        <i class="fa fa-line-chart" aria-hidden="true"></i>
-        <i v-if="sort.key === 'personalAvgExp' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'personalAvgExp' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
-      </div> -->
     </div>
-    <!-- <div class="dg-cellgroup dg-cellgroup-1of3 white-right-border"> -->
-    <div class="dg-cellgroup dg-cellgroup-3of10 white-right-border">
+
+    <div class="dg-cellgroup dg-cellgroup-6of20 white-right-border">
       <div title="# of battles in this ship" class="dg-cell icon"
           :class="{ active: sort.key === 'ship.battles'}"
           @click="setSort('ship.battles')">
@@ -88,13 +82,6 @@
         <i v-if="sort.key === 'ship.avgDmg' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
         <i v-if="sort.key === 'ship.avgDmg' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
       </div>
-      <!-- <div title="Ship average experience" class="dg-cell icon"
-          :class="{ active: sort.key === 'shipAvgExp'}"
-          @click="setSort('shipAvgExp')">
-        <i class="fa fa-line-chart" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipAvgExp' && sort.order === 1" class="fa fa-sort-desc" aria-hidden="true"></i>
-        <i v-if="sort.key === 'shipAvgExp' && sort.order === -1" class="fa fa-sort-asc" aria-hidden="true"></i>
-      </div> -->
     </div>
   </div>
 </template>

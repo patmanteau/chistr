@@ -146,6 +146,18 @@ body {
   background: #ddd;
 }*/
 
+.text-small {
+  font-size: small;
+}
+
+.text-smallcaps {
+  font-variant: small-caps;
+}
+
+.text-gray {
+  color: #999;
+}
+
 .text-subdued {
   color: #aaa;
   font-family: 'Archivo', sans-serif;
