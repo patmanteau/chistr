@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 <!-- ## [Unreleased] -->
 
+## [1.2.1] - 2018-12-06
+### Changed
+- Use up-to-date values for PR calculation
+
 ## [1.2.0] - 2018-04-02
 ### Added
 - Resizable window contents (use `Ctrl+Shift++` and `Ctrl+Shift+-` or the 'View' menu)
