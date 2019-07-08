@@ -1,4 +1,6 @@
 .DS_Store
+.projectile
+*.log
 dist/electron/*
 dist/web/*
 build/*
