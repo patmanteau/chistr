@@ -13,7 +13,9 @@
           <popper
             v-if="player.clan.hasRecord"
             trigger="hover"
-            :options="{ placement: 'bottom' }"
+            :options="{
+              placement: 'right'
+            }"
           >
             <div class="popper">
               <div>{{ player.clan.name }}</div>
