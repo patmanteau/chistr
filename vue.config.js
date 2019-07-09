@@ -3,7 +3,7 @@ module.exports = {
     electronBuilder: {
       builderOptions: {
         win: {
-          target: "portable"
+          target: "nsis"
         }
       }
     }
