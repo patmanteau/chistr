@@ -1,44 +1,56 @@
 {
+    "CLAN": {
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_clan_95e1901fec63a25e2bf4441e50dd8dc84a0c38b1441389e8d20fb8d63e3aa2d3.png",
+        "tag": "CLAN",
+        "name": "Clan Battle",
+        "description": "Assemble a Division with your clanmates and fight against other clans."
+    },
     "PVP": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_pvp.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_pvp_cd68111b34ba316429eda5b105b2615c7fbafada7fdfc0e0b4a8b5c040d63eb3.png",
         "tag": "PVP",
-        "description": "Fight against real players. The matchmaker will create teams randomly.",
-        "name": "Random Battle"
+        "name": "Random Battle",
+        "description": "Fight against real players. The matchmaker will create teams randomly."
     },
     "TEAM_RANKED": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_team_ranked.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_team_ranked_5375455d2a6ad340a918b57721596be1d6ce8bd73b7f4089d6d5fbf862a9ebeb.png",
         "tag": "TEAM_RANKED",
-        "description": "Fight for Rating as a member of your own Team or as a mercenary.",
-        "name": "Team Battle"
+        "name": "Team Battle",
+        "description": "Fight to increase your Rating as a member of your own Team or as a mercenary."
     },
     "RANKED": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_ranked.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_ranked_19548afab4e7a7e08a845189370d65d5abf631b056cf8b562904c28582c56f02.png",
         "tag": "RANKED",
-        "description": "Fight against real players and earn Ranks.",
-        "name": "Ranked Battle"
+        "name": "Ranked Battle",
+        "description": "Fight against real players and earn Ranks."
     },
     "PVE": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_pve.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_pve_6bc153312ff4c592eca3e18334819d02ac2669800b08558bde0933a835c2f2e2.png",
         "tag": "PVE",
-        "description": "Complete tasks as described in the scenario and receive rewards.",
-        "name": "Scenarios"
+        "name": "Scenarios",
+        "description": "Complete tasks as described in the scenario and receive rewards."
     },
     "PVE_PREMADE": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_pve_premade.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_pve_premade_071837cb0c6741109a9df2df03ead68b72c9b648496105cb5bccb635f17782e4.png",
         "tag": "PVE_PREMADE",
-        "description": "Complete tasks as described in the scenario and receive rewards.",
-        "name": "Scenarios"
+        "name": "Scenarios",
+        "description": "Complete tasks as described in the scenario and receive rewards."
     },
     "COOPERATIVE": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_cooperative.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_cooperative_07ae2811db56acf1cf7ac53e6459902a50442890e52d038efba35650d45acff7.png",
         "tag": "COOPERATIVE",
-        "description": "Fight against bots in cooperation with other players.",
-        "name": "Co-op Battle"
+        "name": "Co-op Battle",
+        "description": "Fight against bots in cooperation with other players."
+    },
+    "EVENT": {
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_event_01a82a113916000de352236f324b014f364342203cd842371203b7f2ea5ee1c5.png",
+        "tag": "EVENT",
+        "name": "Savage Battle",
+        "description": "Will you survive the Savage Battle?"
     },
     "TUTORIAL": {
-        "image": "http:\/\/glossary-ru-static.gcdn.co\/icons\/wows\/current\/battle_types\/battle_type_tutorial.png",
+        "image": "https://glossary-wows-global.gcdn.co/icons//battle_types/battle_type_tutorial_4947fabc0be4d94327bbe84c499a1d7e30df7588e84d75253daac82fa3b4beff.png",
         "tag": "TUTORIAL",
-        "description": "Introductory Mission",
-        "name": "Introductory Mission"
+        "name": "Introductory Mission",
+        "description": "Introductory Mission"
     }
 }

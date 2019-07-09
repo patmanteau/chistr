@@ -35,19 +35,18 @@ In case you want to use the development version, clone this repo, cd into it, th
 
 ``` bash
 # install dependencies
-yarn
+yarn install
 
-# serve with hot reload at localhost:9080
-yarn dev
+# serve electron application with hot reload
+yarn electron:serve
 
 # build electron application for production
-yarn build
+yarn electron:build
 
 # lint all JS/Vue component files in `src/`
-yarn lint
+yarn run lint
 
 ```
 
 ---
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[9c9bf75](https://github.com/SimulatedGREG/electron-vue/tree/9c9bf75630add075bfa58f52e391e82fb1b9f44a) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
