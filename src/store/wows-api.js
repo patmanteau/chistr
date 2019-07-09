@@ -86,7 +86,7 @@ export class WowsApi {
       this.api
         .get("/wows/account/info/", { params: params })
         .then(response => {
-          const players = R.mapObjIndexed((playerStats, accountId, obj) => {
+          const players = R.mapObjIndexed((playerStats, _accountId, _obj) => {
             if (
               playerStats &&
               (!playerStats.statistics ||

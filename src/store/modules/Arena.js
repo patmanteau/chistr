@@ -270,7 +270,7 @@ const actions = {
       .catch(e => console.log(e));
   },
 
-  findPlayer({ state, commit }, name) {
+  findPlayer({ _state, commit }, name) {
     return new Promise((resolve, reject) => {
       // Get the player's account ID
       wows
@@ -297,7 +297,7 @@ const actions = {
     });
   },
 
-  resolveClan({ state, getters, commit }, name) {
+  resolveClan({ _state, getters, commit }, name) {
     const player = getters.player(name);
     if (!player.accountId) {
       return Promise.reject(Error(`Invalid account id for player ${name}`));
@@ -318,7 +318,7 @@ const actions = {
     }
   },
 
-  resolveShip({ state, getters, commit, rootState }, { name, matchGroup }) {
+  resolveShip({ _state, getters, commit, _rootState }, { name, matchGroup }) {
     const player = getters.player(name);
     // Resolve the ship's name first
     wows
@@ -356,7 +356,7 @@ const actions = {
     }
   },
 
-  resolvePlayers({ state, commit, rootState }, { players, matchGroup }) {
+  resolvePlayers({ _state, commit, _rootState }, { players, matchGroup }) {
     wows
       .getPlayers(players, matchGroup)
       .then(playerData => {

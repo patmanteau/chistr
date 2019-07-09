@@ -12,9 +12,39 @@ import store from "./store";
 
 import { ipcRenderer } from "electron";
 
-import "@fortawesome/fontawesome-free/js/all";
-
 Vue.config.productionTip = false;
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faRedo,
+  faSortDown,
+  faSortUp,
+  faChartPie,
+  faBullseye,
+  faRocket,
+  faCheckCircle,
+  faAngleRight,
+  faCheck,
+  faCog,
+  faTimes
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(
+  faRedo,
+  faSortDown,
+  faSortUp,
+  faChartPie,
+  faBullseye,
+  faRocket,
+  faCheckCircle,
+  faAngleRight,
+  faCheck,
+  faCog,
+  faTimes
+);
+
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 // handle window menu events
 ipcRenderer.on("open-settings", (_event, _args) => {

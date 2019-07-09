@@ -33,6 +33,7 @@ function createWindow() {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
+    title: "Chistr",
     webPreferences: {
       nodeIntegration: true
     }

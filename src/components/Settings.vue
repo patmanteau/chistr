@@ -4,13 +4,13 @@
       <router-link class="text link" :to="{ name: 'statistics', params: {} }">
         <!-- <button class="text" >Save &amp; close</button> -->
         <span class="savebutton"
-          ><i class="fa fa-check-circle-o" aria-hidden="true" /> Close</span
+          ><font-awesome-icon icon="check-circle" /> Close</span
         >
       </router-link>
     </div>
     <!-- <div id="header">
     <div class="rowflexed">
-    <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
+    <h1><font-awesome-icon icon="cog" /> Settings</h1>
     </div>
   </div> -->
     <div class="gridcontainer">
@@ -33,10 +33,10 @@
             class="text link"
             >here</a
           >
-          (Login <i class="fa fa-angle-right" aria-hidden="true" /> Add
-          application <i class="fa fa-angle-right" aria-hidden="true" /> Choose
-          a name <i class="fa fa-angle-right" aria-hidden="true" /> Set type to
-          Mobile <i class="fa fa-angle-right" aria-hidden="true" /> Add).
+          (Login <font-awesome-icon icon="angle-right" /> Add application
+          <font-awesome-icon icon="angle-right" /> Choose a name
+          <font-awesome-icon icon="angle-right" /> Set type to Mobile
+          <font-awesome-icon icon="angle-right" /> Add).
         </div>
         <div v-if="!wowsApiKeyValid" class="error">
           Please enter a valid Application ID.
@@ -48,10 +48,9 @@
           placeholder="API key"
           @input="validateApiKey"
         />
-        <i
-          class="inline-icon fa fa-check"
-          :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'"
-          aria-hidden="true"
+        <font-awesome-icon
+          :icon="wowsApiKeyValid ? 'check' : 'times'"
+          class="inline-icon"
         />
       </div>
       <div class="config-item">
@@ -71,10 +70,9 @@
           placeholder="Path to WoWS"
           @input="validatePath"
         />
-        <i
-          class="inline-icon fa fa-check"
-          :class="wowsPathValid ? 'fa-check' : 'fa-times'"
-          aria-hidden="true"
+        <font-awesome-icon
+          :icon="wowsPathValid ? 'check' : 'times'"
+          class="inline-icon"
         />
       </div>
       <div class="config-item ui">

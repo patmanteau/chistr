@@ -19,7 +19,7 @@ export default {
   },
 
   watch: {
-    progress(newValue, oldValue) {
+    progress(newValue, _oldValue) {
       this.bar.animate(newValue);
       this.bar.setText(`${(newValue * 100).toFixed()}%`);
     }

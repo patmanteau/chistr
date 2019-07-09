@@ -3,7 +3,7 @@
     <div id="header" class="ui">
       <router-link class="text link" :to="{ name: 'statistics', params: {} }">
         <span class="savebutton"
-          ><i class="fa fa-check-circle-o" aria-hidden="true" /> Close</span
+          ><font-awesome-icon icon="check-circle" /> Close</span
         >
       </router-link>
     </div>
@@ -13,7 +13,7 @@
           >Chistr <small>{{ version }}</small></span
         >
         <span class="author"
-          >Copyright &copy; 2017 Patrick Haas &lt;<a
+          >Copyright &copy; 2019 Patrick Haas &lt;<a
             href="mailto:patmanteau@posteo.de"
             class="external-link"
             target="_blank"
@@ -54,13 +54,15 @@
           >
           icons by Dave Gandy.</span
         >
-        <span class="github ui"
+        <span class="text ui"
           ><a
             href="https://github.com/patmanteau/chistr"
-            class="external-link-bold github"
+            class="external-link-bold text"
             target="_blank"
-            ><i class="fa fa-github" aria-hidden="true"/></a
-        ></span>
+            >Source</a
+          >
+          on Github.</span
+        >
       </div>
     </div>
   </div>

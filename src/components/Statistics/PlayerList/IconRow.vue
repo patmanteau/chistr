@@ -19,15 +19,15 @@
         :class="{ active: sort.key === 'personal.battles' }"
         @click="setSort('personal.battles')"
       >
-        <i class="fa fa-redo" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="redo" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'personal.battles' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'personal.battles' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -38,15 +38,15 @@
         :class="{ active: sort.key === 'personal.winrate' }"
         @click="setSort('personal.winrate')"
       >
-        <i class="fa fa-chart-pie" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="chart-pie" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'personal.winrate' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'personal.winrate' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -57,15 +57,15 @@
         :class="{ active: sort.key === 'personal.kdRatio' }"
         @click="setSort('personal.kdRatio')"
       >
-        <i class="fa fa-bullseye" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="bullseye" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'personal.kdRatio' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'personal.kdRatio' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -76,15 +76,15 @@
         :class="{ active: sort.key === 'personal.avgDmg' }"
         @click="setSort('personal.avgDmg')"
       >
-        <i class="fa fa-rocket" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="rocket" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'personal.avgDmg' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'personal.avgDmg' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -97,15 +97,15 @@
         :class="{ active: sort.key === 'ship.battles' }"
         @click="setSort('ship.battles')"
       >
-        <i class="fa fa-redo" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="redo" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'ship.battles' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'ship.battles' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -116,15 +116,15 @@
         :class="{ active: sort.key === 'ship.winrate' }"
         @click="setSort('ship.winrate')"
       >
-        <i class="fa fa-chart-pie" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="chart-pie" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'ship.winrate' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'ship.winrate' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -136,14 +136,14 @@
         @click="setSort('ship.pr')"
       >
         <span>PR</span>
-        <i
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'ship.pr' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'ship.pr' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -154,15 +154,15 @@
         :class="{ active: sort.key === 'ship.kdRatio' }"
         @click="setSort('ship.kdRatio')"
       >
-        <i class="fa fa-bullseye" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="bullseye" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'ship.kdRatio' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'ship.kdRatio' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
@@ -173,15 +173,15 @@
         :class="{ active: sort.key === 'ship.avgDmg' }"
         @click="setSort('ship.avgDmg')"
       >
-        <i class="fa fa-rocket" aria-hidden="true" />
-        <i
+        <font-awesome-icon icon="rocket" />
+        <font-awesome-icon
+          icon="sort-down"
           v-if="sort.key === 'ship.avgDmg' && sort.order === 1"
-          class="fa fa-sort-down"
           aria-hidden="true"
         />
-        <i
+        <font-awesome-icon
+          icon="sort-up"
           v-if="sort.key === 'ship.avgDmg' && sort.order === -1"
-          class="fa fa-sort-up"
           aria-hidden="true"
         />
       </div>
