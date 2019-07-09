@@ -1,51 +1,75 @@
 <template>
   <div id="view">
     <template v-if="!hasData">
-    <div class="container" key="statsDisplay">
-      <div class="centered">
-        <h1 class="ui">Ahoy captain!</h1>
-        <h2 class="ui">Waiting for your next battle to start.</h2>
-      </div>
-    </div>
-    </template>
-    <template v-else>
-    <div id="header">
-      <span>
-      <arena-info
-        :active="active"
-        :arena="arena">
-      </arena-info>
-      </span>
-    </div>
-    <div v-if="updateAvailable" class="ui update-warning"><a target="_blank" href="https://github.com/patmanteau/chistr/releases/latest">Update available. Click here to download.</a></div>
-    <transition name="fade" mode="out-in">
-      <div v-if="finishedLoading" id="maingrid" key="statsDisplay">
-        <div class="gridcontainer">
-        <player-list
-          title="Foes"
-          bordercolor="#f77"
-          :finishedLoading="finishedLoading"
-          :players="foes">
-        </player-list>
-        <div class="vspace"></div>
-        <player-list
-          title="Friends"
-          bordercolor="#8f8"
-          noheader="true"
-          :finishedLoading="finishedLoading"
-          :players="friends">
-        </player-list>
+      <div
+        key="statsDisplay"
+        class="container"
+      >
+        <div class="centered">
+          <h1 class="ui">
+            Ahoy captain!
+          </h1>
+          <h2 class="ui">
+            Waiting for your next battle to start.
+          </h2>
         </div>
       </div>
-      <div v-else-if="hasData" key="loadingScreen">
-        <!-- <bar-spinner></bar-spinner> -->
-        <circle-progress></circle-progress>
+    </template>
+    <template v-else>
+      <div id="header">
+        <span>
+          <arena-info
+            :active="active"
+            :arena="arena"
+          />
+        </span>
       </div>
-    </transition>
+      <div
+        v-if="updateAvailable"
+        class="ui update-warning"
+      >
+        <a
+          target="_blank"
+          href="https://github.com/patmanteau/chistr/releases/latest"
+        >Update available. Click here to download.</a>
+      </div>
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <div
+          v-if="finishedLoading"
+          id="maingrid"
+          key="statsDisplay"
+        >
+          <div class="gridcontainer">
+            <player-list
+              title="Foes"
+              bordercolor="#f77"
+              :finished-loading="finishedLoading"
+              :players="foes"
+            />
+            <div class="vspace" />
+            <player-list
+              title="Friends"
+              bordercolor="#8f8"
+              noheader="true"
+              :finished-loading="finishedLoading"
+              :players="friends"
+            />
+          </div>
+        </div>
+        <div
+          v-else-if="hasData"
+          key="loadingScreen"
+        >
+          <!-- <bar-spinner></bar-spinner> -->
+          <circle-progress />
+        </div>
+      </transition>
     </template>
     <!-- <div v-if="finishedLoading">Finished Loading</div> -->
   </div>
-
 </template>
 
 <script type="text/javascript">
@@ -58,7 +82,7 @@ import CircleProgress from './Statistics/Spinners/CircleProgress'
 import semver from 'semver'
 
 export default {
-  name: 'statistics',
+  name: 'Statistics',
   // components: { ArenaInfo, PlayerList, BarSpinner },
   components: { ArenaInfo, PlayerList, CircleProgress },
 

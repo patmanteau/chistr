@@ -1,26 +1,21 @@
 <template>
-  <transition name="fade" mode="out-in">
-  <p class="text" :key="sentence">{{ sentence }}</p>
+  <transition
+    name="fade"
+    mode="out-in"
+  >
+    <p
+      :key="sentence"
+      class="text"
+    >
+      {{ sentence }}
+    </p>
   </transition>
 </template>
 
 <script type="text/javascript">
 import _ from 'lodash'
 export default {
-  name: 'random-sentence',
-
-  methods: {
-    getSentence () {
-      return this.sentences[this.sentenceIdx++ % this.sentences.length]
-    }
-  },
-
-  created () {
-    this.sentence = this.getSentence()
-    setInterval(() => {
-      this.sentence = this.getSentence()
-    }, 2000)
-  },
+  name: 'RandomSentence',
 
   data () {
     return {
@@ -59,6 +54,19 @@ export default {
       ]),
       sentence: '',
       sentenceIdx: 0
+    }
+  },
+
+  created () {
+    this.sentence = this.getSentence()
+    setInterval(() => {
+      this.sentence = this.getSentence()
+    }, 2000)
+  },
+
+  methods: {
+    getSentence () {
+      return this.sentences[this.sentenceIdx++ % this.sentences.length]
     }
   }
 }

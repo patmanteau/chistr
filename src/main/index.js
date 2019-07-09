@@ -73,8 +73,8 @@ function createMenu () {
           label: 'Settings...',
           click () { mainWindow.webContents.send('open-settings') }
         },
-        {type: 'separator'},
-        {role: 'quit'}
+        { type: 'separator' },
+        { role: 'quit' }
       ]
     },
     {

@@ -1,18 +1,38 @@
 <template>
   <div class="rowflexed">
-    <transition name="fade" mode="out-in">
-      <div class="ui" v-if="active">
-        <img :src="arena.matchGroup | matchGroupImg" class="type-image ui" height="40"></img>
+    <transition
+      name="fade"
+      mode="out-in"
+    >
+      <div
+        v-if="active"
+        class="ui"
+      >
+        <img
+          :src="arena.matchGroup | matchGroupImg"
+          class="type-image ui"
+          height="40"
+        ></img>
       </div>
     </transition>
     <div class="ui">
-      <transition name="fade" mode="out-in">
-        <h1 v-if="active">{{ arena.mapName | translateMapName }}</h1>
-        <h1 v-else>No active match</h1>
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <h1 v-if="active">
+          {{ arena.mapName | translateMapName }}
+        </h1>
+        <h1 v-else>
+          No active match
+        </h1>
       </transition>
     </div>
     <div class="header-item ui">
-      <transition name="fade" mode="out-in">
+      <transition
+        name="fade"
+        mode="out-in"
+      >
         <h2 class="header-item">
           {{ arena.matchGroup | translateMatchGroup }}<br>
           {{ arena.lastMatchDate }}
@@ -28,7 +48,6 @@ import battleTypes from './../../../data/battle-types.json'
 import mapNames from './../../../data/map-names.json'
 
 export default {
-  props: ['active', 'arena'],
   filters: {
     translateMapName (name) {
       return name
@@ -47,7 +66,8 @@ export default {
         ? battleTypes[_.upperCase(name)].image
         : ''
     }
-  }
+  },
+  props: ['active', 'arena']
 }
 </script>
 

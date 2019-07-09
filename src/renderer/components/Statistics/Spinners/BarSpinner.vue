@@ -1,22 +1,24 @@
 <template>
-<div class="spinnercontainer">
-  <div class="spinner">
-    <p class="percentage">{{ (progress * 100).toFixed() }}%</p>
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
-    <random-sentence></random-sentence>
+  <div class="spinnercontainer">
+    <div class="spinner">
+      <p class="percentage">
+        {{ (progress * 100).toFixed() }}%
+      </p>
+      <div class="rect1" />
+      <div class="rect2" />
+      <div class="rect3" />
+      <div class="rect4" />
+      <div class="rect5" />
+      <random-sentence />
+    </div>
   </div>
-</div>
 </template>
 
 <script type="text/javascript">
 import RandomSentence from './RandomSentence'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'bar-spinner',
+  name: 'BarSpinner',
   components: { RandomSentence },
 
   computed: {

@@ -1,7 +1,7 @@
 import R from 'ramda'
 import * as types from '../mutation-types'
-import {WowsApi} from '../wows-api'
-import {ShipDB} from '../ship-db'
+import { WowsApi } from '../wows-api'
+import { ShipDB } from '../ship-db'
 import * as log from 'electron-log'
 
 const jsonfile = require('jsonfile')

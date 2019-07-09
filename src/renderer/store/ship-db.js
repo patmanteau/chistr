@@ -54,7 +54,7 @@ export class ShipDB {
   set (shipId, dataObj) {
     const _shipId = shipId.toString()
     if (this.has(_shipId)) {
-      this.db.set(`data.${_shipId}`, {...this.db.get(`data.${_shipId}`), ...dataObj})
+      this.db.set(`data.${_shipId}`, { ...this.db.get(`data.${_shipId}`), ...dataObj })
     } else {
       this.db.set(`data.${_shipId}`, dataObj)
     }

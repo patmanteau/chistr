@@ -1,77 +1,159 @@
 <template>
-<div id="view">
-  <div id="header" class="ui">
-    <router-link class="text link" :to="{ name: 'statistics', params: {} }">
-      <!-- <button class="text" >Save &amp; close</button> -->
-      <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
-    </router-link>
-  </div>
-  <!-- <div id="header">
+  <div id="view">
+    <div
+      id="header"
+      class="ui"
+    >
+      <router-link
+        class="text link"
+        :to="{ name: 'statistics', params: {} }"
+      >
+        <!-- <button class="text" >Save &amp; close</button> -->
+        <span class="savebutton"><i
+          class="fa fa-check-circle-o"
+          aria-hidden="true"
+        /> Close</span>
+      </router-link>
+    </div>
+    <!-- <div id="header">
     <div class="rowflexed">
     <h1><i class="fa fa-cog" aria-hidden="true"></i> Settings</h1>
     </div>
   </div> -->
-  <div class="gridcontainer">
-    <div class="config-item">
-
-    </div>
-    <!-- <div class="Rcell Rcell-2of2"> -->
-    <div class="config-item ui">
+    <div class="gridcontainer">
+      <div class="config-item" />
+      <!-- <div class="Rcell Rcell-2of2"> -->
+      <div class="config-item ui">
         <!-- <div class="Rcontent"> -->
 
         <!-- </div> -->
-    </div>
-    <div class="config-item">
-      <div class="title ui">Your Wargaming Application ID</div>
-      <div class="explanation ui">
-        You need a valid Wargaming.net Mobile Application ID. Get yours <a href="https://developers.wargaming.net/applications/" target="_blank" class="text link">here</a> (Login <i class="fa fa-angle-right" aria-hidden="true"></i> Add application <i class="fa fa-angle-right" aria-hidden="true"></i> Choose a name <i class="fa fa-angle-right" aria-hidden="true"></i> Set type to Mobile <i class="fa fa-angle-right" aria-hidden="true"></i> Add).
       </div>
-      <div v-if="!wowsApiKeyValid" class="error">Please enter a valid Application ID.</div>
-      <input class="text" type="text" placeholder="API key" v-model.trim="wowsApiKey" @input="validateApiKey"> <i class="inline-icon fa fa-check" :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
-
-    </div>
-    <div class="config-item">
-      <div class="title ui">World of Warships path</div>
-      <div class="explanation ui">
-        Enter the folder your World of Warships installation lives in.
+      <div class="config-item">
+        <div class="title ui">
+          Your Wargaming Application ID
+        </div>
+        <div class="explanation ui">
+          You need a valid Wargaming.net Mobile Application ID. Get yours <a
+            href="https://developers.wargaming.net/applications/"
+            target="_blank"
+            class="text link"
+          >here</a> (Login <i
+            class="fa fa-angle-right"
+            aria-hidden="true"
+          /> Add application <i
+            class="fa fa-angle-right"
+            aria-hidden="true"
+          /> Choose a name <i
+            class="fa fa-angle-right"
+            aria-hidden="true"
+          /> Set type to Mobile <i
+            class="fa fa-angle-right"
+            aria-hidden="true"
+          /> Add).
+        </div>
+        <div
+          v-if="!wowsApiKeyValid"
+          class="error"
+        >
+          Please enter a valid Application ID.
+        </div>
+        <input
+          v-model.trim="wowsApiKey"
+          class="text"
+          type="text"
+          placeholder="API key"
+          @input="validateApiKey"
+        > <i
+          class="inline-icon fa fa-check"
+          :class="wowsApiKeyValid ? 'fa-check' : 'fa-times'"
+          aria-hidden="true"
+        />
       </div>
-      <div v-if="!wowsPathValid" class="error">Couldn't find WorldOfWarships.exe. The path you entered seems to be incorrect.</div>
-      <input v-model="wowsPath" @input="validatePath" class="text" placeholder="Path to WoWS"> <i class="inline-icon fa fa-check" :class="wowsPathValid ? 'fa-check' : 'fa-times'" aria-hidden="true"></i>
-    </div>
-    <div class="config-item ui">
-      <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
-      <div class="title">World of Warships server</div>
-      <div class="explanation">
-        Select the server you play on.
+      <div class="config-item">
+        <div class="title ui">
+          World of Warships path
+        </div>
+        <div class="explanation ui">
+          Enter the folder your World of Warships installation lives in.
+        </div>
+        <div
+          v-if="!wowsPathValid"
+          class="error"
+        >
+          Couldn't find WorldOfWarships.exe. The path you entered seems to be incorrect.
+        </div>
+        <input
+          v-model="wowsPath"
+          class="text"
+          placeholder="Path to WoWS"
+          @input="validatePath"
+        > <i
+          class="inline-icon fa fa-check"
+          :class="wowsPathValid ? 'fa-check' : 'fa-times'"
+          aria-hidden="true"
+        />
       </div>
-      <select class="text" v-model="wowsApiUrl" name="apiUrl">
-        <option v-for="realm in realms"
-                :value="realm.url"
-                :selected="realm.url === wowsApiUrl">{{ realm.name }} ({{ realm.url }})</option>
-      </select>
-    </div>
-    <div class="config-item ui">
-      <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
-      <div class="title">Match group</div>
-      <div class="explanation">
-        Choose the kind of statistics you want to see.
+      <div class="config-item ui">
+        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+        <div class="title">
+          World of Warships server
+        </div>
+        <div class="explanation">
+          Select the server you play on.
+        </div>
+        <select
+          v-model="wowsApiUrl"
+          class="text"
+          name="apiUrl"
+        >
+          <option
+            v-for="realm in realms"
+            :value="realm.url"
+            :selected="realm.url === wowsApiUrl"
+          >
+            {{ realm.name }} ({{ realm.url }})
+          </option>
+        </select>
       </div>
-      <select class="text" v-model="wowsMatchgroup" name="matchgroup">
-        <option v-for="group in matchgroups"
-                :value="group.val"
-                :selected="group.val === wowsMatchgroup">{{ group.name }} ({{ group.desc }})</option>
-      </select>
-    </div>
-    <div class="config-item ui">
-      <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
-      <div class="title">Cache settings</div>
-      <div class="explanation">
-        Chistr caches ship data to reduce loading times. If ship names are wrong or missing or some PRs are equal to 0, try clearing the cache.
+      <div class="config-item ui">
+        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+        <div class="title">
+          Match group
+        </div>
+        <div class="explanation">
+          Choose the kind of statistics you want to see.
+        </div>
+        <select
+          v-model="wowsMatchgroup"
+          class="text"
+          name="matchgroup"
+        >
+          <option
+            v-for="group in matchgroups"
+            :value="group.val"
+            :selected="group.val === wowsMatchgroup"
+          >
+            {{ group.name }} ({{ group.desc }})
+          </option>
+        </select>
       </div>
-      <button class="text" @click="clearShipCache">Clear ship cache</button>
+      <div class="config-item ui">
+        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
+        <div class="title">
+          Cache settings
+        </div>
+        <div class="explanation">
+          Chistr caches ship data to reduce loading times. If ship names are wrong or missing or some PRs are equal to 0, try clearing the cache.
+        </div>
+        <button
+          class="text"
+          @click="clearShipCache"
+        >
+          Clear ship cache
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script type="text/javascript">
@@ -80,7 +162,25 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 export default {
-  name: 'settings',
+  name: 'Settings',
+
+  data () {
+    return {
+      realms: [
+        { name: 'EU', url: 'http://api.worldofwarships.eu' },
+        { name: 'NA', url: 'http://api.worldofwarships.com' },
+        { name: 'RU', url: 'http://api.worldofwarships.ru' },
+        { name: 'ASIA', url: 'http://api.worldofwarships.asia' }
+      ],
+      matchgroups: [
+        { name: 'Automatic', desc: 'Auto-select based on current match', val: 'auto' },
+        { name: 'Random', desc: 'Display Random match statistics', val: 'pvp' },
+        { name: 'Ranked', desc: 'Display Ranked match statistics', val: 'ranked' }
+      ],
+      wowsApiKeyValid: false,
+      wowsPathValid: false
+    }
+  },
 
   computed: {
     wowsApiKey: {
@@ -120,6 +220,11 @@ export default {
     }
   },
 
+  mounted () {
+    this.validatePath()
+    this.validateApiKey()
+  },
+
   methods: {
     validateApiKey () {
       this.$http.get(`${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`)
@@ -140,29 +245,6 @@ export default {
 
     clearShipCache () {
       this.$store.dispatch('clearApiCache')
-    }
-  },
-
-  mounted () {
-    this.validatePath()
-    this.validateApiKey()
-  },
-
-  data () {
-    return {
-      realms: [
-        { name: 'EU', url: 'http://api.worldofwarships.eu' },
-        { name: 'NA', url: 'http://api.worldofwarships.com' },
-        { name: 'RU', url: 'http://api.worldofwarships.ru' },
-        { name: 'ASIA', url: 'http://api.worldofwarships.asia' }
-      ],
-      matchgroups: [
-        { name: 'Automatic', desc: 'Auto-select based on current match', val: 'auto' },
-        { name: 'Random', desc: 'Display Random match statistics', val: 'pvp' },
-        { name: 'Ranked', desc: 'Display Ranked match statistics', val: 'ranked' }
-      ],
-      wowsApiKeyValid: false,
-      wowsPathValid: false
     }
   }
 }

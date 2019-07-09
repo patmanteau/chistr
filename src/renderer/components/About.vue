@@ -1,19 +1,55 @@
 <template>
   <div id="view">
-    <div id="header" class="ui">
-      <router-link class="text link" :to="{ name: 'statistics', params: {} }">
-        <span class="savebutton"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Close</span>
+    <div
+      id="header"
+      class="ui"
+    >
+      <router-link
+        class="text link"
+        :to="{ name: 'statistics', params: {} }"
+      >
+        <span class="savebutton"><i
+          class="fa fa-check-circle-o"
+          aria-hidden="true"
+        /> Close</span>
       </router-link>
     </div>
     <div class="container">
       <div class="centered">
         <span class="standout ui">Chistr <small>{{ version }}</small></span>
-        <span class="author">Copyright &copy; 2017 Patrick Haas &lt;<a href="mailto:patmanteau@posteo.de" class="external-link" target="_blank">patmanteau@posteo.de</a>&gt;.</span>
+        <span class="author">Copyright &copy; 2017 Patrick Haas &lt;<a
+          href="mailto:patmanteau@posteo.de"
+          class="external-link"
+          target="_blank"
+        >patmanteau@posteo.de</a>&gt;.</span>
         <span class="text ui"> Distributed under The MIT License.</span>
-        <span class="text ui">Inspired by <a class="external-link-bold text" href="https://github.com/tianweiliu/wows-stats" target="_blank">wows-stats</a>. PR courtesy of <a class="external-link-bold text" href="http://wows-numbers.com" target="_blank">WoWS Stats &amp; Numbers</a>.</span>
-        <span class="text ui">&lsquo;World of Warships&rsquo; is a registered trademark of <a href="https://eu.wargaming.net/" target="_blank" class="external-link-bold text">Wargaming</a>.</span>
-        <span class="text ui"><a class="external-link-bold text" href="http://fontawesome.io" target="_blank">Font Awesome</a> icons by Dave Gandy.</span>
-        <span class="github ui"><a href="https://github.com/patmanteau/chistr" class="external-link-bold github" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></span>
+        <span class="text ui">Inspired by <a
+          class="external-link-bold text"
+          href="https://github.com/tianweiliu/wows-stats"
+          target="_blank"
+        >wows-stats</a>. PR courtesy of <a
+          class="external-link-bold text"
+          href="http://wows-numbers.com"
+          target="_blank"
+        >WoWS Stats &amp; Numbers</a>.</span>
+        <span class="text ui">&lsquo;World of Warships&rsquo; is a registered trademark of <a
+          href="https://eu.wargaming.net/"
+          target="_blank"
+          class="external-link-bold text"
+        >Wargaming</a>.</span>
+        <span class="text ui"><a
+          class="external-link-bold text"
+          href="http://fontawesome.io"
+          target="_blank"
+        >Font Awesome</a> icons by Dave Gandy.</span>
+        <span class="github ui"><a
+          href="https://github.com/patmanteau/chistr"
+          class="external-link-bold github"
+          target="_blank"
+        ><i
+          class="fa fa-github"
+          aria-hidden="true"
+        /></a></span>
       </div>
     </div>
   </div>
@@ -23,7 +59,7 @@
 import { remote } from 'electron'
 
 export default {
-  name: 'about',
+  name: 'About',
   data () {
     return {
       version: remote.app.getVersion()

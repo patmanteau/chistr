@@ -1,8 +1,8 @@
 <template>
   <div class="spinnercontainer">
     <!-- <progress-bar class="progressbar" type="circle" ref="circle" :options="options"></progress-bar> -->
-    <div id="progressbar"></div>
-    <random-sentence></random-sentence>
+    <div id="progressbar" />
+    <random-sentence />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import RandomSentence from './RandomSentence'
 import { mapGetters } from 'vuex'
 import ProgressBar from 'progressbar.js'
 export default {
-  name: 'circle-progress',
+  name: 'CircleProgress',
   components: { RandomSentence },
 
   computed: {
