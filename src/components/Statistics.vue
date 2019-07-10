@@ -148,7 +148,7 @@ h2 {
 
 .update-warning {
   color: #c33;
-  font-size: 13px;
+  font-size: 16px;
   font-family: "Archivo Narrow", sans-serif;
   font-weight: 500;
   margin: 0px;

@@ -259,12 +259,12 @@ export default {
 }
 
 .config-item .title {
-  font-size: 16px;
+  font-size: 18px;
   margin: 2px 0 2px 0;
 }
 
 .config-item .explanation {
-  font-size: 14px;
+  font-size: 16px;
   color: #777;
   margin: 2px 0 2px 0;
 }
@@ -294,7 +294,7 @@ h1 {
 
 h2 {
   color: #999;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Oswald", sans-serif;
   font-weight: 500;
   margin: 4px 4px 0px 20px;

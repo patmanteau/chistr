@@ -111,13 +111,13 @@ export default {
 
 .heart {
   color: #f54;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
 }
 
 .text {
   color: #777;
-  font-size: 14px;
+  font-size: 16px;
   /*font-family: 'Roboto Slab', serif;*/
 }
 

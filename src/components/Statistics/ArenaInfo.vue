@@ -11,8 +11,9 @@
     </transition>
     <div class="ui">
       <transition name="fade" mode="out-in">
-        <h1 v-if="active">
-          {{ arena.mapName | translateMapName }}
+        <h1 v-if="active" :title="arena.mapDescription">
+          <!-- {{ arena.mapName | translateMapName }} -->
+          {{ arena.mapName | uppercase }}
         </h1>
         <h1 v-else>
           No active match
@@ -45,6 +46,10 @@ export default {
       return name ? battleTypes[name.toUpperCase()]["name"] : "";
     },
 
+    uppercase(name) {
+      return name.toUpperCase();
+    },
+
     matchGroupImg(name) {
       return name ? battleTypes[_.upperCase(name)].image : "";
     }
@@ -73,14 +78,15 @@ h1 {
 
 h2 {
   color: #999;
-  font-size: 16px;
+  font-size: 18px;
   font-family: "Archivo Narrow", sans-serif;
+  line-height: 1.1;
   font-weight: 500;
-  margin: 0px 0px 0px 2px;
+  margin: 0px 0px -1px 2px;
   /*text-align: center;*/
 }
 
 .type-image {
-  margin-top: 4px;
+  margin-top: 8px;
 }
 </style>

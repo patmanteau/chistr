@@ -24,7 +24,7 @@ body {
   margin: 0;
   box-sizing: border-box;
 
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.3;
 
   -webkit-font-smoothing: antialiased;
@@ -126,7 +126,7 @@ body {
 .text {
   font-family: "Archivo Narrow", sans-serif;
   /* font-weight: 400; */
-  /* font-size: 14px; */
+  font-size: 18px;
 }
 
 .number {
@@ -200,13 +200,13 @@ body {
   /* border-radius: 3px; */
   /* position: absolute; */
   font-family: "Archivo Narrow", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   /* font-weight: normal; */
-  border: 1px #ebebeb solid;
+  border: 1px #cbcbcb solid;
   z-index: 200000;
-  /* -moz-box-shadow: rgb(58, 58, 58) 0 0 6px 0;
-  -webkit-box-shadow: rgb(58, 58, 58) 0 0 6px 0;
-  box-shadow: rgb(58, 58, 58) 0 0 6px 0; */
+  /* -moz-box-shadow: rgb(58, 58, 58) 0 0 2px 0;
+  -webkit-box-shadow: rgb(58, 58, 58) 0 0 2px 0;
+  box-shadow: rgb(58, 58, 58) 0 0 2px 0; */
 }
 
 .savebutton {
