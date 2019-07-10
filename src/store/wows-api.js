@@ -159,7 +159,7 @@ export class WowsApi {
             if (ship) {
               let shipData = {
                 name: ship.name,
-                isPremium: ship.is_premium || ship.is_special,
+                isPremium: ship.is_premium || ship.is_special || ship.price_gold > 0 || ship.price_credit === 1,
                 isTestShip: ship.has_demo_profile,
                 ...ship
               };
