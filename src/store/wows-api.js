@@ -13,8 +13,6 @@ export class WowsApi {
       }
     });
 
-    console.log(`${url}:${key}`);
-
     const responseHandler = response => {
       if (
         response.data.status !== "ok" ||
