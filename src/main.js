@@ -17,6 +17,7 @@ Vue.config.productionTip = false;
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faRedo,
+  faStar,
   faSortDown,
   faSortUp,
   faChartPie,
@@ -32,6 +33,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
   faRedo,
+  faStar,
   faSortDown,
   faSortUp,
   faChartPie,

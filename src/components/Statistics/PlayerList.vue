@@ -58,6 +58,7 @@
               class="external-link"
               target="_blank"
               ><i>{{ player.ship.name }}</i>
+              <font-awesome-icon v-if="player.ship.isPremium" title="Premium Ship" class="premium-ship" icon="star" />
             </a>
           </div>
         </div>
@@ -580,5 +581,12 @@ hr {
 
 .rating-superunicum {
   color: #a00dc5;
+}
+
+.premium-ship {
+  color: #ffc71f;
+  font-size: 10pt;
+  vertical-align: baseline;
+  margin-left: 2px;
 }
 </style>

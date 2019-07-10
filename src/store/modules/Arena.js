@@ -166,6 +166,7 @@ const mutations = {
           id: item.shipId,
           hasRecord: false,
           name: "",
+          isPremium: false,
           battles: 0,
           victories: 0,
           survived: 0,
@@ -332,9 +333,9 @@ const actions = {
     const player = getters.player(name);
     // Resolve the ship's name first
     wows
-      .getShipName(player.ship.id)
-      .then(shipName => {
-        commit(types.SET_SHIP_DATA, { name: name, data: { name: shipName } });
+      .getShip(player.ship.id)
+      .then(ship => {
+        commit(types.SET_SHIP_DATA, { name: name, data: ship });
         commit(types.INC_COMPLETED_OPERATIONS);
       })
       .catch(error => {

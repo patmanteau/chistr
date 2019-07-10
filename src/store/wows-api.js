@@ -140,12 +140,16 @@ export class WowsApi {
     });
   }
 
-  getShipName(shipId) {
+  getShip(shipId) {
     return new Promise((resolve, reject) => {
-      if (this.shipdb.hasName(shipId)) {
-        let shipName = this.shipdb.getName(shipId);
-        log.info(`Cache hit: ${shipId} => ${shipName}`);
-        return resolve(shipName);
+      // shipDb may contain expected values only,
+      // so check if there's a full record including
+      // name
+      if (this.shipdb.hasFull(shipId)) {
+        let ship = this.shipdb.get(shipId);
+        log.info(`Cache hit: ${shipId} => ${ship}`);
+        // console.log(ship);
+        return resolve(ship);
       } else {
         log.info(`Cache miss: ${shipId}`);
         this.api
@@ -153,8 +157,13 @@ export class WowsApi {
           .then(response => {
             const ship = R.path(["data", "data", shipId], response);
             if (ship) {
-              this.shipdb.setName(shipId, ship.name);
-              return resolve(ship.name);
+              let shipData = {
+                name: ship.name,
+                isPremium: ship.is_premium || ship.is_special,
+                tier: ship.tier
+              };
+              this.shipdb.setFull(shipId, shipData);
+              return resolve(shipData);
             } else {
               return reject(Error("Ship not found."));
             }

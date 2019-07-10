@@ -33,7 +33,7 @@ export class ShipDB {
     return this.db.has(`data.${shipId.toString()}`);
   }
 
-  hasName(shipId) {
+  hasFull(shipId) {
     return (
       this.has(shipId) &&
       this.get(shipId).hasOwnProperty("name") &&
@@ -46,13 +46,13 @@ export class ShipDB {
     return this.db.get(`data.${shipId.toString()}`);
   }
 
-  getName(shipId) {
-    if (this.hasName(shipId)) {
-      return this.get(shipId).name;
-    } else {
-      return undefined;
-    }
-  }
+  // getName(shipId) {
+  //   if (this.hasName(shipId)) {
+  //     return this.get(shipId).name;
+  //   } else {
+  //     return undefined;
+  //   }
+  // }
 
   set(shipId, dataObj) {
     const _shipId = shipId.toString();
@@ -66,8 +66,8 @@ export class ShipDB {
     }
   }
 
-  setName(shipId, name) {
-    this.set(shipId, { name: name, timestamp: Date.now() });
+  setFull(shipId, ship) {
+    this.set(shipId, { timestamp: Date.now(), ...ship });
   }
 
   delete(shipId) {
