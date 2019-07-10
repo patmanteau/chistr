@@ -1,13 +1,10 @@
 {
   "name": "chistr",
   "version": "1.3.0",
-  "author": "Patrick Haas <patmanteau@posteo.de>",
-  "description": "A player statistics viewer for World of Warships",
-  "license": "MIT",
   "private": true,
+  "description": "A player statistics viewer for World of Warships",
+  "author": "Patrick Haas <patmanteau@posteo.de>",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
@@ -42,5 +39,6 @@
     "eslint-plugin-vue": "^5.0.0",
     "vue-cli-plugin-electron-builder": "^1.3.6",
     "vue-template-compiler": "^2.6.10"
-  }
+  },
+  "license": "MIT"
 }
