@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [1.3.0] - 2019-07-09
 ### Changed
 - Update PR calculation
+- Slightly larger fonts
 
 ### Fixed
 - No more ugly fonts in clan popups
