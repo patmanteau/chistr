@@ -58,7 +58,18 @@
               class="external-link"
               target="_blank"
               ><i>{{ player.ship.name }}</i>
-              <font-awesome-icon v-if="player.ship.isPremium" title="Premium Ship" class="premium-ship" icon="star" />
+              <font-awesome-icon
+                v-if="player.ship.isPremium"
+                title="Premium Ship"
+                class="special-ship premium-ship"
+                icon="star"
+              />
+              <font-awesome-icon
+                v-if="player.ship.isTestShip"
+                title="Ship is being tested"
+                class="special-ship test-ship"
+                icon="vial"
+              />
             </a>
           </div>
         </div>
@@ -583,10 +594,17 @@ hr {
   color: #a00dc5;
 }
 
-.premium-ship {
-  color: #ffc71f;
+.special-ship {
   font-size: 10pt;
   vertical-align: baseline;
-  margin-left: 2px;
+  margin-left: 4px;
+}
+
+.premium-ship {
+  color: #ffc71f;
+}
+
+.test-ship {
+  color: #3686fd;
 }
 </style>

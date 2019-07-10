@@ -167,6 +167,7 @@ const mutations = {
           hasRecord: false,
           name: "",
           isPremium: false,
+          isTestShip: false,
           battles: 0,
           victories: 0,
           survived: 0,

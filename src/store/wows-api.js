@@ -147,11 +147,11 @@ export class WowsApi {
       // name
       if (this.shipdb.hasFull(shipId)) {
         let ship = this.shipdb.get(shipId);
-        log.info(`Cache hit: ${shipId} => ${ship}`);
+        log.debug(`Cache hit: ${shipId} => ${ship.name}`);
         // console.log(ship);
         return resolve(ship);
       } else {
-        log.info(`Cache miss: ${shipId}`);
+        log.debug(`Cache miss: ${shipId}`);
         this.api
           .get(`/wows/encyclopedia/ships/?ship_id=${shipId}`)
           .then(response => {
@@ -160,7 +160,8 @@ export class WowsApi {
               let shipData = {
                 name: ship.name,
                 isPremium: ship.is_premium || ship.is_special,
-                tier: ship.tier
+                isTestShip: ship.has_demo_profile,
+                ...ship
               };
               this.shipdb.setFull(shipId, shipData);
               return resolve(shipData);
@@ -169,7 +170,8 @@ export class WowsApi {
             }
           })
           .catch(error => {
-            console.log(error);
+            log.error(error);
+            // console.log(error);
             return reject(error);
           });
       }

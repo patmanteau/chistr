@@ -16,34 +16,36 @@ Vue.config.productionTip = false;
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
+  faAngleRight,
+  faBullseye,
+  faChartPie,
+  faCheck,
+  faCheckCircle,
+  faCog,
   faRedo,
-  faStar,
+  faRocket,
   faSortDown,
   faSortUp,
-  faChartPie,
-  faBullseye,
-  faRocket,
-  faCheckCircle,
-  faAngleRight,
-  faCheck,
-  faCog,
-  faTimes
+  faStar,
+  faTimes,
+  faVial
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
+  faAngleRight,
+  faBullseye,
+  faChartPie,
+  faCheck,
+  faCheckCircle,
+  faCog,
   faRedo,
-  faStar,
+  faRocket,
   faSortDown,
   faSortUp,
-  faChartPie,
-  faBullseye,
-  faRocket,
-  faCheckCircle,
-  faAngleRight,
-  faCheck,
-  faCog,
-  faTimes
+  faStar,
+  faTimes,
+  faVial
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
