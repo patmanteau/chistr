@@ -27,7 +27,11 @@ const state = {
   active: false,
   hasData: false,
   arena: {
-    mapname: "",
+    mapId: "",
+    mapDisplayName: "",
+    mapName: "",
+    mapDescription: "",
+    mapIcon: "",
     playerName: "",
     lastMatchDate: "",
     matchGroup: ""
@@ -88,8 +92,14 @@ const mutations = {
   },
 
   [types.SET_ARENA_DATA](state, arenaData) {
+    const mapData = require("../../data/maps.json");
+
     state.arena = {
-      mapName: arenaData.mapDisplayName,
+      mapId: arenaData.mapId,
+      mapName: mapData[arenaData.mapId].name,
+      mapDescription: mapData[arenaData.mapId].description,
+      mapIcon: mapData[arenaData.mapId].icon,
+      mapDisplayName: arenaData.mapDisplayName,
       playerName: arenaData.playerName,
       lastMatchDate: arenaData.dateTime,
       matchGroup: arenaData.matchGroup
