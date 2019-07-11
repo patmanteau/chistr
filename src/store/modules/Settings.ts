@@ -1,6 +1,10 @@
 import * as types from "../mutation-types";
 import config from "../../config";
 
+interface SettingsState {
+  wows
+}
+
 const state = {
   wows: config.get("wows")
 };

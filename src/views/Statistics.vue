@@ -57,10 +57,10 @@
 <script type="text/javascript">
 import { mapState, mapGetters } from "vuex";
 import { remote } from "electron";
-import ArenaInfo from "./Statistics/ArenaInfo";
-import PlayerList from "./Statistics/PlayerList";
+import ArenaInfo from "@/components/Statistics/ArenaInfo";
+import PlayerList from "@/components/Statistics/PlayerList";
 // import BarSpinner from './Statistics/Spinners/BarSpinner'
-import CircleProgress from "./Statistics/Spinners/CircleProgress";
+import CircleProgress from "@/components//Statistics/Spinners/CircleProgress";
 import semver from "semver";
 
 export default {

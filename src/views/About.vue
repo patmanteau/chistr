@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script lang="ts">
 import { remote } from "electron";
 
 export default {

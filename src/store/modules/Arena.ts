@@ -1,15 +1,40 @@
-// import R from "ramda";
-const R = require("ramda");
+import { Module, MutationTree, GetterTree, ActionTree } from "vuex";
+import R from "ramda";
 import * as types from "../mutation-types";
 import { WowsApi } from "../wows-api";
 import { ShipDB } from "../ship-db";
 import * as log from "electron-log";
+import { ArenaVehicle, Player, RootState } from '../types';
 
 const jsonfile = require("jsonfile");
 const path = require("path");
 const shipdb = new ShipDB();
 
-const didFinishOk = function(ok, name, extraData = null) {
+interface ArenaState {
+  active: boolean;
+  hasData: boolean;
+
+  arena?: Arena;
+
+  players: Player[];
+  playerIndex: {};
+  errors: [];
+  completedOperations: number;
+  totalOperations: number;
+}
+
+interface Arena {
+  mapId: string;
+  mapDisplayName: string;
+  mapName: string;
+  mapDescription: string;
+  mapIcon: string;
+  playerName: string;
+  lastMatchDate: string;
+  matchGroup: string;
+}
+
+const didFinishOk = function(ok: boolean, name: String, extraData = null) {
   const obj = {
     name: name,
     data: {
@@ -23,19 +48,10 @@ const didFinishOk = function(ok, name, extraData = null) {
   return obj;
 };
 
-const state = {
+const state: ArenaState = {
   active: false,
   hasData: false,
-  arena: {
-    mapId: "",
-    mapDisplayName: "",
-    mapName: "",
-    mapDescription: "",
-    mapIcon: "",
-    playerName: "",
-    lastMatchDate: "",
-    matchGroup: ""
-  },
+  arena: undefined,
   players: [],
   playerIndex: {},
   errors: [],
@@ -44,22 +60,22 @@ const state = {
   totalOperations: 1
 };
 
-let wows;
+let wows: WowsApi;
 
-const getters = {
-  friends(state, _getters) {
-    return R.filter(player => player.relation <= 1)(state.players);
+const getters: GetterTree<ArenaState, RootState> = {
+  friends(state: ArenaState, _getters): Player[] {
+    return R.filter((player: Player) => player.relation <= 1)(state.players);
   },
 
-  foes(state, _getters) {
-    return R.filter(player => player.relation > 1)(state.players);
+  foes(state: ArenaState, _getters): Player[] {
+    return R.filter((player: Player) => player.relation > 1)(state.players);
   },
 
-  players(state, _getters) {
+  players(state: ArenaState, _getters): Player[] {
     return state.players;
   },
 
-  progress(state) {
+  progress(state: ArenaState): number {
     return R.clamp(
       0,
       1,
@@ -67,7 +83,7 @@ const getters = {
     );
   },
 
-  finishedLoading(state, _getters) {
+  finishedLoading(state: ArenaState, _getters): boolean {
     return (
       state.hasData &&
       R.all(
@@ -78,16 +94,16 @@ const getters = {
     );
   },
 
-  player: state => name => {
+  player: (state: ArenaState) => (name: string) => {
     return state.players[state.playerIndex[name]];
   }
 };
 
-const mutations = {
+const mutations: MutationTree<ArenaState> = {
   [types.SET_ARENA_ACTIVE](state, isActive) {
     state.active = isActive;
     if (!isActive) {
-      state.arena.lastMatchDate = "";
+      state.arena!.lastMatchDate = "";
     }
   },
 
@@ -132,7 +148,7 @@ const mutations = {
     state.errors = [];
   },
 
-  [types.INITIALIZE_PLAYER_DATA](state, playerList) {
+  [types.INITIALIZE_PLAYER_DATA](state, playerList: ArenaVehicle[]) {
     state.hasData = false;
     const tempPlayers = [];
     const tempIndex = {};
@@ -213,7 +229,7 @@ const mutations = {
   }
 };
 
-const actions = {
+const actions: ActionTree<ArenaState, RootState> = {
   readArenaData({ state, dispatch, commit, rootState }) {
     const arenaJson = path.resolve(
       rootState.Settings.wows.path,
@@ -269,7 +285,7 @@ const actions = {
     )
       .then(results => {
         // filter Error objects
-        const players = R.filter(r => !(r instanceof Error), results);
+        const players = R.filter( (r) => !(r instanceof Error), results);
         dispatch("resolvePlayers", { players, matchGroup });
         for (const player of players) {
           dispatch("resolveShip", {

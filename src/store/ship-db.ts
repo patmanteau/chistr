@@ -1,12 +1,12 @@
-// import R from "ramda";
-const R = require("ramda");
-
-const ElectronStore = require("electron-store");
+import R from "ramda";
+import ElectronStore from "electron-store";
 
 export class ShipDB {
+  db: ElectronStore<any>;
+
   constructor() {
     let datasource = require("../data/expected.json");
-    datasource.data = R.pickBy((key, val) => !R.isEmpty(val), datasource.data);
+    datasource.data = R.pickBy((key: string, val: any) => !R.isEmpty(val), datasource.data);
 
     this.db = new ElectronStore({
       defaults: datasource,
@@ -15,7 +15,7 @@ export class ShipDB {
 
     if (datasource.time > this.db.get("time")) {
       console.log("Updating expected values...");
-      R.forEach((shipId, data) => {
+      R.forEachObjIndexed((shipId: string, data: any) => {
         this.set(shipId, data);
       })(datasource.data);
       this.db.set("time", datasource.time);
@@ -25,15 +25,16 @@ export class ShipDB {
   clear() {
     this.db.clear();
     let datasource = require("../data/expected.json");
-    datasource.data = R.pickBy((key, val) => !R.isEmpty(val), datasource.data);
+    datasource.data = R.pickBy((key: String, val: any) => !R.isEmpty(val), datasource.data);
     this.db.store = datasource;
   }
 
-  has(shipId) {
-    return this.db.has(`data.${shipId.toString()}`);
+  has(shipId: string) {
+    // return this.db.has(`data.${shipId.toString()}`);
+    return this.db.has(`data.${shipId}`);
   }
 
-  hasFull(shipId) {
+  hasFull(shipId: string) {
     return (
       this.has(shipId) &&
       this.get(shipId).hasOwnProperty("name") &&
@@ -42,7 +43,7 @@ export class ShipDB {
     );
   }
 
-  get(shipId) {
+  get(shipId: string) {
     return this.db.get(`data.${shipId.toString()}`);
   }
 
@@ -54,7 +55,7 @@ export class ShipDB {
   //   }
   // }
 
-  set(shipId, dataObj) {
+  set(shipId: string, dataObj: any) {
     const _shipId = shipId.toString();
     if (this.has(_shipId)) {
       this.db.set(`data.${_shipId}`, {
@@ -66,11 +67,12 @@ export class ShipDB {
     }
   }
 
-  setFull(shipId, ship) {
+  setFull(shipId: string, ship: any) {
     this.set(shipId, { timestamp: Date.now(), ...ship });
   }
 
-  delete(shipId) {
-    this.db.delete(shipId.toString());
+  delete(shipId: string) {
+    // this.db.delete(shipId.toString());
+    this.db.delete(shipId);
   }
 }

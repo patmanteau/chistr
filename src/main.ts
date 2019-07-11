@@ -4,7 +4,8 @@ import Vue from "vue";
 
 // import axios from "axios";
 const axios = require("axios");
-Vue.http = Vue.prototype.$http = axios;
+// Vue.http = Vue.prototype.$http = axios;
+Vue.prototype.$http = axios;
 
 import App from "./App.vue";
 import router from "./router";
