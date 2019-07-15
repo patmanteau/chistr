@@ -3,7 +3,7 @@
     <transition name="fade" mode="out-in">
       <div v-if="active" class="ui">
         <img
-          :src="arena.matchGroup | matchGroupImg"
+          :src="matchInfo.matchGroup | matchGroupImg"
           class="type-image ui"
           height="40"
         />
@@ -11,9 +11,9 @@
     </transition>
     <div class="ui">
       <transition name="fade" mode="out-in">
-        <h1 v-if="active" :title="arena.mapDescription">
+        <h1 v-if="active" :title="matchInfo.mapDescription">
           <!-- {{ arena.mapName | translateMapName }} -->
-          {{ arena.mapName | uppercase }}
+          {{ matchInfo.mapName | uppercase }}
         </h1>
         <h1 v-else>
           No active match
@@ -23,8 +23,8 @@
     <div class="header-item ui">
       <transition name="fade" mode="out-in">
         <h2 class="header-item">
-          {{ arena.matchGroup | translateMatchGroup }}<br />
-          {{ arena.lastMatchDate }}
+          {{ matchInfo.matchGroup | translateMatchGroup }}<br />
+          {{ matchInfo.lastMatchDate }}
         </h2>
       </transition>
     </div>
@@ -60,14 +60,12 @@ const ArenaInfoProps = Vue.extend({
     matchGroupImg(name: string) {
       return name ? battleTypes[name.toUpperCase()].image : "";
     }
-  },
-  props: ["active", "arena"]
+  }
+  // props: ["active", "arena"]
 })
-export default class ArenaInfo extends ArenaInfoProps {
+export default class ArenaInfo extends Vue {
   @Prop({ default: false }) active: boolean;
-  @Prop({ default: "" }) matchGroup: string;
-  @Prop({ default: "" }) mapName: string;
-  @Prop({ default: "" }) lastMatchDate: string;
+  @Prop() matchInfo;
 }
 </script>
 

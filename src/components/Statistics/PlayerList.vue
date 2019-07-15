@@ -11,7 +11,7 @@
       <div class="dg-cellgroup dg-cellgroup-5of20 ui" :style="trstyle">
         <div class="dg-cell text">
           <popper
-            v-if="player.clan.hasRecord"
+            v-if="player.clan"
             trigger="hover"
             :options="{
               placement: 'right'
@@ -31,7 +31,7 @@
             >
           </popper>
           <a
-            v-if="player.personal.hasRecord"
+            v-if="player.personalStats"
             :href="wowsNumbersLink(player)"
             :title="wowsNumbersLink(player)"
             class="external-link"
@@ -50,7 +50,7 @@
       <!-- Ship name -->
       <div class="dg-cellgroup dg-cellgroup-4of20 grey-right-border ui">
         <div class="dg-cell text">
-          <div v-if="player.ship.name">
+          <div v-if="player.ship">
             <a
               v-if="player.ship.name !== ''"
               :href="wikiLink(player)"
@@ -65,7 +65,7 @@
                 icon="star"
               />
               <font-awesome-icon
-                v-if="player.ship.isTestShip"
+                v-if="player.ship.isTest"
                 title="Ship is being tested"
                 class="special-ship test-ship"
                 icon="vial"
@@ -78,7 +78,7 @@
 
       <!-- No player stats, not yet loaded -->
       <div
-        v-if="!finishedLoading"
+        v-if="!player.profileHidden && !player.personalStats"
         key="without-player-stats-not-loaded"
         class="dg-cellgroup dg-cellgroup-11of20 no-data ui"
       >
@@ -89,9 +89,7 @@
 
       <!-- Got no player stats at all -->
       <div
-        v-else-if="
-          player.personal.finishedLoading && !player.personal.hasRecord
-        "
+        v-else-if="player.profileHidden"
         key="without-player-stats"
         class="dg-cellgroup dg-cellgroup-11of20 no-data invisible-right-border ui"
       >
@@ -110,59 +108,58 @@
         class="dg-cellgroup dg-cellgroup-5of20 grey-right-border ui"
       >
         <div class="dg-cell number">
-          {{ player.personal.battles }}
+          {{ player.personalStats.battles }}
         </div>
         <div
           class="dg-cell number text-centered"
           :class="
-            winrateclass(player.personal.battles, player.personal.winrate)
+            winrateclass(player.personalStats.battles, player.personalStats.winrate)
           "
         >
-          {{ player.personal.winrate.toFixed(2) }}%
+          {{ player.personalStats.winrate.toFixed(2) }}%
         </div>
         <div class="dg-cell number text-centered">
-          {{ player.personal.kdRatio | denan }}
+          {{ player.personalStats.kdRatio | denan }}
         </div>
         <div class="dg-cell number text-subdued">
-          {{ player.personal.avgDmg.toFixed(0) }}
+          {{ player.personalStats.avgDmg.toFixed(0) }}
         </div>
       </div>
 
       <!-- Ship stats -->
       <div
-        v-if="finishedLoading && player.ship.battles"
+        v-if="finishedLoading && player.shipStats.battles"
         key="with-ship-stats"
         class="dg-cellgroup dg-cellgroup-6of20 ui"
       >
         <div class="dg-cell number">
-          {{ player.ship.battles }}
+          {{ player.shipStats.battles }}
         </div>
         <div
           class="dg-cell number text-centered"
-          :class="winrateclass(player.ship.battles, player.ship.winrate)"
+          :class="winrateclass(player.shipStats.battles, player.shipStats.winrate)"
         >
-          {{ player.ship.winrate.toFixed(2) }}%
+          {{ player.shipStats.winrate.toFixed(2) }}%
         </div>
         <div
           class="dg-cell number"
-          :class="prclass(player.ship.battles, player.ship.pr)"
+          :class="prclass(player.shipStats.battles, player.shipStats.pr)"
         >
-          {{ player.ship.pr | denan(0) }}
+          {{ player.shipStats.pr | denan(0) }}
         </div>
         <div class="dg-cell number text-centered">
-          {{ player.ship.kdRatio | denan }}
+          {{ player.shipStats.kdRatio | denan }}
         </div>
         <div class="dg-cell number text-subdued">
-          {{ player.ship.avgDmg.toFixed(0) }}
+          {{ player.shipStats.avgDmg.toFixed(0) }}
         </div>
       </div>
 
       <!-- Got no ship stats at all -->
       <div
         v-else-if="
-          player.personal.hasRecord &&
-            player.ship.finishedLoading &&
-            (!player.ship.hasRecord || !player.ship.battles)
+          !player.profileHidden &&
+            (!player.shipStats || !player.shipStats.battles)
         "
         key="without-ship-stats"
         class="dg-cellgroup dg-cellgroup-6of20 ui"
@@ -184,7 +181,14 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import _ from "lodash/fp";
 import { shell } from "electron";
 import IconRow from "./PlayerList/IconRow.vue";
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
+import {
+  State,
+  Getter,
+  Action,
+  Mutation,
+  namespace
+} from 'vuex-class'
 import Popper from "vue-popperjs";
 // import 'vue-popperjs/dist/css/vue-popper.css'
 
@@ -212,10 +216,6 @@ const PlayerListProps = Vue.extend({
   },
 
   computed: {
-    ...mapState({
-      sort: state => state.Interface.playerListSort
-    }),
-
     filteredPlayers() {
       return this.players.sort((a, b) => {
         if (
@@ -299,7 +299,16 @@ const PlayerListProps = Vue.extend({
     }
   }
 })
-export default class PlayerList extends PlayerListProps {
+export default class PlayerList extends Vue {
+
+  @Prop({ default: "" }) title: string;
+  @Prop({ default: "" }) bordercolor: string;
+  @Prop() players: any;
+  @Prop({ default: false }) noheader: boolean;
+  @Prop({ default: false }) finishedLoading: boolean;
+
+  @State(state => state.Interface.playerListSort) sort;
+
   data() {
     return {
       names: {},

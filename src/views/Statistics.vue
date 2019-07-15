@@ -1,15 +1,11 @@
 <template>
   <div id="view">
-    <!-- <template v-if="!hasData"> -->
-    <template v-if="!arena.matchInfo">
+    <template v-if="!hasData">
+    <!-- <template v-if="!arena.matchInfo"> -->
       <div key="statsDisplay" class="container">
         <div class="centered">
-          <h1 class="ui">
-            Ahoy captain!
-          </h1>
-          <h2 class="ui">
-            Waiting for your next battle to start.
-          </h2>
+          <h1 class="ui">Ahoy captain!</h1>
+          <h2 class="ui">Looking forward to your next battle.</h2>
         </div>
       </div>
     </template>
@@ -17,6 +13,7 @@
       <div id="header">
         <span>
           <arena-info
+            :matchInfo="matchInfo"
             :active="arena.active"
             :matchGroup="arena.matchInfo.matchGroup"
             :mapName="arena.matchInfo.mapName"
@@ -94,6 +91,7 @@ export default class Statistics extends Vue {
   @Getter friends;
   @Getter foes;
   @Getter finishedLoading;
+  @State(state => state.Arena.hasData) hasData;
   @State(state => state.Arena) arena;
   @State(state => state.Arena.matchInfo) matchInfo;
   @State(state => state.Arena.active) active;

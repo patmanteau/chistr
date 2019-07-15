@@ -611,7 +611,7 @@ export class WowsApi {
     });
   }
 
-  getPlayerClan(accountId: AccountId): Promise<ClanRecord | NoClan> {
+  async getPlayerClan(accountId: AccountId): Promise<ClanRecord | NoClan> {
     return new Promise((resolve, reject) => {
       this.api
         .get("/wows/clans/accountinfo/", {
@@ -636,7 +636,7 @@ export class WowsApi {
     });
   }
 
-  getShip(shipId: ShipId): Promise<Ship> {
+  async getShip(shipId: ShipId): Promise<Ship> {
     return new Promise((resolve, reject) => {
       console.log(`getShip(${shipId})`);
       // shipDb may contain expected values only,
@@ -680,8 +680,9 @@ export class WowsApi {
     ): Promise<ShipDict> {
     // return new Promise((resolve, reject) => {
     let shipsToApi: ShipId[] = [];
-    let shipsFromDb: WgShip[] = [];
-    let shipsFromApi: WgShip[] = [];
+    // let shipsFromDb: WgShip[] = [];
+    let shipsFromDb: ShipDict = {};
+    let shipsFromApi: ShipDict = {};
 
     // Look for cached ships first
     for (const shipId of shipIds) {
@@ -689,9 +690,9 @@ export class WowsApi {
       // so check if there's a full record including
       // name
       if (this.shipDb.hasFull(shipId)) {
-        const ship: WgShip = this.shipDb.get(shipId);
-        log.debug(`Cache hit: ${shipId} => ${ship.name}`);
-        shipsFromDb.push(ship);
+        const wgShip: WgShip = this.shipDb.get(shipId);
+        log.debug(`Cache hit: ${shipId} => ${wgShip.name}`);
+        shipsFromDb[shipId] = new Ship(wgShip);
       } else {
         log.debug(`Cache miss: ${shipId}`);
         shipsToApi.push(shipId)
@@ -700,26 +701,41 @@ export class WowsApi {
 
     // Then resolve the rest -- if any -- via API
     try {
+      shipsToApi = shipIds;
       if (shipsToApi.length > 0) {
-        const wgShips = await this.api.get("/wows/encyclopedia/ships/", {
+        const response = await this.api.get("/wows/encyclopedia/ships/", {
           params: {
             ship_id: shipsToApi.join(","),
             fields: "-default_profile,-modules,-upgrades,-next_ships"
           }
         });
 
-        shipsFromApi = R.map((wgShip: WgShip) => {
-          this.shipDb.setFull(wgShip.ship_id, wgShip);
-          return wgShip;
-        })(wgShips.data.data);
+        console.log(response);
+
+        const wgShips = response.data.data;
+
+        // shipsFromApi = R.map((wgShip: WgShip) => {
+        //   this.shipDb.setFull(wgShip.ship_id, wgShip);
+        //   return wgShip;
+        // })(wgShips.data.data);
+
+        for (const shipId in wgShips) {
+          this.shipDb.setFull(shipId, wgShips[shipId]);
+          shipsFromApi[shipId] = new Ship(wgShips[shipId]);
+        }
       }
 
-      let allShips: ShipDict = {};
-      for (const wgShip of R.concat(shipsFromDb, shipsFromApi)) {
-        allShips[wgShip.ship_id] = new Ship(wgShip);
-      }
+      console.log(shipsFromApi)
 
-      return Promise.resolve(allShips);
+      // let allShips: ShipDict = {};
+      // for (const wgShip of R.concat(shipsFromDb, shipsFromApi)) {
+      //   allShips[wgShip.ship_id] = new Ship(wgShip);
+      // }
+
+      return Promise.resolve({
+        ...shipsFromApi,
+        ...shipsFromDb
+      });
 
     } catch(error) {
       log.error(error);
@@ -745,16 +761,14 @@ export class WowsApi {
 
     try {
       const response = await this.api.get("/wows/ships/stats/", { params: params });
-      console.log(response);
-      // const ship: any = R.path(["data", "data", accountId], response);
       const ship = response.data.data[accountId];
+
       if (!ship) {
-        // return Promise.reject(Error("No ship data found."));
         return Promise.resolve(new HiddenShipStatistics());
       }
-      console.log(ship);
+
       const shipStats = ship[0];
-      console.log(shipStats);
+
       if (!R.prop(matchGroup, shipStats)) {
         return Promise.reject(
           Error("Player has no record in the selected matchGroup")
@@ -763,10 +777,12 @@ export class WowsApi {
 
       const group = shipStats[matchGroup];
       const shipData = new ShipBattleStatistics(group, shipId, this.shipDb);
+
       return Promise.resolve(shipData);
 
     } catch(error) {
-      console.log(error);
+      console.error(error);
+      log.error(error);
       return Promise.reject(error);
     }
   }
