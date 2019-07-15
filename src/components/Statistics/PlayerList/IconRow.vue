@@ -16,18 +16,18 @@
       <div
         title="# of battles overall"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'personal.battles' }"
-        @click="setSort('personal.battles')"
+        :class="{ active: sort.key === 'personalStats.battles' }"
+        @click="setSort('personalStats.battles')"
       >
         <font-awesome-icon icon="redo" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'personal.battles' && sort.order === 1"
+          v-if="sort.key === 'personalStats.battles' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'personal.battles' && sort.order === -1"
+          v-if="sort.key === 'personalStats.battles' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -35,18 +35,18 @@
       <div
         title="Player winrate"
         class="dg-cell icon ui"
-        :class="{ active: sort.key === 'personal.winrate' }"
-        @click="setSort('personal.winrate')"
+        :class="{ active: sort.key === 'personalStats.winrate' }"
+        @click="setSort('personalStats.winrate')"
       >
         <font-awesome-icon icon="chart-pie" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'personal.winrate' && sort.order === 1"
+          v-if="sort.key === 'personalStats.winrate' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'personal.winrate' && sort.order === -1"
+          v-if="sort.key === 'personalStats.winrate' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -54,18 +54,18 @@
       <div
         title="Player Kill/Death ratio"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'personal.kdRatio' }"
-        @click="setSort('personal.kdRatio')"
+        :class="{ active: sort.key === 'personalStats.kdRatio' }"
+        @click="setSort('personalStats.kdRatio')"
       >
         <font-awesome-icon icon="bullseye" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'personal.kdRatio' && sort.order === 1"
+          v-if="sort.key === 'personalStats.kdRatio' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'personal.kdRatio' && sort.order === -1"
+          v-if="sort.key === 'personalStats.kdRatio' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -73,18 +73,18 @@
       <div
         title="Player average damage"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'personal.avgDmg' }"
-        @click="setSort('personal.avgDmg')"
+        :class="{ active: sort.key === 'personalStats.avgDmg' }"
+        @click="setSort('personalStats.avgDmg')"
       >
         <font-awesome-icon icon="rocket" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'personal.avgDmg' && sort.order === 1"
+          v-if="sort.key === 'personalStats.avgDmg' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'personal.avgDmg' && sort.order === -1"
+          v-if="sort.key === 'personalStats.avgDmg' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -94,18 +94,18 @@
       <div
         title="# of battles in this ship"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'ship.battles' }"
-        @click="setSort('ship.battles')"
+        :class="{ active: sort.key === 'shipStats.battles' }"
+        @click="setSort('shipStats.battles')"
       >
         <font-awesome-icon icon="redo" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'ship.battles' && sort.order === 1"
+          v-if="sort.key === 'shipStats.battles' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'ship.battles' && sort.order === -1"
+          v-if="sort.key === 'shipStats.battles' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -113,18 +113,18 @@
       <div
         title="Ship winrate"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'ship.winrate' }"
-        @click="setSort('ship.winrate')"
+        :class="{ active: sort.key === 'shipStats.winrate' }"
+        @click="setSort('shipStats.winrate')"
       >
         <font-awesome-icon icon="chart-pie" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'ship.winrate' && sort.order === 1"
+          v-if="sort.key === 'shipStats.winrate' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'ship.winrate' && sort.order === -1"
+          v-if="sort.key === 'shipStats.winrate' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -132,18 +132,18 @@
       <div
         title="Player's Personal Rating for this ship"
         class="dg-cell icon ui"
-        :class="{ active: sort.key === 'ship.pr' }"
-        @click="setSort('ship.pr')"
+        :class="{ active: sort.key === 'shipStats.pr' }"
+        @click="setSort('shipStats.pr')"
       >
         <span>PR</span>
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'ship.pr' && sort.order === 1"
+          v-if="sort.key === 'shipStats.pr' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'ship.pr' && sort.order === -1"
+          v-if="sort.key === 'shipStats.pr' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -151,18 +151,18 @@
       <div
         title="Ship Kill/Death ratio"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'ship.kdRatio' }"
-        @click="setSort('ship.kdRatio')"
+        :class="{ active: sort.key === 'shipStats.kdRatio' }"
+        @click="setSort('shipStats.kdRatio')"
       >
         <font-awesome-icon icon="bullseye" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'ship.kdRatio' && sort.order === 1"
+          v-if="sort.key === 'shipStats.kdRatio' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'ship.kdRatio' && sort.order === -1"
+          v-if="sort.key === 'shipStats.kdRatio' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
@@ -170,18 +170,18 @@
       <div
         title="Ship average damage"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'ship.avgDmg' }"
-        @click="setSort('ship.avgDmg')"
+        :class="{ active: sort.key === 'shipStats.avgDmg' }"
+        @click="setSort('shipStats.avgDmg')"
       >
         <font-awesome-icon icon="rocket" />
         <font-awesome-icon
           icon="sort-down"
-          v-if="sort.key === 'ship.avgDmg' && sort.order === 1"
+          v-if="sort.key === 'shipStats.avgDmg' && sort.order === 1"
           aria-hidden="true"
         />
         <font-awesome-icon
           icon="sort-up"
-          v-if="sort.key === 'ship.avgDmg' && sort.order === -1"
+          v-if="sort.key === 'shipStats.avgDmg' && sort.order === -1"
           aria-hidden="true"
         />
       </div>
