@@ -6,11 +6,17 @@
   </div>
 </template>
 
-<script type="text/javascript">
-import RandomSentence from "./RandomSentence";
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import RandomSentence from "./RandomSentence.vue";
 import { mapGetters } from "vuex";
 import ProgressBar from "progressbar.js";
-export default {
+
+const CircleProgressProps = Vue.extend({
+  props: ["bar", "options"]
+});
+
+@Component({
   name: "CircleProgress",
   components: { RandomSentence },
 
@@ -23,8 +29,9 @@ export default {
       this.bar.animate(newValue);
       this.bar.setText(`${(newValue * 100).toFixed()}%`);
     }
-  },
-
+  }
+})
+export default class CircleProgress extends CircleProgressProps {
   data() {
     return {
       options: {
@@ -37,12 +44,14 @@ export default {
         warnings: false
       }
     };
-  },
+  }
+
+  // progress!: (newValue, _oldValue) => number;
 
   mounted() {
     this.bar = new ProgressBar.Circle("#progressbar", this.options);
   }
-};
+}
 </script>
 
 <style scoped>

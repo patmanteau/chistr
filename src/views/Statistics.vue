@@ -1,6 +1,7 @@
 <template>
   <div id="view">
-    <template v-if="!hasData">
+    <!-- <template v-if="!hasData"> -->
+    <template v-if="!arena.matchInfo">
       <div key="statsDisplay" class="container">
         <div class="centered">
           <h1 class="ui">
@@ -15,7 +16,12 @@
     <template v-else>
       <div id="header">
         <span>
-          <arena-info :active="active" :arena="arena" />
+          <arena-info
+            :active="arena.active"
+            :matchGroup="arena.matchInfo.matchGroup"
+            :mapName="arena.matchInfo.mapName"
+            :lastMatchDate="arena.matchInfo.lastMatchDate"
+          />
         </span>
       </div>
       <div v-if="updateAvailable" class="ui update-warning">
@@ -54,41 +60,46 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script lang="ts">
+// import Component from "vue-class-component";
+// import Vue from "vue";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapState, mapGetters } from "vuex";
+import {
+  State,
+  Getter,
+  Action,
+  Mutation,
+  namespace
+} from 'vuex-class'
 import { remote } from "electron";
-import ArenaInfo from "@/components/Statistics/ArenaInfo";
-import PlayerList from "@/components/Statistics/PlayerList";
-// import BarSpinner from './Statistics/Spinners/BarSpinner'
-import CircleProgress from "@/components//Statistics/Spinners/CircleProgress";
+import ArenaInfo from "../components/Statistics/ArenaInfo.vue";
+import PlayerList from "../components/Statistics/PlayerList.vue";
+import CircleProgress from "../components/Statistics/Spinners/CircleProgress.vue";
 import semver from "semver";
+import Arena from "../store/modules/Arena";
 
-export default {
-  name: "Statistics",
-  // components: { ArenaInfo, PlayerList, BarSpinner },
-  components: { ArenaInfo, PlayerList, CircleProgress },
+@Component({
+  components: {
+    ArenaInfo,
+    PlayerList,
+    CircleProgress
+  }
+})
+export default class Statistics extends Vue {
+  // @State("arena") arena;
+  // @State("hasData") hasData;
 
-  computed: {
-    ...mapState({
-      arena: state => state.Arena.arena,
-      hasData: state => state.Arena.hasData,
-      active: state => state.Arena.active
-      // players: state => state.Arena.players
-    }),
+  @Prop({ default: false }) updateAvailable: boolean;
+  @Getter friends;
+  @Getter foes;
+  @Getter finishedLoading;
+  @State(state => state.Arena) arena;
+  @State(state => state.Arena.matchInfo) matchInfo;
+  @State(state => state.Arena.active) active;
 
-    ...mapGetters([
-      "friends",
-      "foes",
-      // 'players',
-      "finishedLoading"
-    ])
-  },
-
-  data() {
-    return {
-      updateAvailable: false
-    };
-  },
+  // arena!: any;
+  $http!: any;
 
   mounted() {
     setInterval(() => {
@@ -108,7 +119,13 @@ export default {
         this.updateAvailable = false;
       });
   }
-};
+
+  // data() {
+  //   return {
+  //     updateAvailable: false
+  //   };
+  // }
+}
 </script>
 
 <style scoped>

@@ -1,4 +1,4 @@
-import R from "ramda";
+import * as R from "ramda";
 import ElectronStore from "electron-store";
 
 export class ShipDB {
@@ -6,7 +6,10 @@ export class ShipDB {
 
   constructor() {
     let datasource = require("../data/expected.json");
-    datasource.data = R.pickBy((key: string, val: any) => !R.isEmpty(val), datasource.data);
+    datasource.data = R.pickBy(
+      (key: string, val: any) => !R.isEmpty(val),
+      datasource.data
+    );
 
     this.db = new ElectronStore({
       defaults: datasource,
@@ -25,7 +28,10 @@ export class ShipDB {
   clear() {
     this.db.clear();
     let datasource = require("../data/expected.json");
-    datasource.data = R.pickBy((key: String, val: any) => !R.isEmpty(val), datasource.data);
+    datasource.data = R.pickBy(
+      (key: String, val: any) => !R.isEmpty(val),
+      datasource.data
+    );
     this.db.store = datasource;
   }
 

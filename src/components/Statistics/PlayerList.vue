@@ -179,25 +179,16 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
 import _ from "lodash/fp";
 import { shell } from "electron";
-import IconRow from "./PlayerList/IconRow";
+import IconRow from "./PlayerList/IconRow.vue";
 import { mapState } from "vuex";
 import Popper from "vue-popperjs";
 // import 'vue-popperjs/dist/css/vue-popper.css'
 
-export default {
-  name: "PlayerList",
-  components: { IconRow, popper: Popper },
-
-  filters: {
-    denan(number, decimals = 2) {
-      if (isNaN(number)) return "-";
-      else if (!isFinite(number)) return "∞";
-      else return number.toFixed(decimals);
-    }
-  },
+const PlayerListProps = Vue.extend({
   props: [
     "title",
     "bordercolor",
@@ -205,7 +196,20 @@ export default {
     "noheader",
     "filterby",
     "finishedLoading"
-  ],
+  ]
+});
+
+@Component({
+  name: "PlayerList",
+  components: { IconRow, popper: Popper },
+
+  filters: {
+    denan(num: number, decimals: number = 2) {
+      if (isNaN(num)) return "-";
+      else if (!isFinite(num)) return "∞";
+      else return num.toFixed(decimals);
+    }
+  },
 
   computed: {
     ...mapState({
@@ -293,8 +297,9 @@ export default {
         return _.max([biggest, cur.length]);
       }, 0)(this.players[propname]);
     }
-  },
-
+  }
+})
+export default class PlayerList extends PlayerListProps {
   data() {
     return {
       names: {},
@@ -305,7 +310,7 @@ export default {
       }
     };
   }
-};
+}
 </script>
 
 <style media="screen">

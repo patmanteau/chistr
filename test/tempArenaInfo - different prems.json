@@ -1,0 +1,173 @@
+{
+    "clientVersionFromXml": "0, 8, 5, 1631917",
+    "gameMode": 7,
+    "clientVersionFromExe": "0, 8, 5, 1631917",
+    "scenarioUiCategoryId": 0,
+    "mapDisplayName": "51_Greece",
+    "mapId": 32,
+    "matchGroup": "pvp",
+    "weatherParams": {
+        "0": [
+            "PCOW007_Dull"
+        ]
+    },
+    "duration": 1200,
+    "gameLogic": "Domination",
+    "name": "12x12",
+    "scenario": "Domination_rhombus",
+    "playerID": 0,
+    "vehicles": [
+        {
+            "shipId": 4282300112,
+            "relation": 2,
+            "id": 939668114,
+            "name": "dady45"
+        },
+        {
+            "shipId": 3751753552,
+            "relation": 1,
+            "id": 805489347,
+            "name": "Corsaiirs"
+        },
+        {
+            "shipId": 4276041712,
+            "relation": 1,
+            "id": 805393181,
+            "name": "Ziutek010"
+        },
+        {
+            "shipId": 4182652880,
+            "relation": 1,
+            "id": 939692575,
+            "name": "kootao"
+        },
+        {
+            "shipId": 4180588528,
+            "relation": 2,
+            "id": 805402800,
+            "name": "24HourDubTape"
+        },
+        {
+            "shipId": 4180621136,
+            "relation": 1,
+            "id": 939673379,
+            "name": "Admiral_Kickass"
+        },
+        {
+            "shipId": 4182652720,
+            "relation": 1,
+            "id": 939536167,
+            "name": "ArmasPaskiainen"
+        },
+        {
+            "shipId": 4182685136,
+            "relation": 2,
+            "id": 805338032,
+            "name": "menar12"
+        },
+        {
+            "shipId": 4182685520,
+            "relation": 1,
+            "id": 805496371,
+            "name": "titoun47"
+        },
+        {
+            "shipId": 4182685680,
+            "relation": 1,
+            "id": 939565491,
+            "name": "hasvik1"
+        },
+        {
+            "shipId": 4180588496,
+            "relation": 1,
+            "id": 939687736,
+            "name": "jango1234"
+        },
+        {
+            "shipId": 4181604304,
+            "relation": 2,
+            "id": 805474749,
+            "name": "DirtyHulk"
+        },
+        {
+            "shipId": 3762173936,
+            "relation": 1,
+            "id": 939617859,
+            "name": "Joshua_1988"
+        },
+        {
+            "shipId": 4077828080,
+            "relation": 2,
+            "id": 939550796,
+            "name": "mirecek79"
+        },
+        {
+            "shipId": 3751753552,
+            "relation": 1,
+            "id": 939709390,
+            "name": "_Fonix_"
+        },
+        {
+            "shipId": 4182717904,
+            "relation": 0,
+            "id": 805384142,
+            "name": "rottzorr"
+        },
+        {
+            "shipId": 4286527472,
+            "relation": 2,
+            "id": 805383127,
+            "name": "Schiff10"
+        },
+        {
+            "shipId": 3760109552,
+            "relation": 1,
+            "id": 805325917,
+            "name": "Kanapaych"
+        },
+        {
+            "shipId": 3530504176,
+            "relation": 2,
+            "id": 805438561,
+            "name": "maru59"
+        },
+        {
+            "shipId": 4180621136,
+            "relation": 2,
+            "id": 939591653,
+            "name": "LuisaVuitton"
+        },
+        {
+            "shipId": 3762173744,
+            "relation": 2,
+            "id": 939615602,
+            "name": "Pajuzz"
+        },
+        {
+            "shipId": 3751753552,
+            "relation": 2,
+            "id": 939698676,
+            "name": "sierzant310"
+        },
+        {
+            "shipId": 4182652720,
+            "relation": 2,
+            "id": 939670778,
+            "name": "Hugos_Schiffchen"
+        },
+        {
+            "shipId": 3761190608,
+            "relation": 2,
+            "id": 805337982,
+            "name": "SABATON_CZ_1986"
+        }
+    ],
+    "playersPerTeam": 12,
+    "dateTime": "10.07.2019 15:00:34",
+    "mapName": "spaces/51_Greece",
+    "playerName": "rottzorr",
+    "scenarioConfigId": 223,
+    "teamsCount": 2,
+    "logic": "Domination",
+    "playerVehicle": "PRSB107-Sinop"
+}

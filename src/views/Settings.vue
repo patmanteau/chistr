@@ -128,7 +128,7 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script lang="ts">
 import * as types from "../store/mutation-types";
 import * as fs from "fs";
 import * as path from "path";

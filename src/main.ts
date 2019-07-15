@@ -7,6 +7,9 @@ const axios = require("axios");
 // Vue.http = Vue.prototype.$http = axios;
 Vue.prototype.$http = axios;
 
+const log = require("electron-log");
+log.transports.console.format = "{h}:{i}:{s} {text}";
+
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";

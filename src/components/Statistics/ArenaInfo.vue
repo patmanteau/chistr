@@ -31,31 +31,44 @@
   </div>
 </template>
 
-<script>
-import _ from "lodash/fp";
-import battleTypes from "./../../data/battle-types.json";
-import mapNames from "./../../data/map-names.json";
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+// import _ from "lodash/fp";
 
-export default {
+const battleTypes = require("./../../data/battle-types.json");
+const mapNames = require("./../../data/map-names.json");
+
+const ArenaInfoProps = Vue.extend({
+  props: ["active", "arena"]
+});
+
+@Component({
+  name: "ArenaInfo",
   filters: {
-    translateMapName(name) {
+    translateMapName(name: string) {
       return name ? mapNames[name].toUpperCase() : "";
     },
 
-    translateMatchGroup(name) {
+    translateMatchGroup(name: string) {
       return name ? battleTypes[name.toUpperCase()]["name"] : "";
     },
 
-    uppercase(name) {
+    uppercase(name: string) {
       return name.toUpperCase();
     },
 
-    matchGroupImg(name) {
-      return name ? battleTypes[_.upperCase(name)].image : "";
+    matchGroupImg(name: string) {
+      return name ? battleTypes[name.toUpperCase()].image : "";
     }
   },
   props: ["active", "arena"]
-};
+})
+export default class ArenaInfo extends ArenaInfoProps {
+  @Prop({ default: false }) active: boolean;
+  @Prop({ default: "" }) matchGroup: string;
+  @Prop({ default: "" }) mapName: string;
+  @Prop({ default: "" }) lastMatchDate: string;
+}
 </script>
 
 <style scoped>
