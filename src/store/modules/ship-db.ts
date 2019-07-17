@@ -5,7 +5,7 @@ export class ShipDB {
   db: ElectronStore<any>;
 
   constructor() {
-    let datasource = require("../data/expected.json");
+    let datasource = require("../../data/expected.json");
     datasource.data = R.pickBy(
       (key: string, val: any) => !R.isEmpty(val),
       datasource.data
@@ -27,7 +27,7 @@ export class ShipDB {
 
   clear() {
     this.db.clear();
-    let datasource = require("../data/expected.json");
+    let datasource = require("../../data/expected.json");
     datasource.data = R.pickBy(
       (key: String, val: any) => !R.isEmpty(val),
       datasource.data

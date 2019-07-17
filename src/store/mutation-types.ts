@@ -1,3 +1,4 @@
+export const SET_ARENA_STATE = "SET_ARENA_STATE";
 export const SET_ARENA_ACTIVE = "SET_ARENA_ACTIVE";
 export const SET_ARENA_DATA = "SET_ARENA_DATA";
 // export const INITIALIZE_ARENA = "INITIALIZE_ARENA";

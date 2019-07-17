@@ -2,34 +2,6 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import * as log from "electron-log";
 import * as R from "ramda";
 import { ShipDB } from "./ship-db";
-import { create } from "domain";
-
-// enum PlayerKind {
-//   Stub,
-//   Resolved
-// }
-
-// export interface Player {
-//   kind: PlayerKind;
-//   relation: PlayerRelation;
-//   name: string;
-//   shipId: ShipId;
-//   // relation: number;
-// }
-
-// export class PlayerStub implements Player {
-//   kind: PlayerKind.Stub;
-
-//   name: string;
-//   relation: PlayerRelation;
-//   shipId: ShipId;
-
-//   constructor(name: string, relation: PlayerRelation, shipId: ShipId) {
-//     this.name = name;
-//     this.relation = relation;
-//     this.shipId = shipId;
-//   }
-// }
 
 export class Ship {
   shipId: ShipId;
@@ -51,7 +23,7 @@ export class Ship {
   }
 }
 
-type ShipDict = { [id: string] : Ship };
+type ShipDict = { [id: string]: Ship };
 /**
  * Ship info from Wargaming API
  * Request URL: /wows/encyclopedia/ships/
@@ -305,39 +277,41 @@ interface WgPlayerShipStats {
   readonly rank_solo?: WgBattleStats;
 }
 
-enum RecordKind {
+export enum RecordKind {
   Player,
   Clan,
   Ship,
-  HiddenPlayer,
-  HiddenShip,
-  NoClan
+  Hidden,
+  NoClan,
+  Unresolved
 }
 
 export interface PlayerStatistics {
   readonly kind: RecordKind.Player;
 
-  readonly name: string;
   readonly battles: number;
   readonly winrate: number;
   readonly avgExp: number;
   readonly avgDmg: number;
   readonly kdRatio: number;
+
+  readonly finishedLoading: boolean;
+  readonly hasData: boolean;
 }
 
 export class PlayerBattleStatistics implements PlayerStatistics {
-  readonly kind: RecordKind.Player;
+  readonly kind = RecordKind.Player;
 
-  readonly name: string;
   readonly battles: number;
   readonly winrate: number;
   readonly avgExp: number;
   readonly avgDmg: number;
   readonly kdRatio: number;
 
-  constructor(name: string, stats: WgBattleStats) {
-    this.name = name;
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = true;
 
+  constructor(stats: WgBattleStats) {
     this.battles = stats.battles;
     this.winrate = (stats.wins / stats.battles) * 100;
     (this.avgExp = stats.xp / stats.battles),
@@ -347,18 +321,18 @@ export class PlayerBattleStatistics implements PlayerStatistics {
 }
 
 export class PlayerOperationStatistics implements PlayerStatistics {
-  readonly kind: RecordKind.Player;
+  readonly kind = RecordKind.Player;
 
-  readonly name: string;
   readonly battles: number;
   readonly winrate: number;
   readonly avgExp: number;
   readonly avgDmg: number;
   readonly kdRatio: number;
 
-  constructor(name: string, stats: WgOperStats) {
-    this.name = name;
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = true;
 
+  constructor(stats: WgOperStats) {
     this.battles = stats.battles;
     this.winrate = (stats.wins / stats.battles) * 100;
     (this.avgExp = stats.xp / stats.battles), (this.avgDmg = 0);
@@ -367,26 +341,30 @@ export class PlayerOperationStatistics implements PlayerStatistics {
 }
 
 export class HiddenPlayerStatistics {
-  kind: RecordKind.HiddenPlayer;
+  kind = RecordKind.Hidden;
 
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = false;
 }
 
+export class UnresolvedPlayerStatistics {
+  kind = RecordKind.Unresolved;
 
+  readonly finishedLoading: boolean = false;
+  readonly hasData: boolean = false;
+}
 
 export class ClanRecord {
-  readonly kind: RecordKind.Clan;
+  readonly kind = RecordKind.Clan;
 
   readonly id: ClanId;
-  readonly hasRecord: boolean;
   readonly createdAt: string;
   readonly membersCount: number;
   readonly name: string;
   readonly tag: string;
+
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = true;
 
   constructor(info: WgClanInfo) {
     this.id = info.clan_id;
@@ -394,33 +372,51 @@ export class ClanRecord {
     this.membersCount = info.members_count;
     this.name = info.name;
     this.tag = info.tag;
-
-    this.hasRecord = true;
   }
 }
 
+export class NoClan {
+  readonly kind = RecordKind.NoClan;
+
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = false;
+}
+
+export class UnresolvedClanRecord {
+  readonly kind = RecordKind.Unresolved;
+
+  readonly finishedLoading: boolean = false;
+  readonly hasData: boolean = false;
+}
+
 export interface ShipStatistics {
-  readonly kind: RecordKind.Ship;
+  readonly kind: RecordKind;
 
   readonly battles: number;
   readonly winrate: number;
   readonly avgExp: number;
   readonly avgDmg: number;
   readonly kdRatio: number;
+
+  readonly finishedLoading: boolean;
+  readonly hasData: boolean;
 }
 
 export class ShipBattleStatistics implements ShipStatistics {
-  kind: RecordKind.Ship;
+  readonly kind = RecordKind.Ship;
 
-  battles: number;
-  victories: number;
-  survived: number;
-  frags: number;
-  avgExp: number;
-  avgDmg: number;
-  kdRatio: number;
-  winrate: number;
-  pr: number;
+  readonly battles: number;
+  readonly victories: number;
+  readonly survived: number;
+  readonly frags: number;
+  readonly avgExp: number;
+  readonly avgDmg: number;
+  readonly kdRatio: number;
+  readonly winrate: number;
+  readonly pr: number;
+
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = true;
 
   // finishedLoading: boolean = false;
 
@@ -463,15 +459,17 @@ export class ShipBattleStatistics implements ShipStatistics {
 }
 
 export class HiddenShipStatistics {
-  kind: RecordKind.HiddenShip;
+  kind = RecordKind.Hidden;
+
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = false;
 }
 
-export class NoClan {
-  playerName: string;
+export class UnresolvedShipStatistics {
+  kind = RecordKind.Unresolved;
 
-  constructor(playerName: string) {
-    this.playerName = playerName;
-  }
+  readonly finishedLoading: boolean = true;
+  readonly hasData: boolean = false;
 }
 
 export class WowsApi {
@@ -571,8 +569,8 @@ export class WowsApi {
   async getPlayersStats(
     accounts: AccountId[],
     matchGroup: string = "pvp"
-  // ): Promise<(PlayerStatistics | HiddenPlayerStatistics)[]> {
-  ): Promise<{ [id: string] : PlayerStatistics | HiddenPlayerStatistics }> {
+    // ): Promise<(PlayerStatistics | HiddenPlayerStatistics)[]> {
+  ): Promise<{ [id: string]: PlayerStatistics | HiddenPlayerStatistics }> {
     if (matchGroup === "ranked") matchGroup = "rank_solo";
     else if (matchGroup === "cooperative") matchGroup = "pve";
 
@@ -596,11 +594,11 @@ export class WowsApi {
                 resp.hidden_profile ||
                 !R.path(["statistics", matchGroup], resp))
             ) {
-              return new HiddenPlayerStatistics(resp.nickname);
+              return new HiddenPlayerStatistics();
             } else {
               const group = resp.statistics[matchGroup];
               // TODO: Operations
-              return new PlayerBattleStatistics(resp.nickname, group);
+              return new PlayerBattleStatistics(group);
             }
           })(response.data.data);
           return resolve(players);
@@ -618,15 +616,16 @@ export class WowsApi {
           params: { account_id: accountId, extra: "clan" }
         })
         .then(resp => {
-          const playerClan: WgPlayerClan = R.path(
-            // ["data", "data", accountId, "clan"],
-            ["data", "data", accountId],
-            resp
-          );
-          if (playerClan.clan) {
-            return new ClanRecord(playerClan.clan);
+          // console.log(resp);
+
+          const getClan = R.path<WgClanInfo | undefined>(["data", "data", accountId, "clan"]);
+          const playerClan = getClan(resp);
+          console.log(playerClan);
+
+          if (playerClan) {
+            return new ClanRecord(playerClan);
           } else {
-            return new NoClan(playerClan.account_name);
+            return new NoClan();
           }
         })
         .catch(error => {
@@ -676,8 +675,8 @@ export class WowsApi {
 
   async getShips(
     shipIds: ShipId[]
-  // ): Promise<Ship[]> {
-    ): Promise<ShipDict> {
+    // ): Promise<Ship[]> {
+  ): Promise<ShipDict> {
     // return new Promise((resolve, reject) => {
     let shipsToApi: ShipId[] = [];
     // let shipsFromDb: WgShip[] = [];
@@ -695,7 +694,7 @@ export class WowsApi {
         shipsFromDb[shipId] = new Ship(wgShip);
       } else {
         log.debug(`Cache miss: ${shipId}`);
-        shipsToApi.push(shipId)
+        shipsToApi.push(shipId);
       }
     }
 
@@ -725,7 +724,7 @@ export class WowsApi {
         }
       }
 
-      console.log(shipsFromApi)
+      console.log(shipsFromApi);
 
       // let allShips: ShipDict = {};
       // for (const wgShip of R.concat(shipsFromDb, shipsFromApi)) {
@@ -736,8 +735,7 @@ export class WowsApi {
         ...shipsFromApi,
         ...shipsFromDb
       });
-
-    } catch(error) {
+    } catch (error) {
       log.error(error);
       return Promise.reject(error);
     }
@@ -760,7 +758,9 @@ export class WowsApi {
     if (matchGroup === "pve") params.extra = "pve";
 
     try {
-      const response = await this.api.get("/wows/ships/stats/", { params: params });
+      const response = await this.api.get("/wows/ships/stats/", {
+        params: params
+      });
       const ship = response.data.data[accountId];
 
       if (!ship) {
@@ -779,8 +779,7 @@ export class WowsApi {
       const shipData = new ShipBattleStatistics(group, shipId, this.shipDb);
 
       return Promise.resolve(shipData);
-
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       log.error(error);
       return Promise.reject(error);

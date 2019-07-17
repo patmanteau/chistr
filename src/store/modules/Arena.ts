@@ -1,9 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
-import { MutationTree, GetterTree, ActionTree } from "vuex";
-// import * as R from "ramda";
-// const R = require("ramda");
 import * as R from "ramda";
 import * as types from "../mutation-types";
+import { Promise } from "bluebird";
 import {
   WowsApi,
   PlayerStatistics,
@@ -13,9 +11,12 @@ import {
   AccountId,
   ShipId,
   Ship,
-  NoClan
-} from "../wows-api";
-import { ShipDB } from "../ship-db";
+  NoClan,
+  UnresolvedShipStatistics,
+  UnresolvedClanRecord,
+  UnresolvedPlayerStatistics
+} from "./wows-api";
+import { ShipDB } from "./ship-db";
 import * as log from "electron-log";
 import { RootState } from "../types";
 import { stringify } from "querystring";
@@ -44,10 +45,10 @@ export class Player {
   accountId: AccountId;
   profileHidden: boolean;
   // account: PlayerAccountInfo | undefined;
-  ship: Ship | undefined;
-  clan: ClanRecord | NoClan | undefined;
-  personalStats: PlayerStatistics | HiddenPlayerStatistics | undefined;
-  shipStats: ShipStatistics | undefined;
+  ship: Ship | UnresolvedShipStatistics;
+  clan: ClanRecord | NoClan | UnresolvedClanRecord;
+  personalStats: PlayerStatistics | HiddenPlayerStatistics | UnresolvedPlayerStatistics;
+  shipStats: ShipStatistics | UnresolvedShipStatistics;
 
   finishedLoading: boolean = true;
 
@@ -60,6 +61,11 @@ export class Player {
 
     this.accountId = "";
     this.profileHidden = false;
+
+    this.ship = new UnresolvedShipStatistics();
+    this.clan = new UnresolvedClanRecord();
+    this.personalStats = new UnresolvedPlayerStatistics();
+    this.shipStats = new UnresolvedShipStatistics();
   }
 }
 
@@ -96,10 +102,19 @@ class MatchInfo {
   lastMatchDate: string;
   matchGroup: string;
 
-  constructor(
-    { mapId, mapDisplayName, playerName, dateTime, matchGroup }
-    : { mapId: string, mapDisplayName: string, playerName: string, dateTime: string, matchGroup: string }
-    ) {
+  constructor({
+    mapId,
+    mapDisplayName,
+    playerName,
+    dateTime,
+    matchGroup
+  }: {
+    mapId: string;
+    mapDisplayName: string;
+    playerName: string;
+    dateTime: string;
+    matchGroup: string;
+  }) {
     const mapData = require("../../data/maps.json");
     this.mapId = mapId;
     this.mapDisplayName = mapDisplayName;
@@ -124,37 +139,32 @@ interface Vehicle {
   name: string;
 }
 
+export enum ArenaState {
+  Empty = 0,
+  Loading = 1,
+  Display = 2
+}
+
 @Module
 export default class Arena extends VuexModule {
+  arenaState = ArenaState.Empty;
   active = false;
   hasData = false;
   matchInfo: MatchInfo | undefined;
-  //  {
-  //   lastMatchDate: 0
-  // };
 
-  // This will be filled from tempArenaInfo.json
-  // when a new match starts
-  // vehicles = new Array<Vehicle>();
-  // These will be resolved by API calls
   players = new Array<Player>(); //new Map<string, Player>();
-  // players: Player[] = [];
-  // playerIndex = {};
   errors = [];
+
   // for progress display
   completedOperations = 0;
   totalOperations = 1;
 
-  get friends(): Player[] {
-    return R.filter((player: Player) => player.relation <= 1)(this.players);
-  }
+  // get friends(): Player[] {
+  //   return R.filter((player: Player) => player.relation <= 1)(this.players);
+  // }
 
-  get foes(): Player[] {
-    return R.filter((player: Player) => player.relation > 1)(this.players);
-  }
-
-  // get players(state: ArenaState, _getters): Player[] {
-  //   return state.players;
+  // get foes(): Player[] {
+  //   return R.filter((player: Player) => player.relation > 1)(this.players);
   // }
 
   get progress(): number {
@@ -166,32 +176,35 @@ export default class Arena extends VuexModule {
   }
 
   get finishedLoading(): boolean {
-    // return (
-    //   this.hasData &&
-    //   R.all(
-    //     R.path(["personal", "finishedLoading"]) &&
-    //       R.path(["clan", "finishedLoading"]) &&
-    //       R.path(["ship", "finishedLoading"])
-    //   )(this.players)
-    // );
     return (
       this.hasData &&
-      R.all(p => p.finishedLoading, this.players)
-    )
+      this.players.every((player) => {
+        if (!player.personalStats || !player.shipStats) {
+          return false;
+        }
+        return player.personalStats.finishedLoading && player.shipStats.finishedLoading;
+
+      })
+      // R.all(
+      //   this.players.
+      //   R.path(["personalStats", "finishedLoading"]) &&
+      //     // R.path(["clan", "finishedLoading"]) &&
+      //     R.path(["shipStats", "finishedLoading"])
+      // )(this.players)
+    );
+    // return this.hasData && R.all(p => p.finishedLoading, this.players);
   }
 
-  // get findPlayerIndex(): (name: string) => {
-  //   return this.players.findIndex((val, idx, obj) => {
-  //     return val.name === name;
-  //   });
-  // }
+  @Mutation
+  [types.SET_ARENA_STATE](state: ArenaState) {
+    this.arenaState = state;
+  }
 
   @Mutation
   [types.SET_ARENA_ACTIVE](isActive: boolean) {
     this.active = isActive;
     if (!isActive) {
       this.matchInfo = undefined;
-      // this.matchInfo!.lastMatchDate = "";
     }
   }
 
@@ -201,7 +214,6 @@ export default class Arena extends VuexModule {
 
     this.matchInfo = new MatchInfo(arenaData);
 
-    // this.vehicles = arenaData.vehicles;
     this.players = new Array<Player>();
     for (const v of arenaData.vehicles) {
       let p = new Player(v.name, v.relation, v.shipId);
@@ -252,136 +264,89 @@ export default class Arena extends VuexModule {
     this.errors = [];
   }
 
-  // @Mutation
-  // [types.INITIALIZE_ARENA](vehicles: Vehicle[]) {
-  //   this.players = new Array<Player>();
-  //   // for (const v of vehicles) {
-  //   //   let p = new Player(v.name, v.relation, v.shipId);
-  //   //   this.players.push(p);
-  //   // }
-  //   this.vehicles = vehicles;
-
-  //   this.completedOperations = 0;
-  //   this.totalOperations = 1;
-  //   this.hasData = true;
-  //   // this.hasData = false;
-  //   // const tempPlayers = [];
-  //   // const tempIndex = {};
-  //   // this.playerIndex = {};
-  //   // for (const item of playerList) {
-  //   //   tempIndex[item.name] = tempPlayers.length;
-  //   //   tempPlayers.push({
-  //   //     accountId: "",
-  //   //     name: item.name,
-  //   //     relation: item.relation,
-  //   //     errors: [],
-  //   //     personal: {
-  //   //       hasRecord: false,
-  //   //       battles: 0,
-  //   //       winrate: 0,
-  //   //       avgExp: 0,
-  //   //       avgDmg: 0,
-  //   //       kdRatio: 0.0,
-  //   //       finishedLoading: false
-  //   //     },
-  //   //     clan: {
-  //   //       id: "",
-  //   //       hasRecord: false,
-  //   //       finishedLoading: false,
-  //   //       createdAt: "",
-  //   //       membersCount: 0,
-  //   //       name: "",
-  //   //       tag: ""
-  //   //     },
-  //   //     ship: {
-  //   //       id: item.shipId,
-  //   //       hasRecord: false,
-  //   //       name: "",
-  //   //       isPremium: false,
-  //   //       isTestShip: false,
-  //   //       battles: 0,
-  //   //       victories: 0,
-  //   //       survived: 0,
-  //   //       frags: 0,
-  //   //       avgExp: 0,
-  //   //       avgDmg: 0,
-  //   //       kdRatio: 0.0,
-  //   //       winrate: 0.0,
-  //   //       pr: 0,
-  //   //       finishedLoading: false
-  //   //     }
-  //   //   });
-  //   //   this.players = tempPlayers;
-  //   //   this.playerIndex = tempIndex;
-  //   //   this.completedOperations = 0;
-  //   //   this.totalOperations = 1;
-  //   //   this.hasData = true;
-  //   // }
-  // }
-
-  // @Mutation
-  // setPlayerAccountId(playerName: string, accountId: AccountId) {
-  //   log.debug(`Setting ${playerName}'s accountId: ${accountId}`);
-  //   // Object.assign(this.players[this.playerIndex[playerName]], data);
-  //   const idx = this.players.findIndex((val, idx, obj) => {
-  //     return val.name == playerName;
-  //   })
-
-  //   if (idx > 0) {
-  //     this.players[idx].accountId = accountId;
-  //   } else {
-  //     log.error(`Player ${playerName} not found!`);
-  //   }
-  // }
   @Mutation
-  [types.SET_PLAYER_ACCOUNT_ID]({ index, accountId } : { index: number, accountId: AccountId }) {
+  [types.SET_PLAYER_ACCOUNT_ID]({
+    index,
+    accountId
+  }: {
+    index: number;
+    accountId: AccountId;
+  }) {
     this.players[index].accountId = accountId;
   }
 
   @Mutation
-  [types.SET_PLAYER_DATA]({ index, data } : { index: number, data: any}) {
+  [types.SET_PLAYER_DATA]({ index, data }: { index: number; data: any }) {
     this.players[index] = {
       ...data,
       ...this.players[index]
-    }
+    };
   }
 
   @Mutation
-  [types.SET_PLAYER_STATS]({ index, data } : { index: number, data: PlayerStatistics | HiddenPlayerStatistics }) {
+  [types.SET_PLAYER_STATS]({
+    index,
+    data
+  }: {
+    index: number;
+    data: PlayerStatistics | HiddenPlayerStatistics;
+  }) {
     if (data instanceof HiddenPlayerStatistics) {
       this.players[index].profileHidden = true;
     } else {
-      this.players[index].personalStats = {
-        ...data,
+      // this.players[index].personalStats = {
+      //   ...data
+      // };
+      this.players[index] = {
+        ...this.players[index],
+        personalStats: data
       }
     }
   }
 
   @Mutation
-  [types.SET_CLAN_DATA]({ index, data } : { index: number, data: any }) {
-    this.players[index].clan = {
-      ...data
+  [types.SET_CLAN_DATA]({ index, data }: { index: number; data: ClanRecord | NoClan }) {
+    this.players[index] = {
+      ...this.players[index],
+      clan: data
+    }
+    // this.players[index].clan = {
+    //   ...data
+    // };
+  }
+
+  @Mutation
+  [types.SET_SHIP_DATA]({ index, data }: { index: number; data: Ship }) {
+    this.players[index] = {
+      ...this.players[index],
+      ship: data
+    }
+    // this.players[index].ship = {
+    //   ...data
+    //   // ...this.players[index].ship
+    // };
+  }
+
+  @Mutation
+  [types.SET_SHIP_STATS]({
+    index,
+    data
+  }: {
+    index: number;
+    data: ShipStatistics;
+  }) {
+    // this.players[index].shipStats = {
+    //   ...data
+    //   // ...this.players[index].shipStats
+    // };
+    this.players[index] = {
+      ...this.players[index],
+      shipStats: data
     }
   }
 
   @Mutation
-  [types.SET_SHIP_DATA]({ index, data } : { index: number, data: Ship }) {
-    this.players[index].ship = {
-      ...data,
-      // ...this.players[index].ship
-    }
-  }
-
-  @Mutation
-  [types.SET_SHIP_STATS]({ index, data } : { index: number, data: ShipStatistics}) {
-    this.players[index].shipStats = {
-      ...data,
-      // ...this.players[index].shipStats
-    }
-  }
-
-  @Mutation
-  [types.SET_TOTAL_OPERATIONS](count: number) {
+  [types.SET_TOTAL_OPERATIONS]({ count } : { count: number }) {
     this.totalOperations = count;
   }
 
@@ -407,6 +372,7 @@ export default class Arena extends VuexModule {
       } else {
         if (!this.matchInfo || this.matchInfo.lastMatchDate !== obj.dateTime) {
           this.context.commit(types.SET_ARENA_DATA, obj);
+          this.context.commit(types.SET_ARENA_STATE, ArenaState.Loading);
           this.context.commit(types.SET_ARENA_ACTIVE, true);
           // this.context.commit(types.INITIALIZE_ARENA, obj.vehicles);
           this.context.dispatch("resolve");
@@ -451,7 +417,9 @@ export default class Arena extends VuexModule {
         R.reject(
           r => r instanceof Error,
           this.players
-            .map((_p: Player, i: number) => this.context.dispatch("findPlayer", i))
+            .map((_p: Player, i: number) =>
+              this.context.dispatch("findPlayer", i)
+            )
             .map(p => p.catch(e => e))
         )
       );
@@ -464,9 +432,26 @@ export default class Arena extends VuexModule {
         this.context.dispatch("resolveShipStats", index, matchGroup);
         this.context.dispatch("resolveClan", index);
       }
+      // const actions = this.players.flatMap((_p, index) => {
+      //   return [
+      //     this.context.dispatch("resolveShipStats", index, matchGroup),
+      //     this.context.dispatch("resolveClan", index)
+      //   ];
+      // });
+
+      // // Promise.join(actions, (_promises) => {
+      // //   this.context.commit(types.SET_ARENA_STATE, ArenaState.Display);
+      // // });
+
+      // Promise.all(actions).then((_promises) => {
+      //   this.context.commit(types.SET_ARENA_STATE, ArenaState.Display);
+      // });
+
     } catch (error) {
       log.error(error);
     }
+
+    this.context.commit(types.SET_ARENA_STATE, ArenaState.Display);
   }
 
   @Action
@@ -486,23 +471,17 @@ export default class Arena extends VuexModule {
       console.log(`Found player: ${player.name} => ${accountId}`);
 
       return Promise.resolve(accountId);
-
     } catch (error) {
       log.error(error);
 
       R.forEach((typ: string) =>
         this.context.commit(typ, didFinishOk(false, index))
-      )([
-        types.SET_PLAYER_DATA,
-        types.SET_CLAN_DATA,
-        types.SET_SHIP_DATA
-      ]);
+      )([types.SET_PLAYER_STATS, types.SET_CLAN_DATA, types.SET_SHIP_STATS]);
 
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
 
       log.error(error);
       return Promise.reject(error);
-
     }
   }
 
@@ -514,16 +493,14 @@ export default class Arena extends VuexModule {
     //   return Promise.reject(Error(`Invalid account id for player ${name}`));
     // } else {
     const player = this.players[index];
+
     try {
       const clanData = await wows.getPlayerClan(player.accountId);
-      this.context.commit(
-        types.SET_CLAN_DATA,
-        didFinishOk(true, name, clanData)
-      );
+      this.context.commit(types.SET_CLAN_DATA, didFinishOk(true, index, clanData));
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.resolve();
 
-    } catch(error) {
+    } catch (error) {
       this.context.commit(types.SET_CLAN_DATA, didFinishOk(false, index));
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       console.log(error);
@@ -544,27 +521,18 @@ export default class Arena extends VuexModule {
         const ship = ships[player.shipId];
 
         if (ship) {
-          this.context.commit(types.SET_SHIP_DATA, {
-            index,
-            data: ship
-          });
-
+          this.context.commit(types.SET_SHIP_DATA, didFinishOk(true, index, ship));
         } else {
-          this.context.commit(types.SET_SHIP_DATA, {
-            index,
-            data: {
-              name: "Ship not found"
-            }
-          });
+          this.context.commit(types.SET_SHIP_DATA, didFinishOk(false, index, {
+            name: "Ship not found"
+          }));
         }
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
       }
       return Promise.resolve();
-
-    } catch(error) {
+    } catch (error) {
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
-      return Promise.reject();
-
+      return Promise.reject(error);
     }
   }
 
@@ -574,22 +542,22 @@ export default class Arena extends VuexModule {
     const player = this.players[index];
     if (!player.accountId) {
       return Promise.reject(Error("Invalid account id"));
-
     } else if (player.profileHidden) {
       log.debug(`Won't get ship stats for ${player.name}...profile is hidden`);
-
     } else {
-
       try {
-        const shipData = await wows.getPlayerShip(player.shipId, player.accountId, matchGroup);
+        const shipData = await wows.getPlayerShip(
+          player.shipId,
+          player.accountId,
+          matchGroup
+        );
         this.context.commit(
           types.SET_SHIP_STATS,
           didFinishOk(true, index, shipData)
         );
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
         return Promise.resolve();
-
-      } catch(error) {
+      } catch (error) {
         this.context.commit(types.SET_SHIP_STATS, didFinishOk(false, index));
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
         console.error(error);
@@ -608,15 +576,14 @@ export default class Arena extends VuexModule {
         const name = player.name;
         const data = playerData[player.accountId]; //.find(pd => pd.name === name);
         if (data) {
-          this.context.commit(types.SET_PLAYER_STATS, { index, data });
+          this.context.commit(types.SET_PLAYER_STATS, didFinishOk(true, index, data));
         } else {
           log.error(`Got no response at all for player ${name}`);
         }
       }
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.resolve();
-
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.reject(error);
@@ -630,11 +597,16 @@ export default class Arena extends VuexModule {
 }
 
 function didFinishOk(ok: boolean, index: number, extraData: any = undefined) {
+  // let obj = {
+  //   index,
+  //   data: {
+  //     finishedLoading: true,
+  //     hasData: ok
+  //   }
+  // };
   let obj = {
     index,
     data: {
-      finishedLoading: true,
-      hasRecord: ok
     }
   };
 
@@ -643,8 +615,8 @@ function didFinishOk(ok: boolean, index: number, extraData: any = undefined) {
     obj.data = {
       ...extraData,
       ...obj.data
-    }
+    };
   }
 
   return obj;
-};
+}

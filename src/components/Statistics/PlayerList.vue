@@ -11,7 +11,7 @@
       <div class="dg-cellgroup dg-cellgroup-5of20 ui" :style="trstyle">
         <div class="dg-cell text">
           <popper
-            v-if="player.clan"
+            v-if="player.clan.hasData"
             trigger="hover"
             :options="{
               placement: 'right'
@@ -31,7 +31,7 @@
             >
           </popper>
           <a
-            v-if="player.personalStats"
+            v-if="player.personalStats.hasData"
             :href="wowsNumbersLink(player)"
             :title="wowsNumbersLink(player)"
             class="external-link"
@@ -78,7 +78,7 @@
 
       <!-- No player stats, not yet loaded -->
       <div
-        v-if="!player.profileHidden && !player.personalStats"
+        v-if="!finishedLoading"
         key="without-player-stats-not-loaded"
         class="dg-cellgroup dg-cellgroup-11of20 no-data ui"
       >
@@ -89,7 +89,7 @@
 
       <!-- Got no player stats at all -->
       <div
-        v-else-if="player.profileHidden"
+        v-else-if="player.personalStats.finishedLoading && !player.personalStats.hasData"
         key="without-player-stats"
         class="dg-cellgroup dg-cellgroup-11of20 no-data invisible-right-border ui"
       >
@@ -113,7 +113,10 @@
         <div
           class="dg-cell number text-centered"
           :class="
-            winrateclass(player.personalStats.battles, player.personalStats.winrate)
+            winrateclass(
+              player.personalStats.battles,
+              player.personalStats.winrate
+            )
           "
         >
           {{ player.personalStats.winrate.toFixed(2) }}%
@@ -137,7 +140,9 @@
         </div>
         <div
           class="dg-cell number text-centered"
-          :class="winrateclass(player.shipStats.battles, player.shipStats.winrate)"
+          :class="
+            winrateclass(player.shipStats.battles, player.shipStats.winrate)
+          "
         >
           {{ player.shipStats.winrate.toFixed(2) }}%
         </div>
@@ -158,8 +163,9 @@
       <!-- Got no ship stats at all -->
       <div
         v-else-if="
-          !player.profileHidden &&
-            (!player.shipStats || !player.shipStats.battles)
+           player.personalStats.hasData &&
+            player.shipStats.finishedLoading &&
+            (!player.shipStats.hasData || !player.shipStats.battles)
         "
         key="without-ship-stats"
         class="dg-cellgroup dg-cellgroup-6of20 ui"
@@ -182,13 +188,7 @@ import _ from "lodash/fp";
 import { shell } from "electron";
 import IconRow from "./PlayerList/IconRow.vue";
 // import { mapState } from "vuex";
-import {
-  State,
-  Getter,
-  Action,
-  Mutation,
-  namespace
-} from 'vuex-class'
+import { State, Getter, Action, Mutation, namespace } from "vuex-class";
 import Popper from "vue-popperjs";
 // import 'vue-popperjs/dist/css/vue-popper.css'
 
@@ -300,7 +300,6 @@ const PlayerListProps = Vue.extend({
   }
 })
 export default class PlayerList extends Vue {
-
   @Prop({ default: "" }) title: string;
   @Prop({ default: "" }) bordercolor: string;
   @Prop() players: any;
