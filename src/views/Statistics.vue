@@ -13,11 +13,11 @@
       <div id="header">
         <span>
           <arena-info
-            :matchInfo="matchInfo"
             :active="arena.active"
-            :matchGroup="arena.matchInfo.matchGroup"
-            :mapName="arena.matchInfo.mapName"
-            :lastMatchDate="arena.matchInfo.lastMatchDate"
+            :type="arena.matchInfo.matchGroup"
+            :description="arena.matchInfo.mapDescription"
+            :name="arena.matchInfo.mapName"
+            :timestamp="arena.matchInfo.lastMatchDate"
           />
         </span>
       </div>
@@ -76,6 +76,14 @@ import { mapGetters } from 'vuex';
     PlayerList,
     CircleProgress
   },
+  computed: {
+    // finishedLoading() {
+    //   // return this.$store.state.Arena.completedOperations >= this.$store.state.Arena.totalOperations;
+    // }
+    // ...mapGetters([
+    //   "finishedLoading",
+    // ])
+  }
 })
 export default class Statistics extends Vue {
   // @State("arena") arena;
@@ -172,6 +180,10 @@ h2 {
 }
 
 .vspace {
+  margin-bottom: 1em;
+}
+
+#header {
   margin-bottom: 1em;
 }
 </style>

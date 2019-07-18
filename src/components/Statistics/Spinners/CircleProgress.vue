@@ -1,6 +1,5 @@
 <template>
   <div class="spinnercontainer">
-    <!-- <progress-bar class="progressbar" type="circle" ref="circle" :options="options"></progress-bar> -->
     <div id="progressbar" />
     <random-sentence />
   </div>
@@ -18,19 +17,28 @@ import { Getter } from "vuex-class";
   components: { RandomSentence },
 })
 export default class CircleProgress extends Vue {
-  @Prop({
-    default: {
-      color: "#777",
-      strokeWidth: 8,
-      trailWidth: 4,
-      easing: "linear",
-      duration: 100,
-      className: "progressbar-text",
-      warnings: false
-    }
-  })
-  options: any;
-  @Prop() bar: ProgressBar.Circle;
+  // @Prop({
+  //   default: () => {
+  //     color: "#777",
+  //     strokeWidth: 8,
+  //     trailWidth: 4,
+  //     easing: "linear",
+  //     duration: 100,
+  //     className: "progressbar-text",
+  //     warnings: false
+  //   }
+  // })
+  // options: any;
+  options = {
+    color: "#777",
+    strokeWidth: 8,
+    trailWidth: 4,
+    easing: "linear",
+    duration: 100,
+    className: "progressbar-text",
+    warnings: false
+  };
+  bar: ProgressBar.Circle;
 
   @Getter progress: number;
 

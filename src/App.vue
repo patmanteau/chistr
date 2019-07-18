@@ -79,7 +79,7 @@ body {
 
 .gridcontainer {
   width: 95%;
-  margin: 0px 10px;
+  margin: 20px 10px;
 }
 
 .link {

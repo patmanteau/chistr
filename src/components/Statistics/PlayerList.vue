@@ -31,7 +31,7 @@
             >
           </popper>
           <a
-            v-if="player.personalStats.hasData"
+            v-if="!player.profileHidden"
             :href="wowsNumbersLink(player)"
             :title="wowsNumbersLink(player)"
             class="external-link"
@@ -40,7 +40,7 @@
           </a>
           <span
             v-else
-            title="This player has hidden his profile"
+            title="This player has hidden their profile"
             class="external-link disabled"
             >{{ player.name }}</span
           >
@@ -95,7 +95,7 @@
       >
         <div
           class="dg-cell text text-centered ui"
-          title="This player has hidden his profile"
+          title="This player has hidden their profile"
         >
           <hr class="grey" />
         </div>
