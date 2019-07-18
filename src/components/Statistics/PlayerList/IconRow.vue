@@ -1,212 +1,89 @@
 <template>
-  <div class="dg-row--head white-left-border">
+  <div class="dg-row--head white-left-border ui">
     <!-- <div class="dg-cellgroup dg-cellgroup-1of3 white-right-border"> -->
     <div class="dg-cellgroup dg-cellgroup-5of20">
-      <div title="Player" class="dg-cell icon ui">
+      <div title="Player" class="dg-cell">
         &nbsp;
       </div>
     </div>
     <div class="dg-cellgroup dg-cellgroup-4of20 white-right-border">
-      <div title="Ship" class="dg-cell icon ui">
+      <div title="Ship" class="dg-cell">
         &nbsp;
       </div>
     </div>
     <!-- <div class="dg-cellgroup dg-cellgroup-1of3 grey-right-border"> -->
     <div class="dg-cellgroup dg-cellgroup-5of20 grey-right-border">
-      <div
+      <sortable-icon
         title="# of battles overall"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'personalStats.battles' }"
-        @click="setSort('personalStats.battles')"
-      >
-        <font-awesome-icon icon="redo" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'personalStats.battles' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'personalStats.battles' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        sortField="personalStats.battles"
+        icon="redo"
+      />
+      <sortable-icon
         title="Player winrate"
-        class="dg-cell icon ui"
-        :class="{ active: sort.key === 'personalStats.winrate' }"
-        @click="setSort('personalStats.winrate')"
-      >
-        <font-awesome-icon icon="chart-pie" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'personalStats.winrate' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'personalStats.winrate' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        class="dg-cell icon"
+        sortField="personalStats.winrate"
+        icon="chart-pie"
+      />
+      <sortable-icon
         title="Player Kill/Death ratio"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'personalStats.kdRatio' }"
-        @click="setSort('personalStats.kdRatio')"
-      >
-        <font-awesome-icon icon="bullseye" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'personalStats.kdRatio' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'personalStats.kdRatio' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        sortField="personalStats.kdRatio"
+        icon="bullseye"
+      />
+      <sortable-icon
         title="Player average damage"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'personalStats.avgDmg' }"
-        @click="setSort('personalStats.avgDmg')"
-      >
-        <font-awesome-icon icon="rocket" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'personalStats.avgDmg' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'personalStats.avgDmg' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
+        sortField="personalStats.avgDmg"
+        icon="bullseye"
+      />
     </div>
 
     <div class="dg-cellgroup dg-cellgroup-6of20 white-right-border">
-      <div
+      <sortable-icon
         title="# of battles in this ship"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'shipStats.battles' }"
-        @click="setSort('shipStats.battles')"
-      >
-        <font-awesome-icon icon="redo" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'shipStats.battles' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'shipStats.battles' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        sortField="shipStats.battles"
+        icon="redo"
+      />
+      <sortable-icon
         title="Ship winrate"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'shipStats.winrate' }"
-        @click="setSort('shipStats.winrate')"
-      >
-        <font-awesome-icon icon="chart-pie" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'shipStats.winrate' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'shipStats.winrate' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        sortField="shipStats.winrate"
+        icon="chart-pie"
+      />
+      <sortable-icon
         title="Player's Personal Rating for this ship"
-        class="dg-cell icon ui"
-        :class="{ active: sort.key === 'shipStats.pr' }"
-        @click="setSort('shipStats.pr')"
-      >
-        <span>PR</span>
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'shipStats.pr' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'shipStats.pr' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        class="dg-cell icon"
+        sortField="shipStats.pr"
+        text="PR"
+      />
+      <sortable-icon
         title="Ship Kill/Death ratio"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'shipStats.kdRatio' }"
-        @click="setSort('shipStats.kdRatio')"
-      >
-        <font-awesome-icon icon="bullseye" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'shipStats.kdRatio' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'shipStats.kdRatio' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
-
-      <div
+        sortField="shipStats.kdRatio"
+        icon="bullseye"
+      />
+      <sortable-icon
         title="Ship average damage"
         class="dg-cell icon"
-        :class="{ active: sort.key === 'shipStats.avgDmg' }"
-        @click="setSort('shipStats.avgDmg')"
-      >
-        <font-awesome-icon icon="rocket" />
-        <font-awesome-icon
-          icon="sort-down"
-          v-if="sort.key === 'shipStats.avgDmg' && sort.order === 1"
-          aria-hidden="true"
-        />
-        <font-awesome-icon
-          icon="sort-up"
-          v-if="sort.key === 'shipStats.avgDmg' && sort.order === -1"
-          aria-hidden="true"
-        />
-      </div>
+        sortField="shipStats.avgDmg"
+        icon="rocket"
+      />
     </div>
   </div>
 </template>
 
-<script type="text/javascript">
-import { mapState } from "vuex";
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { State } from "vuex-class";
+import SortableIcon from "./SortableIcon";
 
-export default {
+@Component({
   name: "IconRow",
-
-  computed: {
-    ...mapState({
-      sort: state => state.Interface.playerListSort
-    })
-  },
-
-  methods: {
-    setSort(key) {
-      this.$store.dispatch("setPlayerListSortKey", key);
-    }
-  }
-};
+  components: { SortableIcon }
+})
+export default class IconRow extends Vue {}
 </script>
 <style media="screen">
 .icon {
