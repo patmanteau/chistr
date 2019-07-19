@@ -217,32 +217,15 @@ const PlayerListProps = Vue.extend({
 
   computed: {
     filteredPlayers() {
-      return this.players.sort((a, b) => {
-        if (
-          parseFloat(_.get(this.sort.key, a)) <
-          parseFloat(_.get(this.sort.key, b))
-        )
-          return this.sort.order;
-        else if (
-          parseFloat(_.get(this.sort.key, a)) >
-          parseFloat(_.get(this.sort.key, b))
-        )
-          return this.sort.order * -1;
-        else return 0;
-      });
-      // if (this.filterby !== '') {
-      //   return sorted.filter((element, index, array) => {
-      //     for (let p in element) {
-      //       let s = element[p].toString().toLowerCase()
-      //       if (element.hasOwnProperty(p) && s.includes(this.filterby.toLowerCase())) {
-      //         return true
-      //       }
-      //     }
-      //     return false
-      //   })
-      // } else {
-      //   return sorted
-      // }
+      const getter = _.get(this.sort.key);
+      const orderFunc = _.orderBy(
+        [p => getter(p)],
+        this.sort.order > 0 ? ["desc"] : ["asc"]
+      );
+
+      const [withStats, woStats] = _.partition(p => getter(p), this.players);
+
+      return _.concat(orderFunc(withStats), woStats);
     }
   },
 
@@ -300,11 +283,11 @@ const PlayerListProps = Vue.extend({
   }
 })
 export default class PlayerList extends Vue {
-  @Prop({ default: "" }) title: string;
-  @Prop({ default: "" }) bordercolor: string;
-  @Prop() players: any;
-  @Prop({ default: false }) noheader: boolean;
-  @Prop({ default: false }) finishedLoading: boolean;
+  @Prop({ default: "" }) private title!: string;
+  @Prop({ default: "" }) private bordercolor!: string;
+  @Prop() private players!: any;
+  @Prop({ default: false }) private noheader!: boolean;
+  @Prop({ default: false }) private finishedLoading!: boolean;
 
   @State(state => state.Interface.playerListSort) sort;
 

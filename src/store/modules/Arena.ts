@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
-import * as R from "ramda";
+import _ from "lodash";
 import * as types from "../mutation-types";
 import { Promise } from "bluebird";
 import {
@@ -14,12 +14,11 @@ import {
   NoClan,
   UnresolvedShipStatistics,
   UnresolvedClanRecord,
-  UnresolvedPlayerStatistics
+  UnresolvedPlayerStatistics,
+  RecordKind
 } from "./wows-api";
 import { ShipDB } from "./ship-db";
 import * as log from "electron-log";
-import { RootState } from "../types";
-import { stringify } from "querystring";
 
 const jsonfile = require("jsonfile");
 const path = require("path");
@@ -139,15 +138,8 @@ interface Vehicle {
   name: string;
 }
 
-export enum ArenaState {
-  Empty = 0,
-  Loading = 1,
-  Display = 2
-}
-
 @Module
 export default class Arena extends VuexModule {
-  arenaState = ArenaState.Empty;
   active = false;
   hasData = false;
   matchInfo: MatchInfo | undefined;
@@ -168,44 +160,19 @@ export default class Arena extends VuexModule {
   // }
 
   get progress(): number {
-    return R.clamp(
-      0,
-      1,
-      (this.completedOperations / this.totalOperations) * 1.1
-    );
+    return _.clamp((this.completedOperations / this.totalOperations) * 1.1, 0, 1);
   }
 
   get finishedLoading(): boolean {
-    return (
-      this.hasData &&
-      this.players.every((player) => {
-        if (!player.personalStats || !player.shipStats) {
-          return false;
-        }
-        return player.personalStats.finishedLoading && player.shipStats.finishedLoading;
-
-      })
-      // R.all(
-      //   this.players.
-      //   R.path(["personalStats", "finishedLoading"]) &&
-      //     // R.path(["clan", "finishedLoading"]) &&
-      //     R.path(["shipStats", "finishedLoading"])
-      // )(this.players)
-    );
-    // return this.hasData && R.all(p => p.finishedLoading, this.players);
-  }
-
-  @Mutation
-  [types.SET_ARENA_STATE](state: ArenaState) {
-    this.arenaState = state;
+    return this.completedOperations >= this.totalOperations;
   }
 
   @Mutation
   [types.SET_ARENA_ACTIVE](isActive: boolean) {
     this.active = isActive;
-    if (!isActive) {
-      this.matchInfo = undefined;
-    }
+    // if (!isActive) {
+    //   this.matchInfo = undefined;
+    // }
   }
 
   @Mutation
@@ -223,35 +190,6 @@ export default class Arena extends VuexModule {
     this.completedOperations = 0;
     this.totalOperations = 1;
     this.hasData = true;
-
-    //  {
-    //   mapId: arenaData.mapId,
-    //   mapName: mapData[arenaData.mapId].name,
-    //   mapDescription: mapData[arenaData.mapId].description,
-    //   mapIcon: mapData[arenaData.mapId].icon,
-    //   mapDisplayName: arenaData.mapDisplayName,
-    //   playerName: arenaData.playerName,
-    //   lastMatchDate: arenaData.dateTime,
-    //   matchGroup: arenaData.matchGroup
-    //   // dateTime:"04.07.2017 15:26:52"
-    //   // duration:1200
-    //   // gameLogic:"Domination"
-    //   // gameMode:7
-    //   // logic:"Domination"
-    //   // mapDisplayName:"17_NA_fault_line"
-    //   // mapId:11
-    //   // mapName:"spaces/17_NA_fault_line"
-    //   // matchGroup:"ranked"
-    //   // name:"7x7"
-    //   // playerID:0
-    //   // playerName:"rottzorr"
-    //   // playerVehicle:"PJSB006-Fuso-1943"
-    //   // playersPerTeam:7
-    //   // scenario:"Ranked_Domination"
-    //   // scenarioConfigId:90
-    //   // teamsCount:2
-    // };
-    // state.hasData = true
   }
 
   @Mutation
@@ -291,16 +229,13 @@ export default class Arena extends VuexModule {
     index: number;
     data: PlayerStatistics | HiddenPlayerStatistics;
   }) {
-    if (data instanceof HiddenPlayerStatistics) {
+    // if (data instanceof HiddenPlayerStatistics) {
+    if (data.kind === RecordKind.Hidden) {
       this.players[index].profileHidden = true;
-    } else {
-      // this.players[index].personalStats = {
-      //   ...data
-      // };
-      this.players[index] = {
-        ...this.players[index],
-        personalStats: data
-      }
+    }
+    this.players[index] = {
+      ...this.players[index],
+      personalStats: data
     }
   }
 
@@ -372,7 +307,6 @@ export default class Arena extends VuexModule {
       } else {
         if (!this.matchInfo || this.matchInfo.lastMatchDate !== obj.dateTime) {
           this.context.commit(types.SET_ARENA_DATA, obj);
-          this.context.commit(types.SET_ARENA_STATE, ArenaState.Loading);
           this.context.commit(types.SET_ARENA_ACTIVE, true);
           // this.context.commit(types.INITIALIZE_ARENA, obj.vehicles);
           this.context.dispatch("resolve");
@@ -393,7 +327,8 @@ export default class Arena extends VuexModule {
       // 4. set ship stats
       // 5. set clan info
       // Then set all player stats
-      count: 3 * this.players.length + 1
+      //
+      count: 4 * this.players.length + 1
     });
 
     wows = new WowsApi(
@@ -414,44 +349,44 @@ export default class Arena extends VuexModule {
     try {
       // Use some kind of Promise.some()
       let accIds: AccountId[] = await Promise.all(
-        R.reject(
-          r => r instanceof Error,
+        _.reject(
           this.players
             .map((_p: Player, i: number) =>
               this.context.dispatch("findPlayer", i)
             )
-            .map(p => p.catch(e => e))
+            .map(p => p.catch(e => e)),
+            r => r instanceof Error
         )
       );
+      // let accIds = await Promise.join(this.players.map((_player, index) => {
+      //   return this.context.dispatch("findPlayer", index);
+      // }))
 
-      this.context.dispatch("resolvePlayers", matchGroup);
-      this.context.dispatch("resolveShips");
+      this.context.dispatch("resolvePlayers", matchGroup),
+      this.context.dispatch("resolveShips")
 
       this.context.commit(types.SET_ARENA_ACTIVE, true);
-      for (const index of this.players.keys()) {
-        this.context.dispatch("resolveShipStats", index, matchGroup);
-        this.context.dispatch("resolveClan", index);
-      }
-      // const actions = this.players.flatMap((_p, index) => {
-      //   return [
-      //     this.context.dispatch("resolveShipStats", index, matchGroup),
-      //     this.context.dispatch("resolveClan", index)
-      //   ];
-      // });
 
-      // // Promise.join(actions, (_promises) => {
-      // //   this.context.commit(types.SET_ARENA_STATE, ArenaState.Display);
-      // // });
+      await Promise.join(_.flatMap(this.players, (_player, index) => {
+        return [
+          this.context.dispatch("resolveShipStats", index, matchGroup),
+          this.context.dispatch("resolveClan", index)
+        ]
+      }));
 
-      // Promise.all(actions).then((_promises) => {
-      //   this.context.commit(types.SET_ARENA_STATE, ArenaState.Display);
-      // });
+      // this.context.dispatch("resolvePlayers", matchGroup);
+      // this.context.dispatch("resolveShips");
+
+      // this.context.commit(types.SET_ARENA_ACTIVE, true);
+
+      // for (const index of this.players.keys()) {
+      //   this.context.dispatch("resolveShipStats", index, matchGroup);
+      //   this.context.dispatch("resolveClan", index);
+      // }
 
     } catch (error) {
       log.error(error);
     }
-
-    this.context.commit(types.SET_ARENA_STATE, ArenaState.Display);
   }
 
   @Action
@@ -474,9 +409,10 @@ export default class Arena extends VuexModule {
     } catch (error) {
       log.error(error);
 
-      R.forEach((typ: string) =>
-        this.context.commit(typ, didFinishOk(false, index))
-      )([types.SET_PLAYER_STATS, types.SET_CLAN_DATA, types.SET_SHIP_STATS]);
+      _.forEach(
+        [types.SET_PLAYER_STATS, types.SET_CLAN_DATA, types.SET_SHIP_STATS],
+        (typ: string) => this.context.commit(typ, didFinishOk(false, index))
+      );
 
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
 
@@ -496,6 +432,7 @@ export default class Arena extends VuexModule {
 
     try {
       const clanData = await wows.getPlayerClan(player.accountId);
+      console.log(clanData);
       this.context.commit(types.SET_CLAN_DATA, didFinishOk(true, index, clanData));
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.resolve();

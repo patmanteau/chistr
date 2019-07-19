@@ -1,22 +1,17 @@
 import Vue from "vue";
-// import VueI18n from 'vue-i18n'
-// Vue.use(VueI18n)
+Vue.config.productionTip = false;
 
-// import axios from "axios";
-const axios = require("axios");
-// Vue.http = Vue.prototype.$http = axios;
+import * as axios from "axios";
 Vue.prototype.$http = axios;
 
-const log = require("electron-log");
+import * as log from "electron-log";
 log.transports.console.format = "{h}:{i}:{s} {text}";
 
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-
 import { ipcRenderer } from "electron";
 
-Vue.config.productionTip = false;
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -55,10 +50,10 @@ library.add(
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 // handle window menu events
-ipcRenderer.on("open-settings", (_event, _args) => {
+ipcRenderer.on("open-settings", (_event: any, _args: any) => {
   router.push("/settings");
 });
-ipcRenderer.on("open-about", (_event, _args) => {
+ipcRenderer.on("open-about", (_event: any, _args: any) => {
   router.push("/about");
 });
 

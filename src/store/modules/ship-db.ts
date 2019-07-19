@@ -1,4 +1,4 @@
-import * as R from "ramda";
+import _ from "lodash";
 import ElectronStore from "electron-store";
 
 export class ShipDB {
@@ -6,9 +6,10 @@ export class ShipDB {
 
   constructor() {
     let datasource = require("../../data/expected.json");
-    datasource.data = R.pickBy(
-      (key: string, val: any) => !R.isEmpty(val),
-      datasource.data
+    datasource.data = _.pickBy(
+      datasource.data,
+      (key: string, val: any) => !_.isEmpty(val),
+
     );
 
     this.db = new ElectronStore({
@@ -18,9 +19,10 @@ export class ShipDB {
 
     if (datasource.time > this.db.get("time")) {
       console.log("Updating expected values...");
-      R.forEachObjIndexed((shipId: string, data: any) => {
-        this.set(shipId, data);
-      })(datasource.data);
+      _.forOwn(
+        datasource.data,
+        (shipId: string, data: any) => { this.set(shipId, data) }
+      );
       this.db.set("time", datasource.time);
     }
   }
@@ -28,9 +30,9 @@ export class ShipDB {
   clear() {
     this.db.clear();
     let datasource = require("../../data/expected.json");
-    datasource.data = R.pickBy(
-      (key: String, val: any) => !R.isEmpty(val),
-      datasource.data
+    datasource.data = _.pickBy(
+      datasource.data,
+      (key: String, val: any) => !_.isEmpty(val),
     );
     this.db.store = datasource;
   }
@@ -53,14 +55,6 @@ export class ShipDB {
     return this.db.get(`data.${shipId.toString()}`);
   }
 
-  // getName(shipId) {
-  //   if (this.hasName(shipId)) {
-  //     return this.get(shipId).name;
-  //   } else {
-  //     return undefined;
-  //   }
-  // }
-
   set(shipId: string, dataObj: any) {
     const _shipId = shipId.toString();
     if (this.has(_shipId)) {
@@ -78,7 +72,6 @@ export class ShipDB {
   }
 
   delete(shipId: string) {
-    // this.db.delete(shipId.toString());
     this.db.delete(shipId);
   }
 }

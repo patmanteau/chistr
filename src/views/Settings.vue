@@ -8,18 +8,9 @@
         >
       </router-link>
     </div>
-    <!-- <div id="header">
-    <div class="rowflexed">
-    <h1><font-awesome-icon icon="cog" /> Settings</h1>
-    </div>
-  </div> -->
     <div class="gridcontainer">
       <div class="config-item" />
-      <!-- <div class="Rcell Rcell-2of2"> -->
       <div class="config-item ui">
-        <!-- <div class="Rcontent"> -->
-
-        <!-- </div> -->
       </div>
       <div class="config-item">
         <div class="title ui">
@@ -76,7 +67,6 @@
         />
       </div>
       <div class="config-item ui">
-        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
         <div class="title">
           World of Warships server
         </div>
@@ -94,7 +84,6 @@
         </select>
       </div>
       <div class="config-item ui">
-        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
         <div class="title">
           Match group
         </div>
@@ -112,7 +101,6 @@
         </select>
       </div>
       <div class="config-item ui">
-        <!-- <input v-model="wowsApiUrl" size="40" placeholder="API URL"> -->
         <div class="title">
           Cache settings
         </div>

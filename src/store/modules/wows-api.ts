@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import * as log from "electron-log";
-import * as R from "ramda";
+import _ from "lodash";
 import { ShipDB } from "./ship-db";
 
 export class Ship {
@@ -418,8 +418,6 @@ export class ShipBattleStatistics implements ShipStatistics {
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = true;
 
-  // finishedLoading: boolean = false;
-
   constructor(stats: WgBattleStats, shipId: ShipId, shipDb: ShipDB) {
     this.battles = stats.battles;
     this.victories = stats.wins;
@@ -491,9 +489,9 @@ export class WowsApi {
     const responseHandler = (response: AxiosResponse<any>) => {
       if (
         response.data.status !== "ok" ||
-        R.path(["data", "error"], response)
+        _.get(response, ["data", "error"])
       ) {
-        return Promise.reject(R.path(["data", "error"], response));
+        return Promise.reject(_.get(response, ["data", "error"]));
       } else {
         return response;
       }
@@ -517,54 +515,36 @@ export class WowsApi {
   }
 
   async findAccount(playerName: string): Promise<AccountId> {
-    return new Promise((resolve, reject) => {
-      log.debug(`findPlayer(${playerName})`);
-      // Find the player's account ID. We use Wargaming's
-      // API to search by the player's name. The API returns a list of
-      // players whose names match our search (i.e. searching for 'Alfred'
-      // returns 'Alfred1', 'Alfred_accurate', 'AlfredAlfred' an so on), so
-      // we have to search the response list ourselves for the right player
-      this.api
-        // .get(`/wows/account/list/?search=${encodeURIComponent(playerName)}`)
-        .get("/wows/account/list/", { params: { search: playerName } })
-        .then(response => {
-          const account: WgAccount | undefined = R.find(
-            R.propEq("nickname", playerName)
-          )(response.data.data);
-          if (account) {
-            log.debug(`findPlayer(${playerName}) => ${account.account_id}`);
-            return resolve(account.account_id);
-          } else {
-            return reject(Error("Player not found"));
-          }
-        })
-        .catch(error => {
-          // console.log(error);
-          log.error(error);
-          return reject(Error("Player not found"));
-        });
-    });
-  }
+    log.debug(`findPlayer(${playerName})`);
+    // Find the player's account ID. We use Wargaming's
+    // API to search by the player's name. The API returns a list of
+    // players whose names match our search (i.e. searching for 'Alfred'
+    // returns 'Alfred1', 'Alfred_accurate', 'AlfredAlfred' an so on), so
+    // we have to search the response list ourselves for the right player
+    try {
+      const response = await this.api.get("/wows/account/list/", {
+        params: {
+          search: playerName
+        }
+      });
 
-  // private playerStatsToRecord(stats: WgPlayerStats, matchGroup: string):PlayerStatistics | HiddenRecord {
-  //   if (
-  //     resp &&
-  //     (!resp.statistics ||
-  //       resp.hidden_profile ||
-  //       !R.path(["statistics", matchGroup], resp))
-  //   ) {
-  //     return new HiddenRecord();
-  //   } else {
-  //     const group = resp.statistics[matchGroup];
-  //     return newPlayerStatistics(
-  //       group.battles,
-  //       (group.wins / group.battles) * 100,
-  //       group.xp / group.battles,
-  //       group.damage_dealt / group.battles,
-  //       group.frags / (group.battles - group.survived_battles),
-  //     );
-  //   }
-  // }
+      const account: WgAccount | undefined = _.find(response.data.data,
+        _.matchesProperty("nickname", playerName)
+      );
+
+      if (account) {
+        log.debug(`findPlayer(${playerName}) => ${account.account_id}`);
+        return Promise.resolve(account.account_id);
+
+      } else {
+        return Promise.reject(Error("Player not found"));
+      }
+
+    } catch(error) {
+      log.error(error);
+      return Promise.reject(Error("Player not found"));
+    }
+  }
 
   async getPlayersStats(
     accounts: AccountId[],
@@ -574,112 +554,97 @@ export class WowsApi {
     if (matchGroup === "ranked") matchGroup = "rank_solo";
     else if (matchGroup === "cooperative") matchGroup = "pve";
 
-    return new Promise((resolve, reject) => {
-      // Our second step is looking up the player's stats using their account IDs.
-      const params = {
-        account_id: accounts.join(","), //R.map( (acc) => account_id, accounts).join(","),
-        extra: ""
-      };
+    // Our second step is looking up the player's stats using their account IDs.
+    const params = {
+      account_id: accounts.join(","),
+      extra: ""
+    };
 
-      if (matchGroup === "rank_solo") params.extra = "statistics.rank_solo";
-      if (matchGroup === "pve") params.extra = "statistics.pve";
+    if (matchGroup === "rank_solo") params.extra = "statistics.rank_solo";
+    if (matchGroup === "pve") params.extra = "statistics.pve";
 
-      this.api
-        .get("/wows/account/info/", { params: params })
-        .then(response => {
-          const players = R.map((resp: WgPlayer) => {
-            if (
-              resp &&
-              (!resp.statistics ||
-                resp.hidden_profile ||
-                !R.path(["statistics", matchGroup], resp))
-            ) {
-              return new HiddenPlayerStatistics();
-            } else {
-              const group = resp.statistics[matchGroup];
-              // TODO: Operations
-              return new PlayerBattleStatistics(group);
-            }
-          })(response.data.data);
-          return resolve(players);
-        })
-        .catch(error => {
-          return reject(error);
-        });
-    });
+    try {
+      const response = await this.api.get("/wows/account/info/", { params: params });
+
+      const players = _.mapValues(response.data.data, (wgPlayer: WgPlayer) => {
+        const group = _.get(wgPlayer, ["statistics", matchGroup]);
+
+        if (wgPlayer.hidden_profile || !group) {
+          return new HiddenPlayerStatistics();
+
+        } else {
+          // TODO: Operations
+          return new PlayerBattleStatistics(group);
+        }
+      });
+      return Promise.resolve(players);
+
+    } catch(error) {
+      return Promise.reject(error);
+    }
   }
 
   async getPlayerClan(accountId: AccountId): Promise<ClanRecord | NoClan> {
-    return new Promise((resolve, reject) => {
-      this.api
-        .get("/wows/clans/accountinfo/", {
-          params: { account_id: accountId, extra: "clan" }
-        })
-        .then(resp => {
-          // console.log(resp);
+    try {
+      const response = await this.api.get("/wows/clans/accountinfo/", {
+        params: { account_id: accountId, extra: "clan" }
+      })
 
-          const getClan = R.path<WgClanInfo | undefined>(["data", "data", accountId, "clan"]);
-          const playerClan = getClan(resp);
-          console.log(playerClan);
+      const playerClan: WgClanInfo | undefined = _.get(response, ["data", "data", accountId, "clan"]);
+      if (playerClan) {
+        return Promise.resolve(new ClanRecord(playerClan));
 
-          if (playerClan) {
-            return new ClanRecord(playerClan);
-          } else {
-            return new NoClan();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          return reject(error);
-        });
-    });
+      } else {
+        return Promise.resolve(new NoClan());
+      }
+
+    } catch(error) {
+      return Promise.reject(error);
+    }
   }
 
   async getShip(shipId: ShipId): Promise<Ship> {
-    return new Promise((resolve, reject) => {
-      console.log(`getShip(${shipId})`);
-      // shipDb may contain expected values only,
-      // so check if there's a full record including
-      // name
-      if (this.shipDb.hasFull(shipId)) {
-        let ship: WgShip = this.shipDb.get(shipId);
-        log.debug(`Cache hit: ${shipId} => ${ship.name}`);
-        // console.log(ship);
-        return resolve(new Ship(ship));
-      } else {
-        log.debug(`Cache miss: ${shipId}`);
-        this.api
-          .get("/wows/encyclopedia/ships/", {
-            params: {
-              ship_id: shipId,
-              fields: "-default_profile,-modules,-upgrades,-next_ships"
-            }
-          })
-          .then(response => {
-            const wgShip: WgShip = R.path(["data", "data", shipId], response);
-            if (wgShip) {
-              // no cache hit earlier, so cache it now
-              this.shipDb.setFull(shipId, wgShip);
-              return resolve(new Ship(wgShip));
-            } else {
-              return reject(Error("Ship not found."));
-            }
-          })
-          .catch(error => {
-            log.error(error);
-            return reject(error);
-          });
+    console.log(`getShip(${shipId})`);
+    // shipDb may contain expected values only,
+    // so check if there's a full cache record
+    if (this.shipDb.hasFull(shipId)) {
+      let ship: WgShip = this.shipDb.get(shipId);
+      log.debug(`Cache hit: ${shipId} => ${ship.name}`);
+
+      return Promise.resolve(new Ship(ship));
+
+    } else {
+      log.debug(`Cache miss: ${shipId}`);
+
+      try {
+        const response = await this.api.get("/wows/encyclopedia/ships/", {
+          params: {
+            ship_id: shipId,
+            fields: "-default_profile,-modules,-upgrades,-next_ships"
+          }
+        });
+
+        const wgShip: WgShip | undefined = _.get(response, ["data", "data", shipId]);
+        if (wgShip) {
+          // no cache hit earlier, so cache it now
+          this.shipDb.setFull(shipId, wgShip);
+          return Promise.resolve(new Ship(wgShip));
+        } else {
+          return Promise.reject(Error("Ship not found."));
+        }
+
+      } catch(error) {
+        log.error(error);
+        return Promise.reject(error);
       }
-    });
+    }
   }
 
   async getShips(
     shipIds: ShipId[]
-    // ): Promise<Ship[]> {
   ): Promise<ShipDict> {
-    // return new Promise((resolve, reject) => {
+
     let shipsToApi: ShipId[] = [];
-    // let shipsFromDb: WgShip[] = [];
     let shipsFromDb: ShipDict = {};
     let shipsFromApi: ShipDict = {};
 
@@ -709,27 +674,13 @@ export class WowsApi {
           }
         });
 
-        console.log(response);
-
         const wgShips = response.data.data;
-
-        // shipsFromApi = R.map((wgShip: WgShip) => {
-        //   this.shipDb.setFull(wgShip.ship_id, wgShip);
-        //   return wgShip;
-        // })(wgShips.data.data);
 
         for (const shipId in wgShips) {
           this.shipDb.setFull(shipId, wgShips[shipId]);
           shipsFromApi[shipId] = new Ship(wgShips[shipId]);
         }
       }
-
-      console.log(shipsFromApi);
-
-      // let allShips: ShipDict = {};
-      // for (const wgShip of R.concat(shipsFromDb, shipsFromApi)) {
-      //   allShips[wgShip.ship_id] = new Ship(wgShip);
-      // }
 
       return Promise.resolve({
         ...shipsFromApi,
@@ -746,9 +697,9 @@ export class WowsApi {
     accountId: AccountId,
     matchGroup: string = "pvp"
   ): Promise<ShipBattleStatistics | HiddenShipStatistics> {
+
     if (matchGroup === "ranked") matchGroup = "rank_solo";
     else if (matchGroup === "cooperative") matchGroup = "pve";
-    // return new Promise((resolve, reject) => {
     const params = {
       account_id: accountId,
       ship_id: shipId,
@@ -769,7 +720,7 @@ export class WowsApi {
 
       const shipStats = ship[0];
 
-      if (!R.prop(matchGroup, shipStats)) {
+      if (!_.get(shipStats, matchGroup)) {
         return Promise.reject(
           Error("Player has no record in the selected matchGroup")
         );

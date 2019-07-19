@@ -1,7 +1,6 @@
 <template>
   <div id="view">
     <template v-if="!hasData">
-      <!-- <template v-if="arenaState === 0"> -->
       <div key="statsDisplay" class="container">
         <div class="centered">
           <h1 class="ui">Ahoy captain!</h1>
@@ -30,7 +29,6 @@
       </div>
       <transition name="fade" mode="out-in">
         <div v-if="finishedLoading" id="maingrid" key="statsDisplay">
-        <!-- <div v-if="arenaState === 2" id="maingrid" key="statsDisplay"> -->
           <div class="gridcontainer">
             <player-list
               title="Foes"
@@ -49,13 +47,10 @@
           </div>
         </div>
         <div v-else-if="hasData" key="loadingScreen">
-        <!-- <div v-else-if="arenaState === 1" key="loadingScreen"> -->
-          <!-- <bar-spinner></bar-spinner> -->
           <circle-progress />
         </div>
       </transition>
     </template>
-    <!-- <div v-if="finishedLoading">Finished Loading</div> -->
   </div>
 </template>
 
@@ -67,7 +62,7 @@ import ArenaInfo from "@/components/Statistics/ArenaInfo.vue";
 import PlayerList from "@/components/Statistics/PlayerList.vue";
 import CircleProgress from "@/components/Statistics/Spinners/CircleProgress.vue";
 import semver from "semver";
-import Arena, { ArenaState } from "@/store/modules/Arena";
+import Arena from "@/store/modules/Arena";
 import { mapGetters } from 'vuex';
 
 @Component({
@@ -76,30 +71,17 @@ import { mapGetters } from 'vuex';
     PlayerList,
     CircleProgress
   },
-  computed: {
-    // finishedLoading() {
-    //   // return this.$store.state.Arena.completedOperations >= this.$store.state.Arena.totalOperations;
-    // }
-    // ...mapGetters([
-    //   "finishedLoading",
-    // ])
-  }
 })
 export default class Statistics extends Vue {
-  // @State("arena") arena;
-  // @State("hasData") hasData;
-
-  @Prop({ default: false }) updateAvailable: boolean;
-  // @Getter friends;
-  // @Getter foes;
-  @Getter finishedLoading;
-  @State(state => state.Arena.hasData) hasData: boolean;
-  @State(state => state.Arena) arena;
-  @State(state => state.Arena.matchInfo) matchInfo;
-  @State(state => state.Arena.active) active: boolean;
-  @State(state => state.Arena.players.filter(p => p.relation <= 1)) friends;
-  @State(state => state.Arena.players.filter(p => p.relation > 1)) foes;
-  @State(state => state.Arena.arenaState) arenaState;
+  @Prop({ default: false }) private updateAvailable!: boolean;
+  @Getter private finishedLoading!: boolean;
+  @State(state => state.Arena.hasData) private hasData!: boolean;
+  @State(state => state.Arena) private arena!: any;
+  @State(state => state.Arena.matchInfo) private matchInfo!: any;
+  @State(state => state.Arena.active) private active!: boolean;
+  @State(state => state.Arena.players.filter(p => p.relation <= 1)) private friends!: any;
+  @State(state => state.Arena.players.filter(p => p.relation > 1)) private foes!: any;
+  // @State(state => state.Arena.arenaState) private arenaState!: any;
 
   // arena!: any;
   $http!: any;
@@ -123,7 +105,6 @@ export default class Statistics extends Vue {
         this.updateAvailable = false;
       });
   }
-
 }
 </script>
 

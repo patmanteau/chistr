@@ -12,7 +12,7 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win: BrowserWindow;
+let win: BrowserWindow | undefined;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -51,7 +51,7 @@ function createWindow() {
   }
 
   win.on("closed", () => {
-    win = null;
+    win = undefined;
   });
 
   createMenu(win);

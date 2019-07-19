@@ -35,7 +35,7 @@
         title="Player average damage"
         class="dg-cell icon"
         sortField="personalStats.avgDmg"
-        icon="bullseye"
+        icon="rocket"
       />
     </div>
 
