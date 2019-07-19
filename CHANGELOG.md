@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 <!-- ## [Unreleased] -->
 
-## [Unreleased] - 2019-07-10
+## [Unreleased] - 2019-07-19
 ### Added
 - Mark test and premium ships
 
