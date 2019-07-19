@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import * as log from "electron-log";
 import _ from "lodash";
-import { ShipDB } from "./ship-db";
+import ShipDB from './ship-db';
+// import ShipDB from "@/store/api/ship-db";
 
 export class Ship {
   shipId: ShipId;
@@ -477,7 +478,7 @@ export class WowsApi {
   key: string;
   url: string;
 
-  constructor(key: string, url: string, shipDb: ShipDB) {
+  constructor(key: string, url: string) {
     this.api = axios.create({
       baseURL: url,
       timeout: 20000,
@@ -503,7 +504,8 @@ export class WowsApi {
 
     this.api.interceptors.response.use(responseHandler, errorHandler);
 
-    this.shipDb = shipDb;
+    // this.shipDb = shipDb;
+    this.shipDb = new ShipDB();
     this.key = key;
     this.url = url;
 
@@ -735,5 +737,9 @@ export class WowsApi {
       log.error(error);
       return Promise.reject(error);
     }
+  }
+
+  clearApiCache() {
+    this.shipDb.clear();
   }
 }

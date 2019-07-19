@@ -192,17 +192,6 @@ import { State, Getter, Action, Mutation, namespace } from "vuex-class";
 import Popper from "vue-popperjs";
 // import 'vue-popperjs/dist/css/vue-popper.css'
 
-const PlayerListProps = Vue.extend({
-  props: [
-    "title",
-    "bordercolor",
-    "players",
-    "noheader",
-    "filterby",
-    "finishedLoading"
-  ]
-});
-
 @Component({
   name: "PlayerList",
   components: { IconRow, popper: Popper },

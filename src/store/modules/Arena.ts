@@ -16,13 +16,13 @@ import {
   UnresolvedClanRecord,
   UnresolvedPlayerStatistics,
   RecordKind
-} from "./wows-api";
-import { ShipDB } from "./ship-db";
+} from "@/store/api/wows-api";
+// import ShipDB from "@/store/api/ship-db";
 import * as log from "electron-log";
 
 const jsonfile = require("jsonfile");
 const path = require("path");
-const shipdb = new ShipDB();
+// const shipdb = new ShipDB();
 
 // const namespaced: boolean = true;
 
@@ -43,7 +43,7 @@ export class Player {
 
   accountId: AccountId;
   profileHidden: boolean;
-  // account: PlayerAccountInfo | undefined;
+
   ship: Ship | UnresolvedShipStatistics;
   clan: ClanRecord | NoClan | UnresolvedClanRecord;
   personalStats: PlayerStatistics | HiddenPlayerStatistics | UnresolvedPlayerStatistics;
@@ -78,19 +78,6 @@ export class PlayerAccountInfo {
   }
 }
 
-// export interface ArenaState {
-//   active: boolean;
-//   hasData: boolean;
-
-//   matchInfo?: MatchInfo;
-
-//   players: Player[];
-//   playerIndex: {};
-//   errors: [];
-//   completedOperations: number;
-//   totalOperations: number;
-// }
-
 class MatchInfo {
   mapId: string;
   mapDisplayName: string;
@@ -114,7 +101,7 @@ class MatchInfo {
     dateTime: string;
     matchGroup: string;
   }) {
-    const mapData = require("../../data/maps.json");
+    const mapData = require("@/data/maps.json");
     this.mapId = mapId;
     this.mapDisplayName = mapDisplayName;
     this.playerName = playerName;
@@ -151,14 +138,6 @@ export default class Arena extends VuexModule {
   completedOperations = 0;
   totalOperations = 1;
 
-  // get friends(): Player[] {
-  //   return R.filter((player: Player) => player.relation <= 1)(this.players);
-  // }
-
-  // get foes(): Player[] {
-  //   return R.filter((player: Player) => player.relation > 1)(this.players);
-  // }
-
   get progress(): number {
     return _.clamp((this.completedOperations / this.totalOperations) * 1.1, 0, 1);
   }
@@ -170,9 +149,6 @@ export default class Arena extends VuexModule {
   @Mutation
   [types.SET_ARENA_ACTIVE](isActive: boolean) {
     this.active = isActive;
-    // if (!isActive) {
-    //   this.matchInfo = undefined;
-    // }
   }
 
   @Mutation
@@ -229,7 +205,6 @@ export default class Arena extends VuexModule {
     index: number;
     data: PlayerStatistics | HiddenPlayerStatistics;
   }) {
-    // if (data instanceof HiddenPlayerStatistics) {
     if (data.kind === RecordKind.Hidden) {
       this.players[index].profileHidden = true;
     }
@@ -245,9 +220,6 @@ export default class Arena extends VuexModule {
       ...this.players[index],
       clan: data
     }
-    // this.players[index].clan = {
-    //   ...data
-    // };
   }
 
   @Mutation
@@ -256,10 +228,6 @@ export default class Arena extends VuexModule {
       ...this.players[index],
       ship: data
     }
-    // this.players[index].ship = {
-    //   ...data
-    //   // ...this.players[index].ship
-    // };
   }
 
   @Mutation
@@ -270,10 +238,6 @@ export default class Arena extends VuexModule {
     index: number;
     data: ShipStatistics;
   }) {
-    // this.players[index].shipStats = {
-    //   ...data
-    //   // ...this.players[index].shipStats
-    // };
     this.players[index] = {
       ...this.players[index],
       shipStats: data
@@ -334,7 +298,7 @@ export default class Arena extends VuexModule {
     wows = new WowsApi(
       this.context.rootState.Settings.wows.api.key,
       this.context.rootState.Settings.wows.api.url,
-      shipdb
+      // shipdb
     );
 
     let matchGroup = this.context.rootState.Settings.wows.matchgroup;
@@ -529,7 +493,8 @@ export default class Arena extends VuexModule {
 
   @Action
   clearApiCache() {
-    shipdb.clear();
+    // shipdb.clear();
+    wows.clearApiCache();
   }
 }
 

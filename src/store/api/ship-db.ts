@@ -1,11 +1,11 @@
 import _ from "lodash";
 import ElectronStore from "electron-store";
 
-export class ShipDB {
+export default class ShipDB {
   db: ElectronStore<any>;
 
   constructor() {
-    let datasource = require("../../data/expected.json");
+    let datasource = require("@/data/expected.json");
     datasource.data = _.pickBy(
       datasource.data,
       (key: string, val: any) => !_.isEmpty(val),
@@ -29,7 +29,7 @@ export class ShipDB {
 
   clear() {
     this.db.clear();
-    let datasource = require("../../data/expected.json");
+    let datasource = require("@/data/expected.json");
     datasource.data = _.pickBy(
       datasource.data,
       (key: String, val: any) => !_.isEmpty(val),
