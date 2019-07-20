@@ -303,29 +303,47 @@ export class PlayerBattleStatistics implements PlayerStatistics {
   readonly kind = RecordKind.Player;
 
   readonly battles: number;
+  readonly victories: number;
+  readonly survived: number;
+  readonly frags: number;
   readonly winrate: number;
   readonly avgExp: number;
+  readonly totalExp: number;
   readonly avgDmg: number;
+  readonly totalDmg: number;
   readonly kdRatio: number;
 
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = true;
 
-  constructor(battles: number, winrate: number, avgExp: number, avgDmg: number, kdRatio: number) {
+  private constructor(
+    battles: number,
+    victories: number,
+    survived: number,
+    frags: number,
+    totalExp: number,
+    totalDmg: number
+  ) {
     this.battles = battles;
-    this.winrate = winrate;
-    this.avgExp = avgExp;
-    this.avgDmg = avgDmg;
-    this.kdRatio = kdRatio;
+    this.victories = victories;
+    this.survived = survived;
+    this.frags = frags;
+    this.winrate = (victories / battles) * 100;
+    this.avgExp = totalExp / battles;
+    this.totalExp = totalExp;
+    this.avgDmg = totalDmg / battles;
+    this.totalDmg = totalDmg;
+    this.kdRatio = frags / (battles - survived);
   }
 
   static from(stats: WgBattleStats): PlayerBattleStatistics {
     return new PlayerBattleStatistics(
       stats.battles,
-      (stats.wins / stats.battles) * 100,
-      stats.xp / stats.battles,
-      stats.damage_dealt / stats.battles,
-      stats.frags / (stats.battles - stats.survived_battles)
+      stats.wins,
+      stats.survived_battles,
+      stats.frags,
+      stats.xp,
+      stats.damage_dealt
     );
   }
 
@@ -335,10 +353,11 @@ export class PlayerBattleStatistics implements PlayerStatistics {
     } else {
       return new PlayerBattleStatistics(
         this.battles + other.battles,
-        this.winrate + other.winrate,
-        this.avgExp + other.avgExp,
-        this.avgDmg + other.avgDmg,
-        this.kdRatio + other.kdRatio,
+        this.victories + other.victories,
+        this.survived + other.survived,
+        this.frags + other.frags,
+        this.totalExp + other.totalExp,
+        this.totalDmg + other.totalDmg
       );
     }
   }
@@ -433,12 +452,17 @@ export interface ShipStatistics {
 export class ShipBattleStatistics implements ShipStatistics {
   readonly kind = RecordKind.Ship;
 
+  private readonly shipId: ShipId;
+  private readonly shipDb: ShipDB;
+
   readonly battles: number;
   readonly victories: number;
   readonly survived: number;
   readonly frags: number;
   readonly avgExp: number;
+  readonly totalExp: number;
   readonly avgDmg: number;
+  readonly totalDmg: number;
   readonly kdRatio: number;
   readonly winrate: number;
   readonly pr: number;
@@ -446,66 +470,152 @@ export class ShipBattleStatistics implements ShipStatistics {
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = true;
 
-  constructor(
+  private constructor(
     battles: number,
     victories: number,
     survived: number,
     frags: number,
-    avgExp: number,
-    avgDmg: number,
-    kdRatio: number,
-    winrate: number,
-    pr: number) {
+    // avgExp: number,
+    totalExp: number,
+    // avgDmg: number,
+    totalDmg: number,
+    // kdRatio: number,
+    // winrate: number,
+    // pr: number,
+    shipId: ShipId,
+    shipDb: ShipDB
+    ) {
 
       this.battles = battles;
       this.victories = victories;
       this.survived = survived;
       this.frags = frags;
-      this.avgExp = avgExp;
-      this.avgDmg = avgDmg;
-      this.kdRatio = kdRatio;
-      this.winrate = winrate;
-      this.pr = pr;
+      this.avgExp = battles ? totalExp / battles : 0;
+      this.totalExp = totalExp;
+      this.avgDmg = battles ? totalDmg / battles : 0;
+      this.totalDmg = totalDmg;
+      this.kdRatio = battles - survived ? frags / (battles - survived) : 0;
+      this.winrate = battles ? (victories / battles) * 100 : 0;
+      this.shipId = shipId;
+      this.shipDb = shipDb;
+
+      this.pr = 0;
+
+      if (shipDb.has(shipId)) {
+        // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
+        const exp = shipDb.get(shipId);
+
+        if (
+          exp.average_damage_dealt &&
+          exp.win_rate &&
+          exp.average_frags * battles
+        ) {
+          const rDmg = this.avgDmg / exp.average_damage_dealt;
+          const rWins = this.winrate / exp.win_rate;
+          const rFrags = frags / (exp.average_frags * battles);
+
+          const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4));
+          const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7));
+          const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1));
+
+          this.pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
+        }
+      }
   }
 
+  // static calcPr(battles: number, wins: number, dmgDealt: number, frags: number, shipId: ShipId, shipDb: ShipDB): number {
+  //   const avgDmg = battles ? dmgDealt / battles : 0;
+  //   const winrate = battles ? (wins / battles) * 100 : 0;
+
+  //   let pr = 0;
+
+  //   if (shipDb.has(shipId)) {
+  //     // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
+  //     const exp = shipDb.get(shipId);
+
+  //     if (
+  //       exp.average_damage_dealt &&
+  //       exp.win_rate &&
+  //       exp.average_frags * battles
+  //     ) {
+  //       const rDmg = avgDmg / exp.average_damage_dealt;
+  //       const rWins = winrate / exp.win_rate;
+  //       const rFrags = frags / (exp.average_frags * battles);
+
+  //       const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4));
+  //       const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7));
+  //       const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1));
+
+  //       pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
+  //     }
+  //   }
+
+  //   return pr;
+  // }
+
   static from(stats: WgBattleStats, shipId: ShipId, shipDb: ShipDB): ShipBattleStatistics {
-    const avgDmg = stats.battles ? stats.damage_dealt / stats.battles : 0;
-    const winrate = stats.battles ? (stats.wins / stats.battles) * 100 : 0;
+    // const avgDmg = stats.battles ? stats.damage_dealt / stats.battles : 0;
+    // const winrate = stats.battles ? (stats.wins / stats.battles) * 100 : 0;
+    // const avgExp = stats.battles ? stats.xp / stats.battles : 0;
+    // const kdRatio = stats.battles - stats.survived_battles ? stats.frags / (stats.battles - stats.survived_battles) : 0;
 
-    let pr = 0;
-
-    if (shipDb.has(shipId)) {
-      // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
-      const exp = shipDb.get(shipId);
-
-      if (
-        exp.average_damage_dealt &&
-        exp.win_rate &&
-        exp.average_frags * stats.battles
-      ) {
-        const rDmg = avgDmg / exp.average_damage_dealt;
-        const rWins = winrate / exp.win_rate;
-        const rFrags = stats.frags / (exp.average_frags * stats.battles);
-
-        const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4));
-        const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7));
-        const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1));
-
-        pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
-      }
-    }
+    // const pr = ShipBattleStatistics.calcPr(
+    //   stats.battles,
+    //   stats.wins,
+    //   stats.damage_dealt,
+    //   stats.frags,
+    //   shipId,
+    //   shipDb
+    // );
 
     return new ShipBattleStatistics(
       stats.battles,
       stats.wins,
       stats.survived_battles,
       stats.frags,
-      stats.battles ? stats.xp / stats.battles : 0,
-      avgDmg,
-      stats.battles - stats.survived_battles ? stats.frags / (stats.battles - stats.survived_battles) : 0,
-      winrate,
-      pr
+      stats.xp,
+      stats.damage_dealt,
+      shipId,
+      shipDb
     );
+  }
+
+  add(other: ShipBattleStatistics | NoShipStatistics): ShipBattleStatistics {
+    if (other instanceof NoShipStatistics) {
+      return this;
+    } else {
+      const battles = this.battles + other.battles;
+      const victories = this.victories + other.victories;
+      const survived = this.survived + other.survived;
+      const frags = this.frags + other.frags;
+      const totalExp = this.totalExp + other.totalExp;
+      const totalDmg = this.totalDmg + other.totalDmg;
+
+      const avgExp = battles ? totalExp / battles : 0;
+      const avgDmg = battles ? totalDmg / battles : 0;
+      const winrate = battles ? (victories / battles) * 100 : 0;
+      const kdRatio = battles - survived ? frags / (battles - survived) : 0
+
+      // const pr = ShipBattleStatistics.calcPr(
+      //   battles,
+      //   victories,
+      //   totalDmg,
+      //   frags,
+      //   this.shipId,
+      //   this.shipDb
+      // );
+
+      return new ShipBattleStatistics(
+        battles,
+        victories,
+        survived,
+        frags,
+        totalExp,
+        totalDmg,
+        this.shipId,
+        this.shipDb
+      );
+    }
   }
 }
 
@@ -514,6 +624,10 @@ export class NoShipStatistics {
 
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = false;
+
+  add(other: ShipBattleStatistics | NoShipStatistics): ShipBattleStatistics | NoShipStatistics {
+    return other;
+  }
 }
 
 export class UnresolvedShipStatistics {
@@ -605,33 +719,54 @@ export class WowsApi {
     matchGroup: string = "pvp"
     // ): Promise<(PlayerStatistics | HiddenPlayerStatistics)[]> {
   ): Promise<{ [id: string]: PlayerStatistics | HiddenPlayerStatistics }> {
-    if (matchGroup === "ranked") matchGroup = "rank_solo";
-    else if (matchGroup === "cooperative") matchGroup = "pve";
+
+    let groups: string[] = ["pvp"];
+
+    if (matchGroup === "ranked") groups = ["rank_solo", "rank_div2", "rank_div3"];
+    else if (matchGroup === "cooperative") groups = ["pve"];
 
     // Our second step is looking up the player's stats using their account IDs.
     const params = {
       account_id: accounts.join(","),
-      extra: ""
+      // statistics.pvp gets delivered by default and the API errors when it's
+      // requested as extra
+      extra: _.without(groups, "pvp").map(g => `statistics.${g}`).join(",")
     };
-
-    if (matchGroup === "rank_solo") params.extra = "statistics.rank_solo";
-    if (matchGroup === "pve") params.extra = "statistics.pve";
 
     try {
       const response = await this.api.get("/wows/account/info/", { params: params });
 
-      const players = _.mapValues(response.data.data, (wgPlayer: WgPlayer) => {
-        const group = _.get(wgPlayer, ["statistics", matchGroup]);
+      const stats: { [id: string]: PlayerStatistics | HiddenPlayerStatistics } = {};
 
-        if (wgPlayer.hidden_profile || !group) {
-          return new HiddenPlayerStatistics();
+      for (const accountId of accounts) {
+        const wgPlayer = _.get(response, ["data", "data", accountId]);
+
+        if (wgPlayer.hidden_profile) {
+          stats[accountId] = new HiddenPlayerStatistics();
 
         } else {
           // TODO: Operations
-          return PlayerBattleStatistics.from(group);
+          const wgBattleStats = _.map(groups, g => {
+            const groupStats = _.get(wgPlayer, ["statistics", g]);
+
+            if (groupStats) {
+              return PlayerBattleStatistics.from(groupStats);
+
+            } else {
+              return new HiddenPlayerStatistics();
+            }
+          });
+
+          stats[accountId] = _.reduce(
+            wgBattleStats,
+            (acc, battleStats) => {
+              return acc.add(battleStats);
+            },
+            new HiddenPlayerStatistics()
+          );
         }
-      });
-      return Promise.resolve(players);
+      }
+      return Promise.resolve(stats);
 
     } catch(error) {
       return Promise.reject(error);
@@ -752,38 +887,51 @@ export class WowsApi {
     accountId: AccountId,
     matchGroup: string = "pvp"
   ): Promise<ShipBattleStatistics | NoShipStatistics> {
+    let groups: string[] = ["pvp"];
 
-    if (matchGroup === "ranked") matchGroup = "rank_solo";
-    else if (matchGroup === "cooperative") matchGroup = "pve";
+    if (matchGroup === "ranked") groups = ["rank_solo", "rank_div2", "rank_div3"];
+    else if (matchGroup === "cooperative") groups = ["pve"];
+
+    // Our second step is looking up the player's stats using their account IDs.
     const params = {
       account_id: accountId,
       ship_id: shipId,
-      extra: ""
+      // pvp gets delivered by default and the API errors when it's
+      // requested as extra
+      extra: _.without(groups, "pvp").join(",")
     };
-    if (matchGroup === "rank_solo") params.extra = "rank_solo";
-    if (matchGroup === "pve") params.extra = "pve";
 
     try {
       const response = await this.api.get("/wows/ships/stats/", {
         params: params
       });
-      const ship = response.data.data[accountId];
+      const wgShipStats = _.get(response, ["data", "data", accountId, "0"]);
 
-      if (!ship) {
+      if (!wgShipStats) {
         return Promise.resolve(new NoShipStatistics());
       }
 
-      const shipStats = ship[0];
+      const wgBattleStats = _.map(groups, group => {
+        const groupStats = _.get(wgShipStats, group);
 
-      if (!_.get(shipStats, matchGroup)) {
-        log.debug("Player has no record in the selected matchGroup");
-        return Promise.resolve(new NoShipStatistics());
-      }
+        if (groupStats) {
+          return ShipBattleStatistics.from(groupStats, shipId, this.shipDb);
 
-      const group = shipStats[matchGroup];
-      const shipData = ShipBattleStatistics.from(group, shipId, this.shipDb);
+        } else {
+          return new NoShipStatistics();
+        }
+      });
 
-      return Promise.resolve(shipData);
+      const aggStats = _.reduce(
+        wgBattleStats,
+        (acc, battleStats) => {
+          return acc.add(battleStats);
+        },
+        new NoShipStatistics()
+      );
+
+      return Promise.resolve(aggStats);
+
     } catch (error) {
       console.error(error);
       log.error(error);

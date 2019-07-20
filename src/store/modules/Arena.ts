@@ -326,14 +326,14 @@ export default class Arena extends VuexModule {
       //   return this.context.dispatch("findPlayer", index);
       // }))
 
-      this.context.dispatch("resolvePlayers", matchGroup),
-      this.context.dispatch("resolveShips")
+      await this.context.dispatch("resolvePlayers", matchGroup);
+      await this.context.dispatch("resolveShips");
 
       this.context.commit(types.SET_ARENA_ACTIVE, true);
 
       await Promise.join(_.flatMap(this.players, (_player, index) => {
         return [
-          this.context.dispatch("resolveShipStats", index, matchGroup),
+          this.context.dispatch("resolveShipStats", { index, matchGroup }),
           this.context.dispatch("resolveClan", index)
         ]
       }));
@@ -366,10 +366,12 @@ export default class Arena extends VuexModule {
         index,
         accountId
       });
+
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       console.log(`Found player: ${player.name} => ${accountId}`);
 
       return Promise.resolve(accountId);
+
     } catch (error) {
       log.error(error);
 
@@ -396,7 +398,6 @@ export default class Arena extends VuexModule {
 
     try {
       const clanData = await wows.getPlayerClan(player.accountId);
-      console.log(clanData);
       this.context.commit(types.SET_CLAN_DATA, didFinishOk(true, index, clanData));
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.resolve();
@@ -412,17 +413,15 @@ export default class Arena extends VuexModule {
   @Action
   async resolveShips() {
     const shipIds: ShipId[] = this.players.map(p => p.shipId);
-    console.log(shipIds);
 
     try {
       let ships = await wows.getShips(shipIds);
-      console.log(ships);
-
       for (const [index, player] of this.players.entries()) {
         const ship = ships[player.shipId];
 
         if (ship) {
           this.context.commit(types.SET_SHIP_DATA, didFinishOk(true, index, ship));
+
         } else {
           this.context.commit(types.SET_SHIP_DATA, didFinishOk(false, index, {
             name: "Ship not found"
@@ -431,6 +430,7 @@ export default class Arena extends VuexModule {
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
       }
       return Promise.resolve();
+
     } catch (error) {
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.reject(error);
@@ -438,13 +438,18 @@ export default class Arena extends VuexModule {
   }
 
   @Action
-  async resolveShipStats(index: number, matchGroup: string) {
+  async resolveShipStats({ index, matchGroup } : { index: number, matchGroup: string }) {
     // First resolve ship
     const player = this.players[index];
+
     if (!player.accountId) {
       return Promise.reject(Error("Invalid account id"));
+
     } else if (player.profileHidden) {
+      console.log(`Won't get ship stats for ${player.name}...profile is hidden`);
       log.debug(`Won't get ship stats for ${player.name}...profile is hidden`);
+      this.context.commit(types.INC_COMPLETED_OPERATIONS);
+
     } else {
       try {
         const shipData = await wows.getPlayerShip(
@@ -458,10 +463,12 @@ export default class Arena extends VuexModule {
         );
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
         return Promise.resolve();
+
       } catch (error) {
         this.context.commit(types.SET_SHIP_STATS, didFinishOk(false, index));
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
         console.error(error);
+
         return Promise.resolve();
       }
     }
@@ -484,9 +491,11 @@ export default class Arena extends VuexModule {
       }
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.resolve();
+
     } catch (error) {
       console.log(error);
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
+
       return Promise.reject(error);
     }
   }
