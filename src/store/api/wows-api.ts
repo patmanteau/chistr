@@ -1,8 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import * as log from "electron-log";
 import _ from "lodash";
-import ShipDB from './ship-db';
-// import ShipDB from "@/store/api/ship-db";
+import ShipDB from "@/store/api/ship-db";
 
 export class Ship {
   shipId: ShipId;
@@ -312,12 +311,36 @@ export class PlayerBattleStatistics implements PlayerStatistics {
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = true;
 
-  constructor(stats: WgBattleStats) {
-    this.battles = stats.battles;
-    this.winrate = (stats.wins / stats.battles) * 100;
-    (this.avgExp = stats.xp / stats.battles),
-      (this.avgDmg = stats.damage_dealt / stats.battles);
-    this.kdRatio = stats.frags / (stats.battles - stats.survived_battles);
+  constructor(battles: number, winrate: number, avgExp: number, avgDmg: number, kdRatio: number) {
+    this.battles = battles;
+    this.winrate = winrate;
+    this.avgExp = avgExp;
+    this.avgDmg = avgDmg;
+    this.kdRatio = kdRatio;
+  }
+
+  static from(stats: WgBattleStats): PlayerBattleStatistics {
+    return new PlayerBattleStatistics(
+      stats.battles,
+      (stats.wins / stats.battles) * 100,
+      stats.xp / stats.battles,
+      stats.damage_dealt / stats.battles,
+      stats.frags / (stats.battles - stats.survived_battles)
+    );
+  }
+
+  add(other: PlayerBattleStatistics | HiddenPlayerStatistics): PlayerBattleStatistics {
+    if (other instanceof HiddenPlayerStatistics) {
+      return this;
+    } else {
+      return new PlayerBattleStatistics(
+        this.battles + other.battles,
+        this.winrate + other.winrate,
+        this.avgExp + other.avgExp,
+        this.avgDmg + other.avgDmg,
+        this.kdRatio + other.kdRatio,
+      );
+    }
   }
 }
 
@@ -346,6 +369,10 @@ export class HiddenPlayerStatistics {
 
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = false;
+
+  add(other: PlayerBattleStatistics | HiddenPlayerStatistics): PlayerBattleStatistics | HiddenPlayerStatistics {
+    return other;
+  }
 }
 
 export class UnresolvedPlayerStatistics {
@@ -419,20 +446,33 @@ export class ShipBattleStatistics implements ShipStatistics {
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = true;
 
-  constructor(stats: WgBattleStats, shipId: ShipId, shipDb: ShipDB) {
-    this.battles = stats.battles;
-    this.victories = stats.wins;
-    this.survived = stats.survived_battles;
-    this.frags = stats.frags;
-    this.avgExp = stats.battles ? stats.xp / stats.battles : 0;
-    this.avgDmg = stats.battles ? stats.damage_dealt / stats.battles : 0;
-    (this.kdRatio =
-      stats.battles - stats.survived_battles
-        ? stats.frags / (stats.battles - stats.survived_battles)
-        : 0),
-      (this.winrate = stats.battles ? (stats.wins / stats.battles) * 100 : 0);
+  constructor(
+    battles: number,
+    victories: number,
+    survived: number,
+    frags: number,
+    avgExp: number,
+    avgDmg: number,
+    kdRatio: number,
+    winrate: number,
+    pr: number) {
 
-    this.pr = 0;
+      this.battles = battles;
+      this.victories = victories;
+      this.survived = survived;
+      this.frags = frags;
+      this.avgExp = avgExp;
+      this.avgDmg = avgDmg;
+      this.kdRatio = kdRatio;
+      this.winrate = winrate;
+      this.pr = pr;
+  }
+
+  static from(stats: WgBattleStats, shipId: ShipId, shipDb: ShipDB): ShipBattleStatistics {
+    const avgDmg = stats.battles ? stats.damage_dealt / stats.battles : 0;
+    const winrate = stats.battles ? (stats.wins / stats.battles) * 100 : 0;
+
+    let pr = 0;
 
     if (shipDb.has(shipId)) {
       // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
@@ -441,23 +481,35 @@ export class ShipBattleStatistics implements ShipStatistics {
       if (
         exp.average_damage_dealt &&
         exp.win_rate &&
-        exp.average_frags * this.battles
+        exp.average_frags * stats.battles
       ) {
-        const rDmg = this.avgDmg / exp.average_damage_dealt;
-        const rWins = this.winrate / exp.win_rate;
-        const rFrags = this.frags / (exp.average_frags * this.battles);
+        const rDmg = avgDmg / exp.average_damage_dealt;
+        const rWins = winrate / exp.win_rate;
+        const rFrags = stats.frags / (exp.average_frags * stats.battles);
 
         const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4));
         const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7));
         const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1));
 
-        this.pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
+        pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
       }
     }
+
+    return new ShipBattleStatistics(
+      stats.battles,
+      stats.wins,
+      stats.survived_battles,
+      stats.frags,
+      stats.battles ? stats.xp / stats.battles : 0,
+      avgDmg,
+      stats.battles - stats.survived_battles ? stats.frags / (stats.battles - stats.survived_battles) : 0,
+      winrate,
+      pr
+    );
   }
 }
 
-export class HiddenShipStatistics {
+export class NoShipStatistics {
   kind = RecordKind.Hidden;
 
   readonly finishedLoading: boolean = true;
@@ -576,7 +628,7 @@ export class WowsApi {
 
         } else {
           // TODO: Operations
-          return new PlayerBattleStatistics(group);
+          return PlayerBattleStatistics.from(group);
         }
       });
       return Promise.resolve(players);
@@ -688,6 +740,7 @@ export class WowsApi {
         ...shipsFromApi,
         ...shipsFromDb
       });
+
     } catch (error) {
       log.error(error);
       return Promise.reject(error);
@@ -698,7 +751,7 @@ export class WowsApi {
     shipId: ShipId,
     accountId: AccountId,
     matchGroup: string = "pvp"
-  ): Promise<ShipBattleStatistics | HiddenShipStatistics> {
+  ): Promise<ShipBattleStatistics | NoShipStatistics> {
 
     if (matchGroup === "ranked") matchGroup = "rank_solo";
     else if (matchGroup === "cooperative") matchGroup = "pve";
@@ -717,19 +770,18 @@ export class WowsApi {
       const ship = response.data.data[accountId];
 
       if (!ship) {
-        return Promise.resolve(new HiddenShipStatistics());
+        return Promise.resolve(new NoShipStatistics());
       }
 
       const shipStats = ship[0];
 
       if (!_.get(shipStats, matchGroup)) {
-        return Promise.reject(
-          Error("Player has no record in the selected matchGroup")
-        );
+        log.debug("Player has no record in the selected matchGroup");
+        return Promise.resolve(new NoShipStatistics());
       }
 
       const group = shipStats[matchGroup];
-      const shipData = new ShipBattleStatistics(group, shipId, this.shipDb);
+      const shipData = ShipBattleStatistics.from(group, shipId, this.shipDb);
 
       return Promise.resolve(shipData);
     } catch (error) {
