@@ -10,8 +10,7 @@
     </div>
     <div class="gridcontainer">
       <div class="config-item" />
-      <div class="config-item ui">
-      </div>
+      <div class="config-item ui"></div>
       <div class="config-item">
         <div class="title ui">
           Your Wargaming Application ID
@@ -199,7 +198,7 @@ export default class Settings extends Vue {
     { name: "NA", url: "http://api.worldofwarships.com" },
     { name: "RU", url: "http://api.worldofwarships.ru" },
     { name: "ASIA", url: "http://api.worldofwarships.asia" }
-  ]
+  ];
 
   matchgroups = [
     {
@@ -213,7 +212,7 @@ export default class Settings extends Vue {
       desc: "Display Ranked match statistics",
       val: "ranked"
     }
-  ]
+  ];
 
   $http!: any;
 
@@ -252,7 +251,7 @@ export default class Settings extends Vue {
   clearShipCache() {
     this.$store.dispatch("clearApiCache");
   }
-};
+}
 </script>
 
 <style scoped>

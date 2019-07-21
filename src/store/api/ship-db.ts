@@ -8,8 +8,7 @@ export default class ShipDB {
     let datasource = require("@/data/expected.json");
     datasource.data = _.pickBy(
       datasource.data,
-      (key: string, val: any) => !_.isEmpty(val),
-
+      (key: string, val: any) => !_.isEmpty(val)
     );
 
     this.db = new ElectronStore({
@@ -19,10 +18,9 @@ export default class ShipDB {
 
     if (datasource.time > this.db.get("time")) {
       console.log("Updating expected values...");
-      _.forOwn(
-        datasource.data,
-        (shipId: string, data: any) => { this.set(shipId, data) }
-      );
+      _.forOwn(datasource.data, (shipId: string, data: any) => {
+        this.set(shipId, data);
+      });
       this.db.set("time", datasource.time);
     }
   }
@@ -32,7 +30,7 @@ export default class ShipDB {
     let datasource = require("@/data/expected.json");
     datasource.data = _.pickBy(
       datasource.data,
-      (key: String, val: any) => !_.isEmpty(val),
+      (key: String, val: any) => !_.isEmpty(val)
     );
     this.db.store = datasource;
   }

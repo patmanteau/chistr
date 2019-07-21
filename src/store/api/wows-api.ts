@@ -347,10 +347,11 @@ export class PlayerBattleStatistics implements PlayerStatistics {
     );
   }
 
-  add(other: PlayerBattleStatistics | HiddenPlayerStatistics): PlayerBattleStatistics {
+  add(
+    other: PlayerBattleStatistics | HiddenPlayerStatistics
+  ): PlayerBattleStatistics {
     if (other instanceof HiddenPlayerStatistics) {
       return this;
-
     } else {
       return new PlayerBattleStatistics(
         this.battles + other.battles,
@@ -427,7 +428,9 @@ export class HiddenPlayerStatistics {
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = false;
 
-  add(other: PlayerBattleStatistics | HiddenPlayerStatistics): PlayerBattleStatistics | HiddenPlayerStatistics {
+  add(
+    other: PlayerBattleStatistics | HiddenPlayerStatistics
+  ): PlayerBattleStatistics | HiddenPlayerStatistics {
     return other;
   }
 }
@@ -517,47 +520,49 @@ export class ShipBattleStatistics implements ShipStatistics {
     totalDmg: number,
     shipId: ShipId,
     shipDb: ShipDB
-    ) {
+  ) {
+    this.battles = battles;
+    this.victories = victories;
+    this.survived = survived;
+    this.frags = frags;
+    this.avgExp = battles ? totalExp / battles : 0;
+    this.totalExp = totalExp;
+    this.avgDmg = battles ? totalDmg / battles : 0;
+    this.totalDmg = totalDmg;
+    this.kdRatio = battles - survived ? frags / (battles - survived) : 0;
+    this.winrate = battles ? (victories / battles) * 100 : 0;
+    this.shipId = shipId;
+    this.shipDb = shipDb;
 
-      this.battles = battles;
-      this.victories = victories;
-      this.survived = survived;
-      this.frags = frags;
-      this.avgExp = battles ? totalExp / battles : 0;
-      this.totalExp = totalExp;
-      this.avgDmg = battles ? totalDmg / battles : 0;
-      this.totalDmg = totalDmg;
-      this.kdRatio = battles - survived ? frags / (battles - survived) : 0;
-      this.winrate = battles ? (victories / battles) * 100 : 0;
-      this.shipId = shipId;
-      this.shipDb = shipDb;
+    this.pr = 0;
 
-      this.pr = 0;
+    if (shipDb.has(shipId)) {
+      // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
+      const exp = shipDb.get(shipId);
 
-      if (shipDb.has(shipId)) {
-        // PR Calculation courtesy of http://wows-numbers.com/de/personal/rating
-        const exp = shipDb.get(shipId);
+      if (
+        exp.average_damage_dealt &&
+        exp.win_rate &&
+        exp.average_frags * battles
+      ) {
+        const rDmg = this.avgDmg / exp.average_damage_dealt;
+        const rWins = this.winrate / exp.win_rate;
+        const rFrags = frags / (exp.average_frags * battles);
 
-        if (
-          exp.average_damage_dealt &&
-          exp.win_rate &&
-          exp.average_frags * battles
-        ) {
-          const rDmg = this.avgDmg / exp.average_damage_dealt;
-          const rWins = this.winrate / exp.win_rate;
-          const rFrags = frags / (exp.average_frags * battles);
+        const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4));
+        const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7));
+        const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1));
 
-          const nDmg = Math.max(0, (rDmg - 0.4) / (1 - 0.4));
-          const nWins = Math.max(0, (rWins - 0.7) / (1 - 0.7));
-          const nFrags = Math.max(0, (rFrags - 0.1) / (1 - 0.1));
-
-          this.pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
-        }
+        this.pr = 700 * nDmg + 300 * nFrags + 150 * nWins;
       }
+    }
   }
 
-  static from(stats: WgBattleStats, shipId: ShipId, shipDb: ShipDB): ShipBattleStatistics {
-
+  static from(
+    stats: WgBattleStats,
+    shipId: ShipId,
+    shipDb: ShipDB
+  ): ShipBattleStatistics {
     return new ShipBattleStatistics(
       stats.battles,
       stats.wins,
@@ -601,7 +606,9 @@ export class NoShipStatistics {
   readonly finishedLoading: boolean = true;
   readonly hasData: boolean = false;
 
-  add(other: ShipBattleStatistics | NoShipStatistics): ShipBattleStatistics | NoShipStatistics {
+  add(
+    other: ShipBattleStatistics | NoShipStatistics
+  ): ShipBattleStatistics | NoShipStatistics {
     return other;
   }
 }
@@ -630,10 +637,7 @@ export class WowsApi {
     });
 
     const responseHandler = (response: AxiosResponse<any>) => {
-      if (
-        response.data.status !== "ok" ||
-        _.get(response, ["data", "error"])
-      ) {
+      if (response.data.status !== "ok" || _.get(response, ["data", "error"])) {
         return Promise.reject(_.get(response, ["data", "error"]));
       } else {
         return response;
@@ -672,19 +676,18 @@ export class WowsApi {
         }
       });
 
-      const account: WgAccount | undefined = _.find(response.data.data,
+      const account: WgAccount | undefined = _.find(
+        response.data.data,
         _.matchesProperty("nickname", playerName)
       );
 
       if (account) {
         log.debug(`findPlayer(${playerName}) => ${account.account_id}`);
         return Promise.resolve(account.account_id);
-
       } else {
         return Promise.reject(Error("Player not found"));
       }
-
-    } catch(error) {
+    } catch (error) {
       log.error(error);
       return Promise.reject(Error("Player not found"));
     }
@@ -695,12 +698,13 @@ export class WowsApi {
     matchGroup: string = "pvp"
     // ): Promise<(PlayerStatistics | HiddenPlayerStatistics)[]> {
   ): Promise<{ [id: string]: PlayerStatistics | HiddenPlayerStatistics }> {
-
     let groups: string[] = ["pvp"];
 
-    if (matchGroup === "ranked") groups = ["rank_solo", "rank_div2", "rank_div3"];
+    if (matchGroup === "ranked")
+      groups = ["rank_solo", "rank_div2", "rank_div3"];
     else if (matchGroup === "cooperative") groups = ["pve"];
-    else if (matchGroup === "operation") groups = ["oper_solo", "oper_div", "oper_div_hard"];
+    else if (matchGroup === "operation")
+      groups = ["oper_solo", "oper_div", "oper_div_hard"];
     else if (matchGroup === "club") groups = ["club"];
 
     console.log(groups);
@@ -710,20 +714,25 @@ export class WowsApi {
       account_id: accounts.join(","),
       // statistics.pvp gets delivered by default and the API errors when it's
       // requested as extra
-      extra: _.without(groups, "pvp").map(g => `statistics.${g}`).join(",")
+      extra: _.without(groups, "pvp")
+        .map(g => `statistics.${g}`)
+        .join(",")
     };
 
     try {
-      const response = await this.api.get("/wows/account/info/", { params: params });
+      const response = await this.api.get("/wows/account/info/", {
+        params: params
+      });
 
-      const stats: { [id: string]: PlayerStatistics | HiddenPlayerStatistics } = {};
+      const stats: {
+        [id: string]: PlayerStatistics | HiddenPlayerStatistics;
+      } = {};
 
       for (const accountId of accounts) {
         const wgPlayer = _.get(response, ["data", "data", accountId]);
 
         if (wgPlayer.hidden_profile) {
           stats[accountId] = new HiddenPlayerStatistics();
-
         } else {
           // TODO: Operations
           const wgBattleStats = _.map(groups, g => {
@@ -731,7 +740,6 @@ export class WowsApi {
 
             if (groupStats) {
               return PlayerBattleStatistics.from(groupStats);
-
             } else {
               return new HiddenPlayerStatistics();
             }
@@ -747,8 +755,7 @@ export class WowsApi {
         }
       }
       return Promise.resolve(stats);
-
-    } catch(error) {
+    } catch (error) {
       return Promise.reject(error);
     }
   }
@@ -757,17 +764,20 @@ export class WowsApi {
     try {
       const response = await this.api.get("/wows/clans/accountinfo/", {
         params: { account_id: accountId, extra: "clan" }
-      })
+      });
 
-      const playerClan: WgClanInfo | undefined = _.get(response, ["data", "data", accountId, "clan"]);
+      const playerClan: WgClanInfo | undefined = _.get(response, [
+        "data",
+        "data",
+        accountId,
+        "clan"
+      ]);
       if (playerClan) {
         return Promise.resolve(new ClanRecord(playerClan));
-
       } else {
         return Promise.resolve(new NoClan());
       }
-
-    } catch(error) {
+    } catch (error) {
       return Promise.reject(error);
     }
   }
@@ -781,14 +791,18 @@ export class WowsApi {
       log.debug(`Cache hit: ${shipId} => ${ship.name}`);
 
       return Promise.resolve(new Ship(ship));
-
     } else {
       log.debug(`Cache miss: ${shipId}`);
 
       try {
         const excluded_fields = [
-          "default_profile", "modules", "upgrades", "next_ships", "mod_slots", "images"
-        ]
+          "default_profile",
+          "modules",
+          "upgrades",
+          "next_ships",
+          "mod_slots",
+          "images"
+        ];
         const response = await this.api.get("/wows/encyclopedia/ships/", {
           params: {
             ship_id: shipId,
@@ -796,7 +810,11 @@ export class WowsApi {
           }
         });
 
-        const wgShip: WgShip | undefined = _.get(response, ["data", "data", shipId]);
+        const wgShip: WgShip | undefined = _.get(response, [
+          "data",
+          "data",
+          shipId
+        ]);
         if (wgShip) {
           // no cache hit earlier, so cache it now
           this.shipDb.setFull(shipId, wgShip);
@@ -804,18 +822,14 @@ export class WowsApi {
         } else {
           return Promise.reject(Error("Ship not found."));
         }
-
-      } catch(error) {
+      } catch (error) {
         log.error(error);
         return Promise.reject(error);
       }
     }
   }
 
-  async getShips(
-    shipIds: ShipId[]
-  ): Promise<ShipDict> {
-
+  async getShips(shipIds: ShipId[]): Promise<ShipDict> {
     let shipsToApi: ShipId[] = [];
     let shipsFromDb: ShipDict = {};
     let shipsFromApi: ShipDict = {};
@@ -858,7 +872,6 @@ export class WowsApi {
         ...shipsFromApi,
         ...shipsFromDb
       });
-
     } catch (error) {
       log.error(error);
       return Promise.reject(error);
@@ -872,7 +885,8 @@ export class WowsApi {
   ): Promise<ShipBattleStatistics | NoShipStatistics> {
     let groups: string[] = ["pvp"];
 
-    if (matchGroup === "ranked") groups = ["rank_solo", "rank_div2", "rank_div3"];
+    if (matchGroup === "ranked")
+      groups = ["rank_solo", "rank_div2", "rank_div3"];
     else if (matchGroup === "cooperative") groups = ["pve"];
 
     console.log(groups);
@@ -901,7 +915,6 @@ export class WowsApi {
 
         if (groupStats) {
           return ShipBattleStatistics.from(groupStats, shipId, this.shipDb);
-
         } else {
           return new NoShipStatistics();
         }
@@ -916,7 +929,6 @@ export class WowsApi {
       );
 
       return Promise.resolve(aggStats);
-
     } catch (error) {
       console.error(error);
       log.error(error);

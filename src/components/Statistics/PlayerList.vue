@@ -89,7 +89,9 @@
 
       <!-- Got no player stats at all -->
       <div
-        v-else-if="player.personalStats.finishedLoading && !player.personalStats.hasData"
+        v-else-if="
+          player.personalStats.finishedLoading && !player.personalStats.hasData
+        "
         key="without-player-stats"
         class="dg-cellgroup dg-cellgroup-11of20 no-data invisible-right-border ui"
       >
@@ -163,7 +165,7 @@
       <!-- Got no ship stats at all -->
       <div
         v-else-if="
-           player.personalStats.hasData &&
+          player.personalStats.hasData &&
             player.shipStats.finishedLoading &&
             (!player.shipStats.hasData || !player.shipStats.battles)
         "

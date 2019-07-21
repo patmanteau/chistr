@@ -12,7 +12,6 @@ import router from "./router";
 import store from "./store";
 import { ipcRenderer } from "electron";
 
-
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleRight,
