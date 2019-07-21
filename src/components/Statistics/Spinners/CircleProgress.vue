@@ -17,18 +17,6 @@ import { Getter } from "vuex-class";
   components: { RandomSentence }
 })
 export default class CircleProgress extends Vue {
-  // @Prop({
-  //   default: () => {
-  //     color: "#777",
-  //     strokeWidth: 8,
-  //     trailWidth: 4,
-  //     easing: "linear",
-  //     duration: 100,
-  //     className: "progressbar-text",
-  //     warnings: false
-  //   }
-  // })
-  // options: any;
   options = {
     color: "#777",
     strokeWidth: 8,
@@ -47,22 +35,6 @@ export default class CircleProgress extends Vue {
     this.bar.animate(newValue);
     this.bar.setText(`${(newValue * 100).toFixed()}%`);
   }
-
-  // data() {
-  //   return {
-  //     options: {
-  //       color: "#777",
-  //       strokeWidth: 8,
-  //       trailWidth: 4,
-  //       easing: "linear",
-  //       duration: 100,
-  //       className: "progressbar-text",
-  //       warnings: false
-  //     }
-  //   };
-  // }
-
-  // progress!: (newValue, _oldValue) => number;
 
   mounted() {
     this.bar = new ProgressBar.Circle("#progressbar", this.options);
