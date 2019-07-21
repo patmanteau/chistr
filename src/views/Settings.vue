@@ -117,39 +117,14 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import * as types from "../store/mutation-types";
 import * as fs from "fs";
 import * as path from "path";
 
-export default {
+@Component({
   name: "Settings",
-
-  data() {
-    return {
-      realms: [
-        { name: "EU", url: "http://api.worldofwarships.eu" },
-        { name: "NA", url: "http://api.worldofwarships.com" },
-        { name: "RU", url: "http://api.worldofwarships.ru" },
-        { name: "ASIA", url: "http://api.worldofwarships.asia" }
-      ],
-      matchgroups: [
-        {
-          name: "Automatic",
-          desc: "Auto-select based on current match",
-          val: "auto"
-        },
-        { name: "Random", desc: "Display Random match statistics", val: "pvp" },
-        {
-          name: "Ranked",
-          desc: "Display Ranked match statistics",
-          val: "ranked"
-        }
-      ],
-      wowsApiKeyValid: false,
-      wowsPathValid: false
-    };
-  },
-
   computed: {
     wowsApiKey: {
       get() {
@@ -188,11 +163,6 @@ export default {
     }
   },
 
-  mounted() {
-    this.validatePath();
-    this.validateApiKey();
-  },
-
   methods: {
     validateApiKey() {
       this.$http
@@ -221,6 +191,66 @@ export default {
     clearShipCache() {
       this.$store.dispatch("clearApiCache");
     }
+  }
+})
+export default class Settings extends Vue {
+  realms = [
+    { name: "EU", url: "http://api.worldofwarships.eu" },
+    { name: "NA", url: "http://api.worldofwarships.com" },
+    { name: "RU", url: "http://api.worldofwarships.ru" },
+    { name: "ASIA", url: "http://api.worldofwarships.asia" }
+  ]
+
+  matchgroups = [
+    {
+      name: "Automatic",
+      desc: "Auto-select based on current match",
+      val: "auto"
+    },
+    { name: "Random", desc: "Display Random match statistics", val: "pvp" },
+    {
+      name: "Ranked",
+      desc: "Display Ranked match statistics",
+      val: "ranked"
+    }
+  ]
+
+  $http!: any;
+
+  wowsApiKeyValid = false;
+  wowsPathValid = false;
+
+  mounted() {
+    this.validatePath();
+    this.validateApiKey();
+  }
+
+  validateApiKey() {
+    this.$http
+      .get(
+        `${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`
+      )
+      .then(response => {
+        this.wowsApiKeyValid = response.data.status === "ok";
+      })
+      .catch(() => {
+        this.wowsApiKeyValid = false;
+      });
+  }
+
+  validatePath() {
+    fs.access(
+      path.resolve(this.wowsPath, "WorldOfWarships.exe"),
+      fs.constants.F_OK,
+      err => {
+        // eslint-disable-next-line no-unneeded-ternary
+        this.wowsPathValid = err ? false : true;
+      }
+    );
+  }
+
+  clearShipCache() {
+    this.$store.dispatch("clearApiCache");
   }
 };
 </script>
