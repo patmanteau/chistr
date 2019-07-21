@@ -8,6 +8,14 @@
         </div>
       </div>
     </template>
+    <template v-else-if="isPve()">
+      <div key="statsDisplay" class="container">
+        <div class="centered">
+          <h1 class="ui">This is a PVE battle</h1>
+          <h2 class="ui">Sit back and relax.</h2>
+        </div>
+      </div>
+    </template>
     <template v-else>
       <div id="header">
         <span>
@@ -62,15 +70,14 @@ import ArenaInfo from "@/components/Statistics/ArenaInfo.vue";
 import PlayerList from "@/components/Statistics/PlayerList.vue";
 import CircleProgress from "@/components/Statistics/Spinners/CircleProgress.vue";
 import semver from "semver";
-import Arena from "@/store/modules/Arena";
-import { mapGetters } from 'vuex';
+import Arena, { Player } from "@/store/modules/Arena";
 
 @Component({
   components: {
     ArenaInfo,
     PlayerList,
     CircleProgress
-  },
+  }
 })
 export default class Statistics extends Vue {
   @Prop({ default: false }) private updateAvailable!: boolean;
@@ -79,8 +86,10 @@ export default class Statistics extends Vue {
   @State(state => state.Arena) private arena!: any;
   @State(state => state.Arena.matchInfo) private matchInfo!: any;
   @State(state => state.Arena.active) private active!: boolean;
-  @State(state => state.Arena.players.filter(p => p.relation <= 1)) private friends!: any;
-  @State(state => state.Arena.players.filter(p => p.relation > 1)) private foes!: any;
+  @State(state => state.Arena.players.filter((p: Player) => p.relation <= 1))
+  private friends!: any;
+  @State(state => state.Arena.players.filter((p: Player) => p.relation > 1))
+  private foes!: any;
   // @State(state => state.Arena.arenaState) private arenaState!: any;
 
   // arena!: any;
@@ -104,6 +113,20 @@ export default class Statistics extends Vue {
         console.log(error);
         this.updateAvailable = false;
       });
+  }
+
+  isPve() {
+    if (!this.matchInfo) {
+      return false;
+    } else {
+      switch (this.matchInfo.matchGroup) {
+        case "cooperative":
+        case "operation":
+          return true;
+        default:
+          return false;
+      }
+    }
   }
 }
 </script>

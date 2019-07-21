@@ -14,7 +14,7 @@ import { Getter } from "vuex-class";
 
 @Component({
   name: "CircleProgress",
-  components: { RandomSentence },
+  components: { RandomSentence }
 })
 export default class CircleProgress extends Vue {
   // @Prop({
@@ -40,7 +40,7 @@ export default class CircleProgress extends Vue {
   };
   bar: ProgressBar.Circle;
 
-  @Getter progress: number;
+  @Getter private progress!: number;
 
   @Watch("progress")
   onProgressChanged(newValue: number, _oldValue: number) {
