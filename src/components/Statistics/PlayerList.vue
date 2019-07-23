@@ -178,12 +178,10 @@ import { shell } from "electron";
 import IconRow from "./PlayerList/IconRow.vue";
 // import { mapState } from "vuex";
 import { State, Getter, Action, Mutation, namespace } from "vuex-class";
-import Popper from "vue-popperjs";
-// import 'vue-popperjs/dist/css/vue-popper.css'
 
 @Component({
   name: "PlayerList",
-  components: { IconRow, popper: Popper },
+  components: { IconRow },
 
   filters: {
     denan(num: number, decimals: number = 2) {
@@ -193,31 +191,31 @@ import Popper from "vue-popperjs";
     }
   },
 
-  computed: {
-    filteredPlayers() {
-      const getter = _.get(this.sort.key);
-      const orderFunc = _.orderBy(
-        [p => getter(p)],
-        this.sort.order > 0 ? ["desc"] : ["asc"]
-      );
+  // computed: {
+  //   filteredPlayers() {
+  //     const getter = _.get(this.sort.key);
+  //     const orderFunc = _.orderBy(
+  //       [p => getter(p)],
+  //       this.sort.order > 0 ? ["desc"] : ["asc"]
+  //     );
 
-      const [withStats, woStats] = _.partition(p => getter(p), this.players);
+  //     const [withStats, woStats] = _.partition(p => getter(p), this.players);
 
-      return _.concat(orderFunc(withStats), woStats);
-    }
-  },
+  //     return _.concat(orderFunc(withStats), woStats);
+  //   }
+  // },
 
   methods: {
-    wowsNumbersLink(player) {
-      return `https://wows-numbers.com/player/${player.accountId},${player.name}`;
-    },
+    // wowsNumbersLink(player) {
+    //   return `https://wows-numbers.com/player/${player.accountId},${player.name}`;
+    // },
 
-    wikiLink(player) {
-      return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
-        /\s/g,
-        "_"
-      )}`;
-    },
+    // wikiLink(player) {
+    //   return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
+    //     /\s/g,
+    //     "_"
+    //   )}`;
+    // },
 
     prclass(matches, pr) {
       return matches < 10 || !pr || pr.isNaN
@@ -268,6 +266,29 @@ export default class PlayerList extends Vue {
   @Prop({ default: false }) private finishedLoading!: boolean;
 
   @State(state => state.Interface.playerListSort) sort;
+
+  filteredPlayers() {
+    const getter = _.get(this.sort.key);
+    const orderFunc = _.orderBy(
+      [p => getter(p)],
+      this.sort.order > 0 ? ["desc"] : ["asc"]
+    );
+
+    const [withStats, woStats] = _.partition(p => getter(p), this.players);
+
+    return _.concat(orderFunc(withStats), woStats);
+  }
+
+  wowsNumbersLink(player) {
+    return `https://wows-numbers.com/player/${player.accountId},${player.name}`;
+  }
+
+  wikiLink(player) {
+    return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
+      /\s/g,
+      "_"
+    )}`;
+  }
 
   data() {
     return {
@@ -581,4 +602,19 @@ hr {
 .test-ship {
   color: #3686fd;
 }
+
+.clan-tag {
+  vertical-align: middle;
+  /* width: auto;
+  background-color: #f7f7f7;
+  color: #333;
+  text-align: center;
+  padding: 6px 8px;
+  font-family: "Archivo Narrow", sans-serif;
+  font-size: 14px;
+  border: 1px #cbcbcb solid;
+  z-index: 200000; */
+}
+
+
 </style>

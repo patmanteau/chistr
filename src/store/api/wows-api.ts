@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import * as log from "electron-log";
 import _ from "lodash";
 import ShipDB from "@/store/api/ship-db";
+import { Promise } from "bluebird";
 
 export class Ship {
   shipId: ShipId;

@@ -77,7 +77,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { State } from "vuex-class";
-import SortableIcon from "./SortableIcon";
+import SortableIcon from "./SortableIcon.vue";
 
 @Component({
   name: "IconRow",

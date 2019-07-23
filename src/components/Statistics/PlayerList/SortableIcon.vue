@@ -27,11 +27,11 @@ import { State } from "vuex-class";
   name: "SortableIcon"
 })
 export default class Statistics extends Vue {
-  @Prop() title: string;
-  @Prop() sortField: string;
-  @Prop() icon: string;
-  @Prop() text: string;
-  @State(state => state.Interface.playerListSort) sort;
+  @Prop() private title!: string;
+  @Prop() private sortField!: string;
+  @Prop() private icon!: string;
+  @Prop() private text!: string;
+  @State(state => state.Interface.playerListSort) sort: any;
 
   setSort(key: string) {
     this.$store.dispatch("setPlayerListSortKey", key);
