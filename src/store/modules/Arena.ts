@@ -273,7 +273,7 @@ export default class Arena extends VuexModule {
       this.context.rootState.Settings.wows.path,
       "replays/tempArenaInfo.json"
     );
-    jsonfile.readFile(arenaJson, (error, obj) => {
+    jsonfile.readFile(arenaJson, (error: any, obj: any) => {
       if (error) {
         if (error.code !== "ENOENT") {
           log.error(error);

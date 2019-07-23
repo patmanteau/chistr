@@ -42,11 +42,11 @@ const mapNames = require("@/data/map-names.json");
   }
 })
 export default class ArenaInfo extends Vue {
-  @Prop({ default: false }) active: boolean;
-  @Prop({ default: "" }) description;
-  @Prop({ default: "" }) type;
-  @Prop({ default: "" }) name;
-  @Prop({ default: "" }) timestamp;
+  @Prop({ default: false }) private active!: boolean;
+  @Prop({ default: "" }) private description!: string;
+  @Prop({ default: "" }) private type!: string;
+  @Prop({ default: "" }) private name!: string;
+  @Prop({ default: "" }) private timestamp!: string;
 }
 </script>
 

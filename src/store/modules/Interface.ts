@@ -8,14 +8,14 @@ const state = {
 const getters = {};
 
 const mutations = {
-  [types.SET_PLAYER_LIST_SORT](state, obj) {
+  [types.SET_PLAYER_LIST_SORT](state: any, obj: any) {
     Object.assign(state.playerListSort, obj);
     config.set("app.playerListSort", obj);
   }
 };
 
 const actions = {
-  setPlayerListSortKey({ state, commit }, key) {
+  setPlayerListSortKey({ state, commit } : { state: any, commit: any }, key: any) {
     let newSort = { ...state.playerListSort };
     if (state.playerListSort.key === key) {
       newSort.order = state.playerListSort.order * -1;

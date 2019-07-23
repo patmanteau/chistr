@@ -215,6 +215,9 @@ export default class Settings extends Vue {
   ];
 
   $http!: any;
+  wowsPath!: any;
+  wowsApiUrl!: string;
+  wowsApiKey!: string;
 
   wowsApiKeyValid = false;
   wowsPathValid = false;
@@ -229,7 +232,7 @@ export default class Settings extends Vue {
       .get(
         `${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`
       )
-      .then(response => {
+      .then((response: any) => {
         this.wowsApiKeyValid = response.data.status === "ok";
       })
       .catch(() => {

@@ -5,7 +5,8 @@ import {
   createProtocol,
   installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
-import * as windowState from "electron-window-state";
+// import * as windowState from "electron-window-state";
+const windowState = require("electron-window-state");
 import config from "./config";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -21,11 +22,12 @@ protocol.registerSchemesAsPrivileged([
 
 function createWindow() {
   // Get saved window state
-  let mainWindowState = windowState({
+  const winOpts = {
     file: "chistr-window-state.json",
     defaultWidth: 1200,
     defaultHeight: 800
-  });
+  };
+  let mainWindowState = windowState(winOpts);
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -64,8 +66,8 @@ function createWindow() {
   });
 }
 
-function createMenu(mainWindow) {
-  const template = [
+function createMenu(mainWindow: BrowserWindow) {
+  const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: "File",
       submenu: [
@@ -73,6 +75,12 @@ function createMenu(mainWindow) {
         //   label: 'Edit settings file...',
         //   click () { electronstore.openInEditor() }
         // },
+        {
+          label: "Edit settings file...",
+          click() {
+            config.openInEditor();
+          }
+        },
         {
           label: "Settings...",
           click() {
@@ -104,11 +112,12 @@ function createMenu(mainWindow) {
         {
           role: "zoomout",
           accelerator: "CmdOrCtrl+Shift+-"
+        },
+        { type: "separator" },
+        {
+          role: 'toggledevtools',
+          accelerator: 'CmdOrCtrl+Shift+I'
         }
-        // {
-        //   role: 'toggledevtools',
-        //   accelerator: 'CmdOrCtrl+Shift+I'
-        // }
       ]
     },
     {
@@ -124,19 +133,19 @@ function createMenu(mainWindow) {
     }
   ];
 
-  if (config.get("app.debug")) {
-    template[0].submenu.unshift({
-      label: "Edit settings file...",
-      click() {
-        config.openInEditor();
-      }
-    });
-    template[1].submenu.push({ type: "separator" });
-    template[1].submenu.push({
-      role: "toggledevtools",
-      accelerator: "CmdOrCtrl+Shift+I"
-    });
-  }
+  // if (config.get("app.debug")) {
+  //   template[0].submenu.unshift({
+  //     label: "Edit settings file...",
+  //     click() {
+  //       config.openInEditor();
+  //     }
+  //   });
+  //   template[1].submenu.push({ type: "separator" });
+  //   template[1].submenu.push({
+  //     role: "toggledevtools",
+  //     accelerator: "CmdOrCtrl+Shift+I"
+  //   });
+  // }
 
   if (process.platform === "darwin") {
     template.splice(1, 0, {

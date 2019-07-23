@@ -4,12 +4,24 @@ import ElectronStore from "electron-store";
 export default class ShipDB {
   db: ElectronStore<any>;
 
-  constructor() {
+  static readExpected(): any {
     let datasource = require("@/data/expected.json");
+
     datasource.data = _.pickBy(
       datasource.data,
-      (key: string, val: any) => !_.isEmpty(val)
+      (_key: string, val: any) => !_.isEmpty(val)
     );
+
+    return datasource;
+  }
+
+  constructor() {
+    // let datasource = require("@/data/expected.json");
+    // datasource.data = _.pickBy(
+    //   datasource.data,
+    //   (key: string, val: any) => !_.isEmpty(val)
+    // );
+    const datasource = ShipDB.readExpected();
 
     this.db = new ElectronStore({
       defaults: datasource,
@@ -27,11 +39,14 @@ export default class ShipDB {
 
   clear() {
     this.db.clear();
-    let datasource = require("@/data/expected.json");
-    datasource.data = _.pickBy(
-      datasource.data,
-      (key: String, val: any) => !_.isEmpty(val)
-    );
+
+    // let datasource = require("@/data/expected.json");
+    // datasource.data = _.pickBy(
+    //   datasource.data,
+    //   (key: string, val: any) => !_.isEmpty(val)
+    // );
+
+    const datasource = ShipDB.readExpected();
     this.db.store = datasource;
   }
 
