@@ -190,25 +190,6 @@ body {
   font-weight: bold;
 }
 
-.popper {
-  width: auto;
-  background-color: #f7f7f7;
-  color: #333;
-  text-align: center;
-  padding: 6px 8px;
-  /* display: inline-block; */
-  /* border-radius: 3px; */
-  /* position: absolute; */
-  font-family: "Archivo Narrow", sans-serif;
-  font-size: 14px;
-  /* font-weight: normal; */
-  border: 1px #cbcbcb solid;
-  z-index: 200000;
-  /* -moz-box-shadow: rgb(58, 58, 58) 0 0 2px 0;
-  -webkit-box-shadow: rgb(58, 58, 58) 0 0 2px 0;
-  box-shadow: rgb(58, 58, 58) 0 0 2px 0; */
-}
-
 .savebutton {
   font-family: "Archivo Narrow", sans-serif;
   font-size: 16px;

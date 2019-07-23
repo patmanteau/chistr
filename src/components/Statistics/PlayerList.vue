@@ -2,7 +2,7 @@
   <div>
     <icon-row v-if="!noheader" key="header" @set-sort="key => setSort(key)" />
     <div
-      v-for="(player, index) in filteredPlayers"
+      v-for="(player, index) in filteredPlayers()"
       :key="player.name"
       :class="{ 'dg-row--stripe': index % 2 === 0 }"
       class="dg-row grey-right-border"
@@ -10,26 +10,13 @@
       <!-- Player name -->
       <div class="dg-cellgroup dg-cellgroup-5of20 ui" :style="trstyle">
         <div class="dg-cell text">
-          <popper
+          <span
             v-if="player.clan.hasData"
-            trigger="hover"
-            :options="{
-              placement: 'right'
-            }"
+            :title="player.clan.name"
+            class="popover ui text text-small text-gray clan-tag"
           >
-            <div class="popper">
-              <div>{{ player.clan.name }}</div>
-              <div>
-                Created
-                {{ new Date(player.clan.createdAt * 1000).toLocaleString() }}
-              </div>
-              <div>{{ player.clan.membersCount }} members</div>
-            </div>
-            <!-- <span slot="reference" class="popover ui text text-subdued">[{{ player.clan.tag }}]</span> -->
-            <span slot="reference" class="popover ui text text-small text-gray"
-              >[{{ player.clan.tag }}]</span
-            >
-          </popper>
+            [{{ player.clan.tag }}]
+          </span>
           <a
             v-if="!player.profileHidden"
             :href="wowsNumbersLink(player)"
