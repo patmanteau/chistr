@@ -631,7 +631,7 @@ export class WowsApi {
   key: string;
   url: string;
 
-  constructor(key: string, url: string, ) {
+  constructor(key: string, url: string) {
     this.api = axios.create({
       baseURL: url,
       timeout: 20000,
@@ -651,12 +651,9 @@ export class WowsApi {
     };
 
     const debugResponseHandler = (response: AxiosResponse<any>) => {
-      const resJson = JSON.stringify(_.pick(response, [
-        'data',
-        'status',
-        'statusText',
-        'headers'
-      ]));
+      const resJson = JSON.stringify(
+        _.pick(response, ["data", "status", "statusText", "headers"])
+      );
       log.debug(`Response <= ${resJson}`);
       return responseHandler(response);
     };
@@ -677,7 +674,6 @@ export class WowsApi {
         log.error("No response received");
         log.error("Request:");
         log.error(error.request);
-
       } else {
         // Something happened in setting up the request that triggered an Error
         log.error("Internal error");
@@ -694,7 +690,9 @@ export class WowsApi {
     };
 
     if (debug) {
-      log.debug("Debug mode is active. Recording all requests and responses...this will be slow.");
+      log.debug(
+        "Debug mode is active. Recording all requests and responses...this will be slow."
+      );
     }
 
     this.api.interceptors.response.use(
@@ -754,6 +752,7 @@ export class WowsApi {
     matchGroup: string = "pvp"
     // ): Promise<(PlayerStatistics | HiddenPlayerStatistics)[]> {
   ): Promise<{ [id: string]: PlayerStatistics | HiddenPlayerStatistics }> {
+    log.debug(`getPlayersStats(${accounts})`);
     let groups: string[] = ["pvp"];
 
     if (matchGroup === "ranked")
@@ -762,8 +761,6 @@ export class WowsApi {
     else if (matchGroup === "operation")
       groups = ["oper_solo", "oper_div", "oper_div_hard"];
     else if (matchGroup === "club") groups = ["club"];
-
-    console.log(groups);
 
     // Our second step is looking up the player's stats using their account IDs.
     const params = {
@@ -812,11 +809,13 @@ export class WowsApi {
       }
       return Promise.resolve(stats);
     } catch (error) {
+      log.error(error);
       return Promise.reject(error);
     }
   }
 
   async getPlayerClan(accountId: AccountId): Promise<ClanRecord | NoClan> {
+    log.debug(`getPlayerClan(${accountId})`);
     try {
       const response = await this.api.get("/wows/clans/accountinfo/", {
         params: { account_id: accountId, extra: "clan" }
@@ -834,58 +833,61 @@ export class WowsApi {
         return Promise.resolve(new NoClan());
       }
     } catch (error) {
+      log.error(error);
       return Promise.reject(error);
     }
   }
 
-  async getShip(shipId: ShipId): Promise<Ship> {
-    console.log(`getShip(${shipId})`);
-    // shipDb may contain expected values only,
-    // so check if there's a full cache record
-    if (this.shipDb.hasFull(shipId)) {
-      let ship: WgShip = this.shipDb.get(shipId);
-      log.debug(`Cache hit: ${shipId} => ${ship.name}`);
+  // async getShip(shipId: ShipId): Promise<Ship> {
+  //   log.debug(`Get ship ${shipId}...`);
+  //   // shipDb may contain expected values only,
+  //   // so check if there's a full cache record
+  //   if (this.shipDb.hasFull(shipId)) {
+  //     let ship: WgShip = this.shipDb.get(shipId);
+  //     log.debug(`Cache hit => ${ship.name}`);
 
-      return Promise.resolve(new Ship(ship));
-    } else {
-      log.debug(`Cache miss: ${shipId}`);
+  //     return Promise.resolve(new Ship(ship));
+  //   } else {
+  //     log.debug(`Ship ${shipId} not in cache`);
 
-      try {
-        const excluded_fields = [
-          "default_profile",
-          "modules",
-          "upgrades",
-          "next_ships",
-          "mod_slots",
-          "images"
-        ];
-        const response = await this.api.get("/wows/encyclopedia/ships/", {
-          params: {
-            ship_id: shipId,
-            fields: _.map(excluded_fields, f => `-${f}`).join(",")
-          }
-        });
+  //     try {
+  //       const excluded_fields = [
+  //         "default_profile",
+  //         "modules",
+  //         "upgrades",
+  //         "next_ships",
+  //         "mod_slots",
+  //         "images"
+  //       ];
+  //       const response = await this.api.get("/wows/encyclopedia/ships/", {
+  //         params: {
+  //           ship_id: shipId,
+  //           fields: _.map(excluded_fields, f => `-${f}`).join(",")
+  //         }
+  //       });
 
-        const wgShip: WgShip | undefined = _.get(response, [
-          "data",
-          "data",
-          shipId
-        ]);
-        if (wgShip) {
-          // no cache hit earlier, so cache it now
-          this.shipDb.setFull(shipId, wgShip);
-          return Promise.resolve(new Ship(wgShip));
-        } else {
-          return Promise.reject(Error("Ship not found."));
-        }
-      } catch (error) {
-        log.error(error);
-        return Promise.reject(error);
-      }
-    }
-  }
+  //       const wgShip: WgShip | undefined = _.get(response, [
+  //         "data",
+  //         "data",
+  //         shipId
+  //       ]);
+  //       if (wgShip) {
+  //         // no cache hit earlier, so cache it now
+  //         this.shipDb.setFull(shipId, wgShip);
+  //         return Promise.resolve(new Ship(wgShip));
+  //       } else {
+  //         return Promise.reject(Error("Ship not found."));
+  //       }
+  //     } catch (error) {
+  //       log.error(error);
+  //       return Promise.reject(error);
+  //     }
+  //   }
+  // }
 
   async getShips(shipIds: ShipId[]): Promise<ShipDict> {
+    log.debug(`getShips(${shipIds})`);
+
     let shipsToApi: ShipId[] = [];
     let shipsFromDb: ShipDict = {};
     let shipsFromApi: ShipDict = {};
@@ -897,10 +899,10 @@ export class WowsApi {
       // name
       if (this.shipDb.hasFull(shipId)) {
         const wgShip: WgShip = this.shipDb.get(shipId);
-        log.debug(`Cache hit: ${shipId} => ${wgShip.name}`);
+        log.debug(`Cache hit => ${wgShip.name}`);
         shipsFromDb[shipId] = new Ship(wgShip);
       } else {
-        log.debug(`Cache miss: ${shipId}`);
+        log.debug(`Ship ${shipId} not in cache`);
         shipsToApi.push(shipId);
       }
     }
@@ -939,6 +941,8 @@ export class WowsApi {
     accountId: AccountId,
     matchGroup: string = "pvp"
   ): Promise<ShipBattleStatistics | NoShipStatistics> {
+    log.debug(`getPlayerShip(${shipId}, ${accountId}, ${matchGroup})`);
+
     let groups: string[] = ["pvp"];
 
     if (matchGroup === "ranked")
