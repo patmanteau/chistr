@@ -11,6 +11,7 @@ const config = new ElectronStore({
     },
     app: {
       debug: false,
+      recordRequests: false,
       matchgroup: "auto",
       playerListSort: {
         key: "playerWinrate",
@@ -32,5 +33,8 @@ config.has("app.playerListSort") ||
     key: "playerWinrate",
     order: 1
   });
+
+config.has("app.recordRequests") ||
+  config.set("app.recordRequests", false);
 
 export default config;

@@ -1,8 +1,9 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from "axios";
 import * as log from "electron-log";
 import _ from "lodash";
 import ShipDB from "@/store/api/ship-db";
 import { Promise } from "bluebird";
+import config from "@/config";
 
 export class Ship {
   shipId: ShipId;
@@ -625,10 +626,12 @@ export class WowsApi {
   api: AxiosInstance;
   shipDb: ShipDB;
 
+  // debug: boolean;
+
   key: string;
   url: string;
 
-  constructor(key: string, url: string) {
+  constructor(key: string, url: string, ) {
     this.api = axios.create({
       baseURL: url,
       timeout: 20000,
@@ -636,6 +639,8 @@ export class WowsApi {
         application_id: key
       }
     });
+
+    const debug = config.get("app.recordRequests");
 
     const responseHandler = (response: AxiosResponse<any>) => {
       if (response.data.status !== "ok" || _.get(response, ["data", "error"])) {
@@ -645,11 +650,62 @@ export class WowsApi {
       }
     };
 
+    const debugResponseHandler = (response: AxiosResponse<any>) => {
+      log.debug("--- Debug dump BEGIN ---");
+      log.debug("--- Response ---");
+      log.debug(response);
+      if (response.data) {
+        log.debug("--- Response data ---");
+        log.debug(response.data);
+      }
+      log.debug("--- Debug dump END ---");
+      return responseHandler(response);
+    };
+
     const errorHandler = (error: any) => {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        log.error(`Error ${error.status}`);
+        log.error("Headers:");
+        log.error(error.headers);
+        log.error("Data:");
+        log.error(error.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        log.error("No response received");
+        log.error("Request:");
+        log.error(error.request);
+
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        log.error("Internal error");
+        log.error(error);
+      }
+
       return Promise.reject(error);
     };
 
-    this.api.interceptors.response.use(responseHandler, errorHandler);
+    const debugRequestHandler = (request: AxiosRequestConfig) => {
+      log.debug("--- Debug dump BEGIN ---");
+      log.debug("--- Request ---");
+      log.debug(request);
+      log.debug("--- Debug dump END ---");
+      return request;
+    };
+
+    if (debug) {
+      log.debug("Debug mode is active. Recording all requests and responses...this will be slow.");
+    }
+
+    this.api.interceptors.response.use(
+      debug ? debugResponseHandler : responseHandler,
+      errorHandler
+    );
+
+    this.api.interceptors.request.use(debugRequestHandler);
 
     // this.shipDb = shipDb;
     this.shipDb = new ShipDB();
@@ -889,8 +945,6 @@ export class WowsApi {
     if (matchGroup === "ranked")
       groups = ["rank_solo", "rank_div2", "rank_div3"];
     else if (matchGroup === "cooperative") groups = ["pve"];
-
-    console.log(groups);
 
     // Our second step is looking up the player's stats using their account IDs.
     const params = {
