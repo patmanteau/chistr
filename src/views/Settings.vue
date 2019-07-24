@@ -160,37 +160,37 @@ import * as path from "path";
         this.$store.commit(types.SET_WOWS_MATCHGROUP, value);
       }
     }
-  },
-
-  methods: {
-    validateApiKey() {
-      this.$http
-        .get(
-          `${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`
-        )
-        .then(response => {
-          this.wowsApiKeyValid = response.data.status === "ok";
-        })
-        .catch(() => {
-          this.wowsApiKeyValid = false;
-        });
-    },
-
-    validatePath() {
-      fs.access(
-        path.resolve(this.wowsPath, "WorldOfWarships.exe"),
-        fs.constants.F_OK,
-        err => {
-          // eslint-disable-next-line no-unneeded-ternary
-          this.wowsPathValid = err ? false : true;
-        }
-      );
-    },
-
-    clearShipCache() {
-      this.$store.dispatch("clearApiCache");
-    }
   }
+
+  // methods: {
+  //   validateApiKey() {
+  //     this.$http
+  //       .get(
+  //         `${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`
+  //       )
+  //       .then(response => {
+  //         this.wowsApiKeyValid = response.data.status === "ok";
+  //       })
+  //       .catch(() => {
+  //         this.wowsApiKeyValid = false;
+  //       });
+  //   },
+
+  //   validatePath() {
+  //     fs.access(
+  //       path.resolve(this.wowsPath, "WorldOfWarships.exe"),
+  //       fs.constants.F_OK,
+  //       err => {
+  //         // eslint-disable-next-line no-unneeded-ternary
+  //         this.wowsPathValid = err ? false : true;
+  //       }
+  //     );
+  //   },
+
+  //   clearShipCache() {
+  //     this.$store.dispatch("clearApiCache");
+  //   }
+  // }
 })
 export default class Settings extends Vue {
   realms = [

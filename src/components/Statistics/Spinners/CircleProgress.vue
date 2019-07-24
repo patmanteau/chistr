@@ -10,6 +10,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import RandomSentence from "./RandomSentence.vue";
 import { mapGetters } from "vuex";
 import ProgressBar from "progressbar.js";
+// const ProgressBar = import("progressbar.js");
 import { Getter } from "vuex-class";
 
 @Component({
@@ -26,7 +27,7 @@ export default class CircleProgress extends Vue {
     className: "progressbar-text",
     warnings: false
   };
-  bar: ProgressBar.Circle;
+  bar!: ProgressBar.Circle;
 
   @Getter private progress!: number;
 

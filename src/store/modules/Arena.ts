@@ -135,7 +135,7 @@ export default class Arena extends VuexModule {
   matchInfo: MatchInfo | undefined;
 
   players = new Array<Player>(); //new Map<string, Player>();
-  errors = [];
+  errors: any[] = [];
 
   // for progress display
   completedOperations = 0;
@@ -315,8 +315,8 @@ export default class Arena extends VuexModule {
     );
 
     let matchGroup = this.context.rootState.Settings.wows.matchgroup;
-    if (matchGroup === "auto") {
-      matchGroup = this.matchInfo.matchGroup;
+    if (matchGroup === "auto" || this.matchInfo) {
+      matchGroup = this.matchInfo!.matchGroup;
     }
 
     // Fill state.players:

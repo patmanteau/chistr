@@ -175,9 +175,10 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import _ from "lodash/fp";
 import { shell } from "electron";
-import IconRow from "./PlayerList/IconRow.vue";
-// import { mapState } from "vuex";
+import IconRow from "@/components/Statistics/PlayerList/IconRow.vue";
 import { State, Getter, Action, Mutation, namespace } from "vuex-class";
+
+import { Player, Ship } from "@/store/types";
 
 @Component({
   name: "PlayerList",
@@ -189,73 +190,6 @@ import { State, Getter, Action, Mutation, namespace } from "vuex-class";
       else if (!isFinite(num)) return "∞";
       else return num.toFixed(decimals);
     }
-  },
-
-  // computed: {
-  //   filteredPlayers() {
-  //     const getter = _.get(this.sort.key);
-  //     const orderFunc = _.orderBy(
-  //       [p => getter(p)],
-  //       this.sort.order > 0 ? ["desc"] : ["asc"]
-  //     );
-
-  //     const [withStats, woStats] = _.partition(p => getter(p), this.players);
-
-  //     return _.concat(orderFunc(withStats), woStats);
-  //   }
-  // },
-
-  methods: {
-    // wowsNumbersLink(player) {
-    //   return `https://wows-numbers.com/player/${player.accountId},${player.name}`;
-    // },
-
-    // wikiLink(player) {
-    //   return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
-    //     /\s/g,
-    //     "_"
-    //   )}`;
-    // },
-
-    prclass(matches, pr) {
-      return matches < 10 || !pr || pr.isNaN
-        ? "rating-nonsensical"
-        : _.find(p => pr < p.r)([
-            { r: 750, c: "rating-bad" },
-            { r: 1100, c: "rating-subpar" },
-            { r: 1350, c: "rating-par" },
-            { r: 1550, c: "rating-good" },
-            { r: 1750, c: "rating-verygood" },
-            { r: 2100, c: "rating-great" },
-            { r: 2450, c: "rating-unicum" },
-            { r: Infinity, c: "rating-superunicum" }
-          ]).c;
-    },
-
-    winrateclass(matches, rate) {
-      return matches < 10 || !rate
-        ? "rating-nonsensical"
-        : _.find(p => rate < p.r)([
-            { r: 47, c: "rating-bad" },
-            { r: 49, c: "rating-subpar" },
-            { r: 52, c: "rating-par" },
-            { r: 54, c: "rating-good" },
-            { r: 56, c: "rating-verygood" },
-            { r: 60, c: "rating-great" },
-            { r: 65, c: "rating-unicum" },
-            { r: Infinity, c: "rating-superunicum" }
-          ]).c;
-    },
-
-    openInBrowser(url) {
-      shell.openExternal(url);
-    },
-
-    maxLen(propname) {
-      _.reduce((biggest, cur) => {
-        return _.max([biggest, cur.length]);
-      }, 0)(this.players[propname]);
-    }
   }
 })
 export default class PlayerList extends Vue {
@@ -265,12 +199,12 @@ export default class PlayerList extends Vue {
   @Prop({ default: false }) private noheader!: boolean;
   @Prop({ default: false }) private finishedLoading!: boolean;
 
-  @State(state => state.Interface.playerListSort) sort;
+  @State(state => state.Interface.playerListSort) sort: any;
 
   filteredPlayers() {
     const getter = _.get(this.sort.key);
     const orderFunc = _.orderBy(
-      [p => getter(p)],
+      [(p: any) => getter(p)],
       this.sort.order > 0 ? ["desc"] : ["asc"]
     );
 
@@ -279,15 +213,69 @@ export default class PlayerList extends Vue {
     return _.concat(orderFunc(withStats), woStats);
   }
 
-  wowsNumbersLink(player) {
+  wowsNumbersLink(player: Player) {
     return `https://wows-numbers.com/player/${player.accountId},${player.name}`;
   }
 
-  wikiLink(player) {
-    return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
-      /\s/g,
-      "_"
-    )}`;
+  wikiLink(player: Player) {
+    if (player.ship instanceof Ship) {
+      return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
+        /\s/g,
+        "_"
+      )}`;
+    }
+  }
+
+  prclass(matches: number, pr: number) {
+    if (matches < 10 || !pr || _.isNaN(pr)) {
+      return "rating-nonsensical";
+    } else {
+      const dict = [
+        { rating: 2450, css: "rating-superunicum" },
+        { rating: 2100, css: "rating-unicum" },
+        { rating: 1750, css: "rating-great" },
+        { rating: 1550, css: "rating-verygood" },
+        { rating: 1350, css: "rating-good" },
+        { rating: 1100, css: "rating-par" },
+        { rating: 750, css: "rating-subpar" },
+        { rating: 0, css: "rating-bad" }
+      ];
+
+      for (const val of dict) {
+        if (pr > val.rating) {
+          return val.css;
+        }
+      }
+      return "rating-nonsensical";
+    }
+  }
+
+  winrateclass(matches: number, rate: number) {
+    if (matches < 10 || !rate || _.isNaN(rate)) {
+      return "rating-nonsensical";
+    } else {
+      const dict = [
+        { rate: 65, css: "rating-superunicum" },
+        { rate: 60, css: "rating-unicum" },
+        { rate: 56, css: "rating-great" },
+        { rate: 54, css: "rating-verygood" },
+        { rate: 52, css: "rating-good" },
+        { rate: 49, css: "rating-par" },
+        { rate: 47, css: "rating-subpar" },
+        { rate: 0, css: "rating-bad" }
+      ];
+
+      for (const val of dict) {
+        if (rate > val.rate) {
+          return val.css;
+        }
+      }
+      return "rating-nonsensical";
+    }
+  }
+
+  openInBrowser(url: string) {
+    shell.openExternal(url);
   }
 
   data() {
@@ -615,6 +603,4 @@ hr {
   border: 1px #cbcbcb solid;
   z-index: 200000; */
 }
-
-
 </style>
