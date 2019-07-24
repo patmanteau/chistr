@@ -11,6 +11,7 @@ const config = new ElectronStore({
     },
     app: {
       debug: false,
+      debugRequests: false,
       recordRequests: false,
       matchgroup: "auto",
       playerListSort: {
@@ -34,7 +35,7 @@ config.has("app.playerListSort") ||
     order: 1
   });
 
-config.has("app.recordRequests") ||
-  config.set("app.recordRequests", false);
+config.has("app.debugRequests") ||
+  config.set("app.debugRequests", false);
 
 export default config;

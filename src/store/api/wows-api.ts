@@ -640,7 +640,7 @@ export class WowsApi {
       }
     });
 
-    const debug = config.get("app.recordRequests");
+    const debug = config.get("app.debugRequests");
 
     const responseHandler = (response: AxiosResponse<any>) => {
       if (response.data.status !== "ok" || _.get(response, ["data", "error"])) {
@@ -651,14 +651,13 @@ export class WowsApi {
     };
 
     const debugResponseHandler = (response: AxiosResponse<any>) => {
-      log.debug("--- Debug dump BEGIN ---");
-      log.debug("--- Response ---");
-      log.debug(response);
-      if (response.data) {
-        log.debug("--- Response data ---");
-        log.debug(response.data);
-      }
-      log.debug("--- Debug dump END ---");
+      const resJson = JSON.stringify(_.pick(response, [
+        'data',
+        'status',
+        'statusText',
+        'headers'
+      ]));
+      log.debug(`Response <= ${resJson}`);
       return responseHandler(response);
     };
 
@@ -689,10 +688,8 @@ export class WowsApi {
     };
 
     const debugRequestHandler = (request: AxiosRequestConfig) => {
-      log.debug("--- Debug dump BEGIN ---");
-      log.debug("--- Request ---");
-      log.debug(request);
-      log.debug("--- Debug dump END ---");
+      const reqJson = JSON.stringify(request.params);
+      log.debug(`Request => ${reqJson}`);
       return request;
     };
 
@@ -705,7 +702,9 @@ export class WowsApi {
       errorHandler
     );
 
-    this.api.interceptors.request.use(debugRequestHandler);
+    if (debug) {
+      this.api.interceptors.request.use(debugRequestHandler);
+    }
 
     // this.shipDb = shipDb;
     this.shipDb = new ShipDB();
