@@ -15,7 +15,10 @@ const mutations = {
 };
 
 const actions = {
-  setPlayerListSortKey({ state, commit } : { state: any, commit: any }, key: any) {
+  setPlayerListSortKey(
+    { state, commit }: { state: any; commit: any },
+    key: any
+  ) {
     let newSort = { ...state.playerListSort };
     if (state.playerListSort.key === key) {
       newSort.order = state.playerListSort.order * -1;

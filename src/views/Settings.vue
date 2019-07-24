@@ -230,7 +230,9 @@ export default class Settings extends Vue {
   validateApiKey() {
     this.$http
       .get(
-        `${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${this.wowsApiKey}`
+        `${this.wowsApiUrl}/wows/encyclopedia/info/?application_id=${
+          this.wowsApiKey
+        }`
       )
       .then((response: any) => {
         this.wowsApiKeyValid = response.data.status === "ok";

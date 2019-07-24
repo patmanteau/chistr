@@ -115,8 +115,8 @@ function createMenu(mainWindow: BrowserWindow) {
         },
         { type: "separator" },
         {
-          role: 'toggledevtools',
-          accelerator: 'CmdOrCtrl+Shift+I'
+          role: "toggledevtools",
+          accelerator: "CmdOrCtrl+Shift+I"
         }
       ]
     },

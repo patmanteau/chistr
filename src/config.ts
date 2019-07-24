@@ -35,7 +35,6 @@ config.has("app.playerListSort") ||
     order: 1
   });
 
-config.has("app.debugRequests") ||
-  config.set("app.debugRequests", false);
+config.has("app.debugRequests") || config.set("app.debugRequests", false);
 
 export default config;

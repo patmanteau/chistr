@@ -3,4 +3,4 @@ export interface RootState {
 }
 
 export { Player } from "@/store/modules/Arena";
-export { Ship } from "@/store/api/wows-api"
+export { Ship } from "@/store/api/wows-api";
