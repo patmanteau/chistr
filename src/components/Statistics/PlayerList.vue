@@ -218,12 +218,12 @@ export default class PlayerList extends Vue {
   }
 
   wikiLink(player: Player) {
-    if (player.ship instanceof Ship) {
+    // if (player.ship instanceof Ship) {
       return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
         /\s/g,
         "_"
       )}`;
-    }
+    // }
   }
 
   prclass(matches: number, pr: number) {
