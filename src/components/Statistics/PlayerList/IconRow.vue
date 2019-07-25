@@ -16,25 +16,25 @@
       <sortable-icon
         title="# of battles overall"
         class="dg-cell icon"
-        sortField="personalStats.battles"
+        sort-field="personalStats.battles"
         icon="redo"
       />
       <sortable-icon
         title="Player winrate"
         class="dg-cell icon"
-        sortField="personalStats.winrate"
+        sort-field="personalStats.winrate"
         icon="chart-pie"
       />
       <sortable-icon
         title="Player Kill/Death ratio"
         class="dg-cell icon"
-        sortField="personalStats.kdRatio"
+        sort-field="personalStats.kdRatio"
         icon="bullseye"
       />
       <sortable-icon
         title="Player average damage"
         class="dg-cell icon"
-        sortField="personalStats.avgDmg"
+        sort-field="personalStats.avgDmg"
         icon="rocket"
       />
     </div>
@@ -43,31 +43,31 @@
       <sortable-icon
         title="# of battles in this ship"
         class="dg-cell icon"
-        sortField="shipStats.battles"
+        sort-field="shipStats.battles"
         icon="redo"
       />
       <sortable-icon
         title="Ship winrate"
         class="dg-cell icon"
-        sortField="shipStats.winrate"
+        sort-field="shipStats.winrate"
         icon="chart-pie"
       />
       <sortable-icon
         title="Player's Personal Rating for this ship"
         class="dg-cell icon"
-        sortField="shipStats.pr"
+        sort-field="shipStats.pr"
         text="PR"
       />
       <sortable-icon
         title="Ship Kill/Death ratio"
         class="dg-cell icon"
-        sortField="shipStats.kdRatio"
+        sort-field="shipStats.kdRatio"
         icon="bullseye"
       />
       <sortable-icon
         title="Ship average damage"
         class="dg-cell icon"
-        sortField="shipStats.avgDmg"
+        sort-field="shipStats.avgDmg"
         icon="rocket"
       />
     </div>
