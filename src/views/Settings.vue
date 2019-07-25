@@ -75,6 +75,7 @@
         <select v-model="wowsApiUrl" class="text" name="apiUrl">
           <option
             v-for="realm in realms"
+            :key="realm.name"
             :value="realm.url"
             :selected="realm.url === wowsApiUrl"
           >
@@ -92,6 +93,7 @@
         <select v-model="wowsMatchgroup" class="text" name="matchgroup">
           <option
             v-for="group in matchgroups"
+            :key="group.val"
             :value="group.val"
             :selected="group.val === wowsMatchgroup"
           >
