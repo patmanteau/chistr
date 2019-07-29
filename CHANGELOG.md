@@ -5,13 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 <!-- ## [Unreleased] -->
 
-## [Unreleased] - 2019-07-19
+## [1.4.0] - 2019-07-19
 ### Added
 - Mark test and premium ships
 
 ### Changed
-
-### Fixed
+- Made loading faster
 
 ## [1.3.0] - 2019-07-09
 ### Changed
