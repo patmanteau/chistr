@@ -923,7 +923,7 @@ export class WowsApi {
 
       return Promise.resolve(aggStats);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       log.error(error);
       return Promise.reject(error);
     }

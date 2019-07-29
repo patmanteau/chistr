@@ -65,7 +65,7 @@ export class Player {
     this.accountId = "";
     this.profileHidden = false;
 
-    this.ship = new UnresolvedShipStatistics();
+    this.ship = new NoShip();
     this.clan = new UnresolvedClanRecord();
     this.personalStats = new UnresolvedPlayerStatistics();
     this.shipStats = new UnresolvedShipStatistics();
@@ -383,7 +383,7 @@ export default class Arena extends VuexModule {
       });
 
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
-      console.log(`Found player: ${player.name} => ${accountId}`);
+      log.debug(`Found player: ${player.name} => ${accountId}`);
 
       return Promise.resolve(accountId);
     } catch (error) {
@@ -421,7 +421,7 @@ export default class Arena extends VuexModule {
     } catch (error) {
       this.context.commit(types.SET_CLAN_DATA, didFinishOk(false, index));
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
-      console.log(error);
+      log.error(error);
       return Promise.resolve();
     }
   }
@@ -471,9 +471,6 @@ export default class Arena extends VuexModule {
     if (!player.accountId) {
       return Promise.reject(Error("Invalid account id"));
     } else if (player.profileHidden) {
-      console.log(
-        `Won't get ship stats for ${player.name}...profile is hidden`
-      );
       log.debug(`Won't get ship stats for ${player.name}...profile is hidden`);
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
     } else {
@@ -492,7 +489,7 @@ export default class Arena extends VuexModule {
       } catch (error) {
         this.context.commit(types.SET_SHIP_STATS, didFinishOk(false, index));
         this.context.commit(types.INC_COMPLETED_OPERATIONS);
-        console.error(error);
+        log.error(error);
 
         return Promise.resolve();
       }
@@ -520,7 +517,7 @@ export default class Arena extends VuexModule {
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
       return Promise.resolve();
     } catch (error) {
-      console.log(error);
+      log.error(error);
       this.context.commit(types.INC_COMPLETED_OPERATIONS);
 
       return Promise.reject(error);

@@ -63,6 +63,7 @@
 </template>
 
 <script lang="ts">
+import * as log from "electron-log";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { State, Getter, Action, Mutation, namespace } from "vuex-class";
 import { remote } from "electron";
@@ -110,7 +111,7 @@ export default class Statistics extends Vue {
         }
       })
       .catch((error: any) => {
-        console.log(error);
+        log.error(error);
         this.updateAvailable = false;
       });
   }

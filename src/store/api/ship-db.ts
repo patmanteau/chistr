@@ -1,4 +1,5 @@
 import _ from "lodash";
+import * as log from "electron-log";
 import ElectronStore from "electron-store";
 
 export default class ShipDB {
@@ -29,7 +30,7 @@ export default class ShipDB {
     });
 
     if (datasource.time > this.db.get("time")) {
-      console.log("Updating expected values...");
+      log.info("Updating expected values...");
       _.forOwn(datasource.data, (shipId: string, data: any) => {
         this.set(shipId, data);
       });
