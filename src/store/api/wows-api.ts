@@ -5,27 +5,6 @@ import ShipDB from "@/store/api/ship-db";
 import { Promise } from "bluebird";
 import config from "@/config";
 
-export class Ship {
-  shipId: ShipId;
-  name: string;
-  isPremium: boolean;
-  isTest: boolean;
-  type: string;
-
-  constructor(ship: WgShip) {
-    this.shipId = ship.ship_id_str;
-    this.name = ship.name;
-    this.type = ship.type;
-    this.isPremium =
-      ship.is_premium ||
-      ship.is_special ||
-      ship.price_gold > 0 ||
-      ship.price_credit === 1;
-    this.isTest = ship.has_demo_profile;
-  }
-}
-
-type ShipDict = { [id: string]: Ship };
 /**
  * Ship info from Wargaming API
  * Request URL: /wows/encyclopedia/ships/
@@ -287,6 +266,34 @@ export enum RecordKind {
   NoClan,
   Unresolved
 }
+
+export class Ship {
+  readonly kind = RecordKind.Ship;
+  shipId: ShipId;
+  name: string;
+  isPremium: boolean;
+  isTest: boolean;
+  type: string;
+
+  constructor(ship: WgShip) {
+    this.shipId = ship.ship_id_str;
+    this.name = ship.name;
+    this.type = ship.type;
+    this.isPremium =
+      ship.is_premium ||
+      ship.is_special ||
+      ship.price_gold > 0 ||
+      ship.price_credit === 1;
+    this.isTest = ship.has_demo_profile;
+  }
+}
+
+export class NoShip {
+  readonly kind = RecordKind.Unresolved;
+}
+
+type ShipDict = { [id: string]: Ship };
+
 
 export interface PlayerStatistics {
   readonly kind: RecordKind.Player;

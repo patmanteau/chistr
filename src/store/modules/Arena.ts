@@ -15,7 +15,8 @@ import {
   UnresolvedShipStatistics,
   UnresolvedClanRecord,
   UnresolvedPlayerStatistics,
-  RecordKind
+  RecordKind,
+  NoShip
 } from "@/store/api/wows-api";
 // import ShipDB from "@/store/api/ship-db";
 import * as log from "electron-log";
@@ -44,7 +45,7 @@ export class Player {
   accountId: AccountId;
   profileHidden: boolean;
 
-  ship: Ship | UnresolvedShipStatistics;
+  ship: Ship | NoShip;
   clan: ClanRecord | NoClan | UnresolvedClanRecord;
   personalStats:
     | PlayerStatistics

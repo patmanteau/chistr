@@ -179,6 +179,7 @@ import IconRow from "@/components/Statistics/PlayerList/IconRow.vue";
 import { State, Getter, Action, Mutation, namespace } from "vuex-class";
 
 import { Player, Ship } from "@/store/types";
+import { RecordKind } from '../../store/api/wows-api';
 
 @Component({
   name: "PlayerList",
@@ -218,12 +219,12 @@ export default class PlayerList extends Vue {
   }
 
   wikiLink(player: Player) {
-    // if (player.ship instanceof Ship) {
-      return `http://wiki.wargaming.net/en/Ship:${player.ship.name.replace(
+    if (player.ship.kind == RecordKind.Ship) {
+      return `http://wiki.wargaming.net/en/Ship:${player.ship.name!.replace(
         /\s/g,
         "_"
       )}`;
-    // }
+    }
   }
 
   prclass(matches: number, pr: number) {
@@ -592,15 +593,6 @@ hr {
 }
 
 .clan-tag {
-  vertical-align: middle;
-  /* width: auto;
-  background-color: #f7f7f7;
-  color: #333;
-  text-align: center;
-  padding: 6px 8px;
-  font-family: "Archivo Narrow", sans-serif;
-  font-size: 14px;
-  border: 1px #cbcbcb solid;
-  z-index: 200000; */
+  font-size: 12pt;
 }
 </style>
