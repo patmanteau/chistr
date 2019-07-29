@@ -179,7 +179,7 @@ import IconRow from "@/components/Statistics/PlayerList/IconRow.vue";
 import { State, Getter, Action, Mutation, namespace } from "vuex-class";
 
 import { Player, Ship } from "@/store/types";
-import { RecordKind } from '../../store/api/wows-api';
+import { RecordKind } from "../../store/api/wows-api";
 
 @Component({
   name: "PlayerList",

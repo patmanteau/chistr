@@ -294,7 +294,6 @@ export class NoShip {
 
 type ShipDict = { [id: string]: Ship };
 
-
 export interface PlayerStatistics {
   readonly kind: RecordKind.Player;
 
