@@ -814,77 +814,6 @@ export class WowsApi {
     }
   }
 
-  async getPlayerClan(accountId: AccountId): Promise<ClanRecord | NoClan> {
-    log.debug(`getPlayerClan(${accountId})`);
-    try {
-      const response = await this.api.get("/wows/clans/accountinfo/", {
-        params: { account_id: accountId, extra: "clan" }
-      });
-
-      const playerClan: WgClanInfo | undefined = _.get(response, [
-        "data",
-        "data",
-        accountId,
-        "clan"
-      ]);
-      if (playerClan) {
-        return Promise.resolve(new ClanRecord(playerClan));
-      } else {
-        return Promise.resolve(new NoClan());
-      }
-    } catch (error) {
-      log.error(error);
-      return Promise.reject(error);
-    }
-  }
-
-  // async getShip(shipId: ShipId): Promise<Ship> {
-  //   log.debug(`Get ship ${shipId}...`);
-  //   // shipDb may contain expected values only,
-  //   // so check if there's a full cache record
-  //   if (this.shipDb.hasFull(shipId)) {
-  //     let ship: WgShip = this.shipDb.get(shipId);
-  //     log.debug(`Cache hit => ${ship.name}`);
-
-  //     return Promise.resolve(new Ship(ship));
-  //   } else {
-  //     log.debug(`Ship ${shipId} not in cache`);
-
-  //     try {
-  //       const excluded_fields = [
-  //         "default_profile",
-  //         "modules",
-  //         "upgrades",
-  //         "next_ships",
-  //         "mod_slots",
-  //         "images"
-  //       ];
-  //       const response = await this.api.get("/wows/encyclopedia/ships/", {
-  //         params: {
-  //           ship_id: shipId,
-  //           fields: _.map(excluded_fields, f => `-${f}`).join(",")
-  //         }
-  //       });
-
-  //       const wgShip: WgShip | undefined = _.get(response, [
-  //         "data",
-  //         "data",
-  //         shipId
-  //       ]);
-  //       if (wgShip) {
-  //         // no cache hit earlier, so cache it now
-  //         this.shipDb.setFull(shipId, wgShip);
-  //         return Promise.resolve(new Ship(wgShip));
-  //       } else {
-  //         return Promise.reject(Error("Ship not found."));
-  //       }
-  //     } catch (error) {
-  //       log.error(error);
-  //       return Promise.reject(error);
-  //     }
-  //   }
-  // }
-
   async getShips(shipIds: ShipId[]): Promise<ShipDict> {
     log.debug(`getShips(${shipIds})`);
 
@@ -989,6 +918,30 @@ export class WowsApi {
       return Promise.resolve(aggStats);
     } catch (error) {
       console.error(error);
+      log.error(error);
+      return Promise.reject(error);
+    }
+  }
+
+  async getPlayerClan(accountId: AccountId): Promise<ClanRecord | NoClan> {
+    log.debug(`getPlayerClan(${accountId})`);
+    try {
+      const response = await this.api.get("/wows/clans/accountinfo/", {
+        params: { account_id: accountId, extra: "clan" }
+      });
+
+      const playerClan: WgClanInfo | undefined = _.get(response, [
+        "data",
+        "data",
+        accountId,
+        "clan"
+      ]);
+      if (playerClan) {
+        return Promise.resolve(new ClanRecord(playerClan));
+      } else {
+        return Promise.resolve(new NoClan());
+      }
+    } catch (error) {
       log.error(error);
       return Promise.reject(error);
     }
